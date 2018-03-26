@@ -1,0 +1,28 @@
+[Mon Feb 19 10:15:37.889668 2018] [ssl:warn] [pid 11271:tid 139681819875456] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 10:15:37.963441 2018] [ssl:warn] [pid 11271:tid 139681819875456] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 10:18:14.605129 2018] [ssl:warn] [pid 11714:tid 140585186617472] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 10:18:14.682173 2018] [ssl:warn] [pid 11714:tid 140585186617472] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 10:41:29.154839 2018] [proxy_fcgi:error] [pid 11720:tid 140584679319296] [client 66.249.79.103:36120] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 10:48:23.012697 2018] [proxy_fcgi:error] [pid 11720:tid 140584742258432] [client 74.125.76.33:51176] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 11:29:24.671518 2018] [proxy_fcgi:error] [pid 11719:tid 140584658339584] [client 141.101.88.134:44650] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 11:31:21.214546 2018] [proxy_fcgi:error] [pid 11719:tid 140584637359872] [client 74.125.76.36:37094] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 12:47:33.552691 2018] [ssl:warn] [pid 13917:tid 139793473165440] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 12:47:33.627047 2018] [ssl:warn] [pid 13917:tid 139793473165440] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 12:47:44.247771 2018] [ssl:warn] [pid 14462:tid 140614095939712] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 12:47:44.326388 2018] [ssl:warn] [pid 14462:tid 140614095939712] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 12:50:59.738439 2018] [ssl:warn] [pid 443:tid 140212984092800] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 12:50:59.809285 2018] [ssl:warn] [pid 443:tid 140212984092800] AH01909: RSA certificate configured for devagents.shoreexcursionsgroup.com:443 does NOT include an ID which matches the server name
+[Mon Feb 19 13:10:10.084484 2018] [proxy_fcgi:error] [pid 692:tid 140212462089984] [client 210.3.145.29:40716] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 13:49:15.779714 2018] [proxy_fcgi:error] [pid 693:tid 140212535518976] [client 66.249.79.103:56616] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 13:49:19.842920 2018] [proxy_fcgi:error] [pid 705:tid 140212608947968] [client 66.249.79.103:57724] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 13:58:27.873327 2018] [proxy_fcgi:error] [pid 705:tid 140212493559552] [client 178.19.253.104:33216] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 14:21:34.490875 2018] [proxy_fcgi:error] [pid 693:tid 140212608947968] [client 172.68.50.182:46616] AH01071: Got error 'Primary script unknown\n', referer: https://primera-clase.com/xmlrpc.php
+[Mon Feb 19 15:53:49.196120 2018] [proxy_fcgi:error] [pid 693:tid 140212556498688] [client 74.125.76.32:40522] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 16:43:54.170536 2018] [proxy_fcgi:error] [pid 705:tid 140212577478400] [client 74.125.76.33:38096] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 17:11:54.388174 2018] [proxy_fcgi:error] [pid 2066:tid 140212388660992] [client 74.125.76.33:42354] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 20:30:17.246681 2018] [proxy_fcgi:error] [pid 2066:tid 140212629927680] [client 207.46.13.160:57644] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 20:33:16.494855 2018] [proxy_fcgi:error] [pid 2066:tid 140212566988544] [client 74.125.76.35:57574] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 21:00:37.130836 2018] [proxy_fcgi:error] [pid 2066:tid 140212399150848] [client 74.125.76.35:55632] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 22:09:11.897566 2018] [proxy_fcgi:error] [pid 2066:tid 140212483069696] [client 141.101.76.68:54334] AH01071: Got error 'Primary script unknown\n'
+[Mon Feb 19 23:56:16.161474 2018] [proxy_fcgi:error] [pid 2066:tid 140212399150848] [client 185.86.13.213:39742] AH01071: Got error 'Primary script unknown\n'
+[Tue Feb 20 00:11:21.270092 2018] [proxy_fcgi:error] [pid 2066:tid 140212493559552] [client 74.125.76.36:34272] AH01071: Got error 'Primary script unknown\n'
