@@ -16,4 +16,6 @@
     <!-- endbuild-->
     <!-- Application styles-->
     <link rel="stylesheet" href="{{asset('css/login_app.css?'.Config::get('app.cache_buster'))}}">
+    <!--noty-->
+    <link rel="stylesheet" href="{{asset('js/vendor/needim/noty/lib/noty.css?'.Config::get('app.cache_buster'))}}">
 </head>

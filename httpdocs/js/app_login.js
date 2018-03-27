@@ -12,6 +12,44 @@
 // APP START
 // -----------------------------------
 
+function sendFormLogin(form){
+  sendPost(form.action,$("form#"+form.id).serialize(),responseFormLogin);
+  return false;
+}
+
+function responseFormLogin(results){
+  try{
+    
+    var obj = jQuery.parseJSON( results );
+    if(obj.data.error){
+      for (var e in obj.data.errmens) {
+        for (var i = 0; i < obj.data.errmens[e].length; i++ ) {
+            showError(obj.data.errmens[e][i]);
+        }
+      }  
+    }else{
+      window.location = obj.data.redirect;
+    }
+    
+    $('input[type=submit]').attr('disabled', false);  
+  }catch(error){
+
+  }
+}
+
+function sendPost(url, data, callBack){    
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: data,
+        //success: callBack(result, status)
+        success: function(result,status){
+            callBack(result);
+        }
+    });
+}
+
+
 (function() {
     'use strict';
 
