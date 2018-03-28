@@ -23,7 +23,7 @@ class AdminController extends Controller
      *
      * @return Response
      */
-    public function getIndex(Request $request)
+    public function getIndex (Request $request)
     {
 		return view('admin.index');
     }
@@ -33,12 +33,13 @@ class AdminController extends Controller
      *
      * @return Response
      */
-    public function getLogin(Request $request)
+    public function getLogin (Request $request)
     {
         
         $user_login = Sentinel::check();
-        if($user_login) {
-            return redirect()->route("dashboard_home");            
+        if ($user_login) 
+        {
+            return redirect()->route ("dashboard_home");            
         }
 
         return view('login.index');

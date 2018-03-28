@@ -22,18 +22,18 @@ class AuthenticateSentinel
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle ($request, Closure $next, $guard = null)
     {
         $user_login = Sentinel::check();
         
-        if(!$user_login) {
-           return redirect()->route("login")->with('_redirect',URL::current());
+        if (!$user_login) 
+        {
+           return redirect()->route("login")->with('_redirect', URL::current());
         }else{
-        	View::share ( 'user_login', $user_login );
-            
+        	View::share('user_login', $user_login);
         }
         
-        return $next($request);
+        return $next ($request);
     }
 
 }
