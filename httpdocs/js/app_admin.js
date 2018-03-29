@@ -12,29 +12,6 @@
 // APP START
 // -----------------------------------
 
-function sendPost(url, data, callBack){    
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: data,
-        //success: callBack(result, status)
-        success: function(result,status){
-            callBack(result);
-        }
-    });
-}
-
-function sendGet(url, callBack){
-    $.ajax({
-        type: "GET",
-        url: url,
-        //success: callBack(result, status)
-        success: function(result,status){
-            callBack(result);
-        }
-    });
-}
-
 (function() {
     'use strict';
 

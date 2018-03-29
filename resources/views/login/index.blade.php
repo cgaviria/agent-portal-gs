@@ -4,7 +4,7 @@
         <div class="page-container bg-blue-grey-900">
             <div class="container-full">
                 <div class="container container-xs">
-                    <form class="card b0 form-validate mt-md-2" id="user-login" action="{{URL::action('AuthController@doLogin')}}" onsubmit="sendFormLogin(this);" name="loginForm" novalidate="">
+                    <form class="card b0 form-validate mt-md-2" id="user-login" action="{{URL::action('AuthController@doLogin')}}" onsubmit="viewsLoginInstance.sendFormLogin(this);" name="loginForm" novalidate="">
                         <div class="card-offset pb0">
                             <div class="card-offset-item text-right"><a class="btn-raised btn btn-info btn-circle btn-lg" href="signup.html"><em class="ion-person-add"></em></a></div>
                             <div class="card-offset-item text-right hidden">
