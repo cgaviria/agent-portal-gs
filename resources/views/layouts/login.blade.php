@@ -17,8 +17,22 @@
         <!-- jQuery Form Validation-->
         <script src="{{asset('js/jquery.validate.js?'.Config::get('app.cache_buster'))}}"></script>
         <script src="{{asset('js/additional-methods.js?'.Config::get('app.cache_buster'))}}"></script>
+        <!--Noty-->
+        <script src="{{asset('js/vendor/needim/noty/lib/noty.js?'.Config::get('app.cache_buster'))}}"></script>
+        <!-- Class.js-->
+        <script src="{{asset('js/class.js?'.Config::get('app.cache_buster'))}}"></script>
         <!-- endbuild-->
         <!-- App script-->
         <script src="{{asset('js/app_login.js?'.Config::get('app.cache_buster'))}}"></script>
+
+        <script src="{{asset('js/views/globals.js?'.Config::get('app.cache_buster'))}}"></script> 
+         <script>
+            var viewsGlobalInstance = new ViewsGlobals();
+        </script>
+        <!--login-->
+        <script src="{{asset('js/views/header/login.js?'.Config::get('app.cache_buster'))}}"></script> 
+        <script>
+            var viewsLoginInstance = new ViewsLayoutsLogin();
+        </script>
     </body>
 </html>
