@@ -28,11 +28,11 @@ class AuthController extends BaseController
     const KEEP_LOGIN_YES = 'YES';
 
     public static $rules_login = array(
-        'accountName'     => 'required|email',
-        'accountPassword'  => 'required'
+        'accountName' => 'required|email',
+        'accountPassword' => 'required'
     );
 
-    public function doLogin (Request $request)
+    public function doLogin(Request $request)
     {
 
 
@@ -42,27 +42,24 @@ class AuthController extends BaseController
 
         $validator = Validator::make(Input::all(), self::$rules_login);
 
-        if ($validator->fails())
-        {
-            $response->error  = true;
+        if ($validator->fails()) {
+            $response->error = true;
             $response->errmens = $validator->messages();
             return RestResponse::sendResult(200,$response);
         }
 
         $credentials = [
-            'email' => $request -> input('accountName'),
-            'password' => $request -> input('accountPassword'),
+            'email' => $request->input('accountName'),
+            'password' => $request->input('accountPassword'),
         ];
 
-        if ($request->keep_login == self::KEEP_LOGIN_YES)
-        {
+        if ($request->keep_login == self::KEEP_LOGIN_YES) {
             $res = Sentinel::authenticateAndRemember($credentials);
         } else {
             $res = Sentinel::authenticate($credentials);
         }
 
-        if ($res != null)
-        {
+        if ($res != null) {
             $response->mens = Lang::get('login_ok');
             if ($request->redirect == '')
             {
@@ -80,7 +77,7 @@ class AuthController extends BaseController
         return RestResponse::sendResult (200,$response);
     }
 
-    public function logout ()
+    public function logout()
     {
 
         Sentinel::logout();

@@ -26,14 +26,13 @@ class AuthenticateSentinel
     {
         $user_login = Sentinel::check();
         
-        if (!$user_login) 
-        {
+        if (!$user_login) {
            return redirect()->route("login")->with('_redirect', URL::current());
-        }else{
+        } else {
         	View::share('user_login', $user_login);
         }
         
-        return $next ($request);
+        return $next($request);
     }
 
 }

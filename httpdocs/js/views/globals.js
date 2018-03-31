@@ -1,7 +1,7 @@
 
 var ViewsGlobals = Class.extend({
 	globalAlertOptions: null,
-	init: function(){
+	init: function() {
 		this.globalAlertOptions = {
 			layout: 'topRight',
 			theme: 'metroui',
@@ -32,19 +32,19 @@ var ViewsGlobals = Class.extend({
 				
 		});
 	},
-	showAlert: function (text){
+	showAlert: function (text) {
 		this.showNotification('alert',text);
 	},
-	showError:function(text){
+	showError: function(text) {
 		this.showNotification('error',text);
 	},
-	showWarning:function(text){
+	showWarning: function(text) {
 		this.showNotification('warning',text);
 	},
-	showInfo:function(text){
+	showInfo: function(text) {
 			this.showNotification('info',text);
 	},
-	showNotification:function (type, text, options = {}){
+	showNotification: function(type, text, options = {}) {
 		new Noty({
 		  type: type, // alert, success, error, warning, info
 		  layout: this.globalAlertOptions.layout, // top, topLeft, topCenter, topRight, center, centerLeft, centerRight, bottom, bottomLeft, bottomCenter, bottomRight
@@ -65,13 +65,13 @@ var ViewsGlobals = Class.extend({
 		  modal: (options.modal) ? options.modal : this.globalAlertOptions.modal
 		}).show();
 	},
-	sendPost: function(url, data, callBack){    
+	sendPost: function(url, data, callBack) {    
 	    $.ajax({
 	        type: "POST",
 	        url: url,
 	        data: data,
 	        //success: callBack(result, status)
-	        success: function(result,status){
+	        success: function(result, status) {
 	            callBack(result);
 	        }
 	    });
@@ -81,7 +81,7 @@ var ViewsGlobals = Class.extend({
 	        type: "GET",
 	        url: url,
 	        //success: callBack(result, status)
-	        success: function(result,status){
+	        success: function(result, status) {
 	            callBack(result);
 	        }
 	    });
