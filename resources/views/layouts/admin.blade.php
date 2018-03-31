@@ -19,7 +19,7 @@
                             <ul class="dropdown-menu dropdown-menu-right md-dropdown-menu">
                                 <li><a href="profile.html"><em class="ion-home icon-fw"></em>My Account</a></li>
                                 <li class="divider" role="presentation"></li>
-                                <li><a href="user.login.html"><em class="ion-log-out icon-fw"></em>Logout</a></li>
+                                <li><a href="{{URL::action('AuthController@logout')}}"><em class="ion-log-out icon-fw"></em>Logout</a></li>
                             </ul>
                         </li>
                         <li><a class="ripple" id="header-settings" href="#"><em class="ion-gear-b"></em></a></li>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="sidebar-content">
                     <div class="sidebar-toolbar text-center"><a href=""><img class="img-circle thumb64" src="{{asset('images/christian_gaviria_foto_square.jpeg')}}" alt="Profile"></a>
-                        <div class="mt">Welcome, Christian</div>
+                        <div class="mt">Welcome, {{$user_login->first_name}}</div>
                     </div>
                     <nav class="sidebar-nav">
                         <ul>
