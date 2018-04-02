@@ -37,12 +37,14 @@
                     </div>
                     <nav class="sidebar-nav">
                         <ul>
-                            <li><a class="ripple" href="dashboard.html"><span class="pull-right nav-label"><span class="badge bg-success">2</span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Bookings</span></a></li>
-                            <li><a class="ripple" href="dashboard.html"><span class="pull-right nav-label"><span class="badge bg-success">2</span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
-                            <li><a class="ripple" href="dashboard.html"><span class="pull-right nav-label"><span class="badge bg-success">2</span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Clients</span></a></li>
-                            <li><a class="ripple" href="dashboard.html"><span class="pull-right nav-label"><span class="badge bg-success">2</span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Request Training</span></a></li>
-                            <li><a class="ripple" href="dashboard.html"><span class="pull-right nav-label"><span class="badge bg-success">2</span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
-                            <li><a class="ripple" href="dashboard.html"><span class="pull-right nav-label"><span class="badge bg-success">2</span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Media Center</span></a></li>
+                            <li><a class="ripple" href="{{URL::action('AdminController@getIndex')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Dashboard</span></a></li>
+                            <li><a class="ripple" href="{{URL::action('AdminController@getContactImporter')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Contact Importer</span></a></li>
+                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Bookings</span></a></li>
+                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
+                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Clients</span></a></li>
+                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Request Training</span></a></li>
+                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
+                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Media Center</span></a></li>
                         </ul>
                     </nav>
                 </div>

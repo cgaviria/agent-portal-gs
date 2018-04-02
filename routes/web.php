@@ -27,6 +27,7 @@ Route::get('/feed', 'FrontController@getFeed');
 Route::get('/comments/feed', 'FrontController@getCommentsFeed');
 
 Route::get('/dashboard/home', ['as' => 'dashboard_home', 'uses' => 'AdminController@getIndex'])->middleware('authSentinel');
+Route::get('/dashboard/contact_importer', ['as' => 'contact_importer', 'uses' => 'AdminController@getContactImporter'])->middleware('authSentinel');
 Route::get('/dashboard/login', ['as' => 'dashboard_login', 'uses' => 'AdminController@getLogin']);
 
 
