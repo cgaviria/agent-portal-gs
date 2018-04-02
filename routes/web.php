@@ -26,5 +26,10 @@ Route::get('/customerreviews', 'FrontController@getCustomerReviews');
 Route::get('/feed', 'FrontController@getFeed');
 Route::get('/comments/feed', 'FrontController@getCommentsFeed');
 
-Route::get('/dashboard/home', 'AdminController@getIndex');
-Route::get('/dashboard/login', 'AdminController@getLogin');
+Route::get('/dashboard/home', ['as' => 'dashboard_home', 'uses' => 'AdminController@getIndex'])->middleware('authSentinel');
+Route::get('/dashboard/login', ['as' => 'dashboard_login', 'uses' => 'AdminController@getLogin']);
+
+
+Route::post('/dashboard/login/doLogin', 'AuthController@doLogin');
+Route::get('/dashboard/login/logout', 'AuthController@logout');
+
