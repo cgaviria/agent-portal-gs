@@ -24,14 +24,14 @@
                                     <label>Email address</label>
                                 </div><span class="mda-input-group-addon"><em class="ion-ios-email-outline icon-lg"></em></span>
                             </div>
-                            <div class="mda-form-group float-label mda-input-group pull-right">
+                            <div class="mda-form-group float-label mda-input-group">
                                 <div class="mda-form-control">
                                     <input class="form-control" type="password" name="accountPassword" required="">
                                     <div class="mda-form-control-line"></div>
                                     <label>Password</label>
                                 </div><span class="mda-input-group-addon"><em class="ion-ios-locked-outline icon-lg"></em></span>
                             </div>
-                            <div class="checkbox c-checkbox">
+                            <div class="checkbox c-checkbox pull-right">
                                 <label>
                                   <input type="checkbox" name="keep_login" value="YES"><span class="ion-checkmark-round"></span> Remember me
                                 </label>
