@@ -31,6 +31,11 @@
                                     <label>Password</label>
                                 </div><span class="mda-input-group-addon"><em class="ion-ios-locked-outline icon-lg"></em></span>
                             </div>
+                            <div class="checkbox c-checkbox pull-right">
+                                <label>
+                                  <input type="checkbox" name="keep_login" value="YES"><span class="ion-checkmark-round"></span> Remember me
+                                </label>
+                            </div>
 
                         </div>
                         <button class="btn btn-primary btn-flat" type="submit">Authenticate</button>
