@@ -24,7 +24,7 @@
                                     <label>Email address</label>
                                 </div><span class="mda-input-group-addon"><em class="ion-ios-email-outline icon-lg"></em></span>
                             </div>
-                            <div class="mda-form-group float-label mda-input-group">
+                            <div class="mda-form-group float-label mda-input-group pull-right">
                                 <div class="mda-form-control">
                                     <input class="form-control" type="password" name="accountPassword" required="">
                                     <div class="mda-form-control-line"></div>
