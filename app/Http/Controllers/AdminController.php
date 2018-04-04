@@ -43,4 +43,15 @@ class AdminController extends Controller
 
         return view('login.index');
     }
+
+    /**
+     * Shows the contact importer page.
+     *
+     * @return Response
+     */
+    public function getContactImporter(Request $request)
+    {
+        /*https://laravel-news.com/google-api-socialite*/ 
+        return view('admin.contact_importer');
+    }
 }
