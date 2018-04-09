@@ -30,6 +30,8 @@ Route::get('/dashboard/home', ['as' => 'dashboard_home', 'uses' => 'AdminControl
 Route::get('/dashboard/importer', ['as' => 'contact_importer', 'uses' => 'AdminController@getContactImporter'])->middleware('authSentinel');
 Route::get('/dashboard/login', ['as' => 'dashboard_login', 'uses' => 'AdminController@getLogin']);
 
+Route::get('/data/importer', 'ContactImporterController@getData');
+
 
 Route::post('/dashboard/login/doLogin', 'AuthController@doLogin');
 Route::get('/dashboard/login/logout', 'AuthController@logout');

@@ -163,7 +163,24 @@
         <script src="{{asset('js/jquery.bootgrid.js?'.Config::get('app.cache_buster'))}}"></script>
         <script src="{{asset('js/jquery.bootgrid.fa.js?'.Config::get('app.cache_buster'))}}"></script>
         <!-- Datatables-->
-        <script src="{{asset('js/jquery.dataTables.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net/js/jquery.dataTables.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-bs/js/dataTables.bootstrap.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-buttons/js/dataTables.buttons.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-buttons-bs/js/buttons.bootstrap.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-buttons/js/buttons.flash.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-buttons/js/buttons.html5.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-buttons/js/buttons.print.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-keytable/js/dataTables.keyTable.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-responsive/js/dataTables.responsive.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-responsive-bs/js/responsive.bootstrap.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/datatables.net-scroller/js/dataTables.scroller.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/switchery/dist/switchery.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/jszip/dist/jszip.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/pdfmake/build/pdfmake.min.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/pdfmake/build/vfs_fonts.js?'.Config::get('app.cache_buster'))}}"></script>
+        <script src="{{asset('js/vendor/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js?'.Config::get('app.cache_buster'))}}"></script>
+
         <!-- Nestable-->
         <script src="{{asset('js/jquery.nestable.js?'.Config::get('app.cache_buster'))}}"></script>
         <!-- Sweet Alert-->
@@ -186,11 +203,15 @@
         <script src="{{asset('js/blueimp-gallery-vimeo.js?'.Config::get('app.cache_buster'))}}"></script>
         <script src="{{asset('js/blueimp-gallery-youtube.js?'.Config::get('app.cache_buster'))}}"></script>
         <script src="{{asset('js/jquery.blueimp-gallery.js?'.Config::get('app.cache_buster'))}}"></script>
+
+        
         <!-- Datamaps-->
         <script src="{{asset('js/topojson.min.js?'.Config::get('app.cache_buster'))}}"></script>
         <script src="{{asset('js/datamaps.all.js?'.Config::get('app.cache_buster'))}}"></script>
         <!-- endbuild-->
         <!-- App script-->
         <script src="{{asset('js/app_admin.js?'.Config::get('app.cache_buster'))}}"></script>
+
+        @yield('extra_script')
     </body>
 </html>
