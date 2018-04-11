@@ -28,17 +28,21 @@ class ContactImporterController extends Controller
             $contactimporters = ContactImporter::query();
             $datatables = new Datatables;
             return $datatables->eloquent($contactimporters)
-                  ->editColumn('type', function ($contactimporter) use ($userL){
-                        if($contactimporter->type == 'auto')
+                  ->editColumn('refresh', function ($contactimporter) use ($userL){
+                        if($contactimporter->refresh == 'auto')
                             return 'Automatic';
+                        else if($contactimporter->refresh == 'daily')
+                            return 'Daily';
+                        else if($contactimporter->refresh == 'weekly')
+                            return 'Weekly';
                         else
-                            return 'Manual';
+                            return 'Monthly';
 
                     })
                   ->addColumn('actions', function ($contactimporter) use ($userL){
-                        $buttons = '<button class="mb-sm btn btn-primary ripple" type="button">Edit</button>';
-                        $buttons .= '<button class="mb-sm btn btn-success ripple" type="button">Import</button>';
-                        $buttons .= '<button class="mb-sm btn btn-warning ripple" type="button">Delete</button>';
+                        $buttons = '<button class="mb-sm btn btn-primary ripple" type="button">Edit</button> ';
+                        $buttons .= '<button class="mb-sm btn btn-success ripple" type="button">Import</button> ';
+                        $buttons .= '<button class="mb-sm btn btn-warning ripple" type="button">Delete</button> ';
                         return $buttons;
                     })
                   ->rawColumns(['actions'])

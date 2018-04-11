@@ -38,7 +38,7 @@
 <script type="text/javascript">
   
   function showAddForm(){
-    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getAddForm')}}","Add new Contact Importer");
+    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getAddForm')}}","@lang('strings.add_importer')");
   }
 
   var table;
