@@ -36,3 +36,6 @@ Route::get('/data/importer', 'ContactImporterController@getData');
 Route::post('/dashboard/login/doLogin', 'AuthController@doLogin');
 Route::get('/dashboard/login/logout', 'AuthController@logout');
 
+
+Route::get('/forms/add/importer', 'ContactImporterController@getAddForm');
+

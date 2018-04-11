@@ -92,6 +92,24 @@
                 </div>
             </div>
         </div>
+
+        <!--======= Dynamic Modal =========-->
+        <div id="dynamic_modal" class="modal fade" tabindex="-1" role="dialog">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="dynamic_modal_title"></h4>
+              </div>
+              <div class="modal-body" id="dynamic_modal_body">
+                  
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
         <!-- End Settings template-->
         <!-- Google Maps API-->
         <!--
@@ -212,6 +230,18 @@
         <!-- App script-->
         <script src="{{asset('js/app_admin.js?'.Config::get('app.cache_buster'))}}"></script>
 
+        <!-- Class.js-->
+        <script src="{{asset('js/class.js?'.Config::get('app.cache_buster'))}}"></script>
+        
+        <script src="{{asset('js/views/globals.js?'.Config::get('app.cache_buster'))}}"></script> 
+         <script>
+            var viewsGlobalInstance = new ViewsGlobals();
+        </script>
+
+        <script src="{{asset('js/views/layouts/admin.js?'.Config::get('app.cache_buster'))}}"></script> 
+         <script>
+            var viewsAdminInstance = new ViewsLayoutsAdmin();
+        </script>
         @yield('extra_script')
     </body>
 </html>

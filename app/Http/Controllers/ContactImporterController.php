@@ -20,7 +20,7 @@ class ContactImporterController extends Controller
      *
      * @return Response
      */
-   public function getData(Request $request){
+    public function getData(Request $request){
 
       $userL = Sentinel::check();        
       if($userL){
@@ -36,17 +36,22 @@ class ContactImporterController extends Controller
 
                     })
                   ->addColumn('actions', function ($contactimporter) use ($userL){
-                        $buttons = ' <button class="mt-sm btn btn-labeled btn-default ripple" type="button">Edit<span class="btn-label btn-label-right"><i class="ion-plus-round"></i></span></button><button class="mt-sm btn btn-labeled btn-default ripple" type="button">Delete<span class="btn-label btn-label-right"><i class="ion-plus-round"></i></span></button>';
+                        $buttons = '<button class="mb-sm btn btn-primary ripple" type="button">Edit</button>';
+                        $buttons .= '<button class="mb-sm btn btn-success ripple" type="button">Import</button>';
+                        $buttons .= '<button class="mb-sm btn btn-warning ripple" type="button">Delete</button>';
                         return $buttons;
                     })
                   ->rawColumns(['actions'])
-                  ->filter(function ($query) use ($request) {
-                        
-                    })
                   ->make(true);
           
       }  
     }
 
-   
+    public function getAddForm(Request $request){
+
+      $userL = Sentinel::check();        
+      if($userL){
+          return view('admin.importer.add')->render();
+      }  
+    }
 }

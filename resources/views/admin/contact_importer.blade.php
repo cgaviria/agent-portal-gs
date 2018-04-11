@@ -8,7 +8,7 @@
                     <h4 class="m0 text-thin">Dashboard</h4><small>Contact Importer</small>
                 </div>
                 <div class="col-sm-4 text-right hidden-xs">
-                    <button class="mt-sm btn btn-labeled btn-default ripple" type="button">Add New<span class="btn-label btn-label-right"><i class="ion-plus-round"></i></span></button>
+                    <button onclick="showAddForm();" class="btn btn-labeled btn-success ripple" type="button"><span class="btn-label"><i class="ion-plus-round"></i></span>Add New</button>
                 </div>
             </div>
         </div>
@@ -36,6 +36,11 @@
 @endsection
 @section('extra_script')
 <script type="text/javascript">
+  
+  function showAddForm(){
+    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getAddForm')}}","Add new Contact Importer");
+  }
+
   var table;
   $(document).ready(function() {    
       //$('#admintable').hide();

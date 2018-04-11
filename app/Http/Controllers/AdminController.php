@@ -59,7 +59,7 @@ class AdminController extends Controller
         $param['fields'] = [
                             [ 'id' => 'id', 'label' => 'Id', 'ordenable' => true,  'searchable' => false],
                             [ 'id' => 'email', 'label' => 'Email', 'ordenable' => true,  'searchable' => true],
-                            [ 'id' => 'type', 'label' => 'Type', 'ordenable' => true,  'searchable' => false],
+                            [ 'id' => 'refresh', 'label' => 'Refresh', 'ordenable' => true,  'searchable' => false],
                             [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false]
                            ];
 
