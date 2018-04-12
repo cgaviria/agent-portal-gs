@@ -37,5 +37,8 @@ Route::post('/dashboard/login/doLogin', 'AuthController@doLogin');
 Route::get('/dashboard/login/logout', 'AuthController@logout');
 
 
-Route::get('/forms/add/importer', 'ContactImporterController@getAddForm');
+Route::get('/forms/importer/add', 'ContactImporterController@getAddForm');
+Route::get('/forms/importer/edit', 'ContactImporterController@getEditForm');
+Route::get('/forms/importer/delete', 'ContactImporterController@getDeleteForm');
+Route::get('/forms/importer/run', 'ContactImporterController@getRunForm');
 

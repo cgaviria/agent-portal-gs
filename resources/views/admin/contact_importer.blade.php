@@ -5,7 +5,7 @@
         <div class="content-heading bg-white">
             <div class="row">
                 <div class="col-sm-8">
-                    <h4 class="m0 text-thin">Dashboard</h4><small>Contact Importer</small>
+                    <h4 class="m0 text-thin">Contact Importer</h4><small>Manage your accounts to import contacts here</small>
                 </div>
                 <div class="col-sm-4 text-right hidden-xs">
                     <button onclick="showAddForm();" class="btn btn-labeled btn-success ripple" type="button"><span class="btn-label"><i class="ion-plus-round"></i></span>Add New</button>
@@ -14,7 +14,7 @@
         </div>
         <div class="container-fluid">
             <div class="card">
-              <div class="card-heading">Contact Importer</div>
+              <div class="card-heading">&nbsp;</div>
               <!-- START table-responsive-->
               <div class="table-responsive">
                 <div class="col-sm-12">
@@ -41,6 +41,18 @@
     viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getAddForm')}}","@lang('strings.add_importer')");
   }
 
+  function showEditForm(){
+    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getEditForm')}}","@lang('strings.edit_importer')");
+  }
+
+  function showDeleteForm(){
+    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getDeleteForm')}}","@lang('strings.delete_importer')");
+  }
+
+  function showRunForm(){
+    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getRunForm')}}","@lang('strings.run_importer')");
+  }
+
   var table;
   $(document).ready(function() {    
       //$('#admintable').hide();
@@ -57,7 +69,7 @@
         } ,
         columns: [
             @foreach($fields as $field)
-              {data: '{{$field['id']}}', name: '{{$field['id']}}', orderable: {{$field['ordenable'] ? 'true' : 'false' }}, searchable: {{$field['searchable'] ? 'true' : 'false' }}   },
+              {data: '{{$field['id']}}', name: '{{$field['id']}}', orderable: {{$field['ordenable'] ? 'true' : 'false' }}, searchable: {{$field['searchable'] ? 'true' : 'false' }} {!!isset($field['width']) ? ',width : "' . $field['width'] .'"' : ''!!}   },
             @endforeach
         ],
         @if(isset($checkboxes))

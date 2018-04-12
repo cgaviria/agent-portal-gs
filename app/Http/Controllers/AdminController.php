@@ -60,7 +60,7 @@ class AdminController extends Controller
                             [ 'id' => 'id', 'label' => 'Id', 'ordenable' => true,  'searchable' => false],
                             [ 'id' => 'email', 'label' => 'Email', 'ordenable' => true,  'searchable' => true],
                             [ 'id' => 'refresh', 'label' => 'Refresh', 'ordenable' => true,  'searchable' => false],
-                            [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false]
+                            [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
                            ];
 
         $param['order'] = ['order' => 1, 'way' => 'desc'];

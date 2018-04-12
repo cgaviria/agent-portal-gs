@@ -40,9 +40,9 @@ class ContactImporterController extends Controller
 
                     })
                   ->addColumn('actions', function ($contactimporter) use ($userL){
-                        $buttons = '<button class="mb-sm btn btn-primary ripple" type="button">Edit</button> ';
-                        $buttons .= '<button class="mb-sm btn btn-success ripple" type="button">Import</button> ';
-                        $buttons .= '<button class="mb-sm btn btn-warning ripple" type="button">Delete</button> ';
+                        $buttons = '<button class="mb-sm btn btn-primary ripple" onclick="showEditForm();" type="button">Edit</button> ';
+                        $buttons .= '<button class="mb-sm btn btn-success ripple" onclick="showRunForm();" type="button">Import</button> ';
+                        $buttons .= '<button class="mb-sm btn btn-warning ripple" onclick="showDeleteForm();" type="button">Delete</button> ';
                         return $buttons;
                     })
                   ->rawColumns(['actions'])
@@ -56,6 +56,30 @@ class ContactImporterController extends Controller
       $userL = Sentinel::check();        
       if($userL){
           return view('admin.importer.add')->render();
+      }  
+    }
+
+    public function getEditForm(Request $request){
+
+      $userL = Sentinel::check();        
+      if($userL){
+          return view('admin.importer.edit')->render();
+      }  
+    }
+
+    public function getDeleteForm(Request $request){
+
+      $userL = Sentinel::check();        
+      if($userL){
+          return view('admin.importer.delete')->render();
+      }  
+    }
+
+    public function getRunForm(Request $request){
+
+      $userL = Sentinel::check();        
+      if($userL){
+          return view('admin.importer.import')->render();
       }  
     }
 }
