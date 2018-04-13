@@ -18,7 +18,7 @@ class AddImporterTest extends Migration
         $importer =
             [
                 'user_id'=>"1",
-                'email'=>'davidroyobravo@gmail.com',
+                'email'=>'christiangaviria@christiangaviria.com',
                 'password'=>'12345',
                 'refresh'=>'auto',
                 'imap_host'=>'mail.gmail.com',

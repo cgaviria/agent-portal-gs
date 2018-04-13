@@ -1,31 +1,31 @@
 <form class="form-horizontal" method="get" action="/">
       <fieldset>
         <div class="form-group">
-          <label class="col-sm-2 control-label">The IMAP host of your email account</label>
+          <label class="col-sm-2 control-label">IMAP Host</label>
           <div class="col-sm-10">
-            <input class="form-control" type="text">
+            <input class="form-control" type="text"><span class="help-block">The IMAP host of your email account.</span>
           </div>
         </div>
       </fieldset>
       <fieldset>
         <div class="form-group">
-          <label class="col-sm-2 control-label">The IMAP port of your email account.</label>
+          <label class="col-sm-2 control-label">IMAP Port</label>
           <div class="col-sm-10">
-            <input class="form-control" type="text">
+            <input class="form-control" type="text"><span class="help-block">The IMAP port of your email account.</span>
           </div>
         </div>
       </fieldset>
       <fieldset>
         <div class="form-group">
-          <label class="col-sm-2 control-label">Your email account.</label>
+          <label class="col-sm-2 control-label">Email</label>
           <div class="col-sm-10">
-            <input class="form-control" type="text">
+            <input class="form-control" type="text"><span class="help-block">Your email account.</span>
           </div>
         </div>
       </fieldset>
       <fieldset>
         <div class="form-group">
-          <label class="col-sm-2 control-label">The password of your email account.</label>
+          <label class="col-sm-2 control-label">Password</label>
           <div class="col-sm-10">
             <input class="form-control" type="password"><span class="help-block"><input checked onchange="hideFrecuency()" type="checkbox" id="store_password" > Store Password</span>
           </div>
@@ -35,7 +35,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">Confirm Password</label>
           <div class="col-sm-10">
-            <input class="form-control" type="password">
+            <input class="form-control" type="password"><span class="help-block">Confirm the password you entered above.</span>
           </div>
         </div>
       </fieldset>
