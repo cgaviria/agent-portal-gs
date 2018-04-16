@@ -8,7 +8,7 @@
                     <h4 class="m0 text-thin">Contact Importer</h4><small>Manage your accounts to import contacts here</small>
                 </div>
                 <div class="col-sm-4 text-right hidden-xs">
-                    <button onclick="showAddForm();" class="btn btn-labeled btn-success ripple" type="button"><span class="btn-label"><i class="ion-plus-round"></i></span>Add New</button>
+                    <button onclick="showAddForm();" class="btn btn-labeled btn-primary ripple" type="button"><span class="btn-label"><i class="ion-plus-round"></i></span>Add Contact Import Source</button>
                 </div>
             </div>
         </div>
