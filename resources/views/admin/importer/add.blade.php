@@ -26,16 +26,17 @@
       <fieldset>
         <div class="form-group">
           <label class="col-sm-2 control-label">Password</label>
-          <div class="col-sm-10">
-            <input class="form-control" type="password"><span class="help-block"><input checked onchange="hideFrecuency()" type="checkbox" id="store_password" > Store Password</span>
+          <div class="col-sm-4">
+            <input class="form-control" type="password">
+            <div class="checkbox c-checkbox">
+              <label>
+                <input type="checkbox" checked onchange="hideFrecuency()" id="store_password" value=""><span class="ion-checkmark-round"></span> Store Password
+              </label>
+            </div>
           </div>
-        </div>
-      </fieldset>
-      <fieldset>
-        <div class="form-group">
           <label class="col-sm-2 control-label">Confirm Password</label>
-          <div class="col-sm-10">
-            <input class="form-control" type="password"><span class="help-block">Confirm the password you entered above.</span>
+          <div class="col-sm-4">
+            <input class="form-control" type="password">
           </div>
         </div>
       </fieldset>
@@ -44,18 +45,18 @@
           <label class="col-sm-2 control-label">Frequency of Import</label>
           <div class="col-sm-10">
             <select class="form-control" name="account">
-              <option value="auto">Automatic</option>
               <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
+              <option value="weekly" selected>Weekly</option>
               <option value="monthly">Monthly</option>
             </select>
+            <span class="help-block">How often you want us to access your inbox to retrieve contacts.</span>
           </div>
         </div>
       </fieldset>
       <fieldset>
         <div class="form-group">
           <div class="col-sm-12">
-            <span class="pull-right"><button class="btn btn-raised btn-success ripple" type="button">Save Contact Import Source</button></span>
+            <span class="pull-right"><button class="btn btn-raised btn-success ripple" type="button">Save</button></span>
           </div>
         </div>
       </fieldset>
