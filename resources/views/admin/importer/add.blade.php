@@ -1,7 +1,7 @@
 <form class="form-horizontal" method="get" action="/">
       <fieldset>
         <div class="form-group">
-          <label class="col-sm-2 control-label">IMAP Host</label>
+          <label class="col-sm-2 control-label" style="text-align:left !important;">IMAP Host</label>
           <div class="col-sm-10">
             <input class="form-control" type="text"><span class="help-block">The IMAP host of your email account.</span>
           </div>
@@ -9,7 +9,7 @@
       </fieldset>
       <fieldset>
         <div class="form-group">
-          <label class="col-sm-2 control-label">IMAP Port</label>
+          <label class="col-sm-2 control-label" style="text-align:left !important;">IMAP Port</label>
           <div class="col-sm-10">
             <input class="form-control" type="text"><span class="help-block">The IMAP port of your email account.</span>
           </div>
@@ -17,7 +17,7 @@
       </fieldset>
       <fieldset>
         <div class="form-group">
-          <label class="col-sm-2 control-label">Email</label>
+          <label class="col-sm-2 control-label" style="text-align:left !important;">Email</label>
           <div class="col-sm-10">
             <input class="form-control" type="text"><span class="help-block">Your email account.</span>
           </div>
@@ -25,7 +25,7 @@
       </fieldset>
       <fieldset>
         <div class="form-group">
-          <label class="col-sm-2 control-label">Password</label>
+          <label class="col-sm-2 control-label" style="text-align:left !important;">Password</label>
           <div class="col-sm-4">
             <input class="form-control" type="password">
             <div class="checkbox c-checkbox">
@@ -34,7 +34,7 @@
               </label>
             </div>
           </div>
-          <label class="col-sm-2 control-label">Confirm Password</label>
+          <label class="col-sm-2 control-label" style="text-align:left !important;">Confirm Password</label>
           <div class="col-sm-4">
             <input class="form-control" type="password">
           </div>
@@ -42,7 +42,7 @@
       </fieldset>
       <fieldset id="frequency_import">
         <div class="form-group">
-          <label class="col-sm-2 control-label">Frequency of Import</label>
+          <label class="col-sm-2 control-label" style="text-align:left !important;">Frequency of Import</label>
           <div class="col-sm-10">
             <select class="form-control" name="account">
               <option value="daily">Daily</option>
@@ -54,11 +54,7 @@
         </div>
       </fieldset>
       <fieldset>
-        <div class="form-group">
-          <div class="col-sm-12">
-            <span class="pull-right"><button class="btn btn-raised btn-success ripple" type="button">Save</button></span>
-          </div>
-        </div>
+        <button class="btn btn-primary btn-flat col-sm-12" type="button">Save</button>
       </fieldset>
 </form>
 

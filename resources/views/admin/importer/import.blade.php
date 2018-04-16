@@ -16,11 +16,7 @@
         </div>
       </fieldset>
       <fieldset>
-        <div class="form-group">
-          <div class="col-sm-12">
-            <span class="pull-right"><button class="btn btn-raised btn-success ripple" type="button">Run Importer</button></span>
-          </div>
-        </div>
+        <button class="btn btn-success btn-flat col-sm-12" type="button">Run Importer</button>
       </fieldset>
 </form>
 
