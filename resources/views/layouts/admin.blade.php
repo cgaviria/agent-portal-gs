@@ -101,9 +101,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="dynamic_modal_title"></h4>
               </div>
-              <div class="modal-body" id="dynamic_modal_body">
-                  
-              </div>
+              <span id="dynamic_modal_body"><span>
               
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->

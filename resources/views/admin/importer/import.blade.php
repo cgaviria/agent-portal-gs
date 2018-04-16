@@ -1,4 +1,5 @@
 <form class="form-horizontal" method="get" action="/">
+  <div class="modal-body">
       <fieldset>
         <div class="form-group">
           <label class="col-sm-2 control-label">The password of your email account.</label>
@@ -15,7 +16,8 @@
           </div>
         </div>
       </fieldset>
-      <fieldset>
+  </div>
+   <div class="modal-footer">
         <div class="form-group pull-right">
           <div class="col-sm-4">
             <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
@@ -24,7 +26,7 @@
             <button class="btn btn-raised btn-success ripple" type="button">Run Importer</button>
           </div>
         </div>
-      </fieldset>
+  </div>
 </form>
 
 <script type="text/javascript">
