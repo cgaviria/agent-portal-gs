@@ -54,7 +54,14 @@
         </div>
       </fieldset>
       <fieldset>
-        <button class="btn btn-primary btn-flat col-sm-12" type="button">Save</button>
+        <div class="form-group pull-right">
+          <div class="col-sm-4">
+            <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+          </div>
+          <div class="col-sm-8">
+            <button class="btn btn-primary btn-flat col-sm-12" type="button">Save</button>
+          </div>
+        </div>
       </fieldset>
 </form>
 

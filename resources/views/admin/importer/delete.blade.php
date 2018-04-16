@@ -5,7 +5,14 @@
         </div>
     </fieldset>
     <fieldset>
-        <button class="btn btn-warning btn-flat col-sm-12" type="button">Delete</button>
+        <div class="form-group pull-right">
+          <div class="col-sm-6">
+            <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
+          </div>
+          <div class="col-sm-6">
+            <button class="btn btn-raised btn-danger ripple" type="button">Delete</button>
+          </div>
+        </div>
       </fieldset>
 </form>
 

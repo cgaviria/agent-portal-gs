@@ -42,7 +42,7 @@ class ContactImporterController extends Controller
                   ->addColumn('actions', function ($contactimporter) use ($userL){
                         $buttons = '<button class="mb-sm btn btn-primary ripple" onclick="showEditForm();" type="button">Edit</button> ';
                         $buttons .= '<button class="mb-sm btn btn-success ripple" onclick="showRunForm();" type="button">Import</button> ';
-                        $buttons .= '<button class="mb-sm btn btn-warning ripple" onclick="showDeleteForm();" type="button">Delete</button> ';
+                        $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm();" type="button">Delete</button> ';
                         return $buttons;
                     })
                   ->rawColumns(['actions'])
