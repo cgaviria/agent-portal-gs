@@ -1,4 +1,6 @@
-<form class="form-horizontal" method="get" action="/">
+<form class="form-horizontal" method="post"  id="form_delete_importer" action="{{URL::action('ContactImporterController@delete')}}" onsubmit="viewsGlobalInstance.sendForm(this,viewsAdminImporterInstance.responseForm);return  false;">
+  {{ csrf_field() }}
+  <input type="hidden" name="ci_id" value="{{$ci->id}}">
   <div class="modal-body">
     <fieldset>
         <div class="form-group">
@@ -12,7 +14,7 @@
           <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
         </div>
         <div class="col-sm-6">
-          <button class="btn btn-raised btn-danger ripple" type="button">Delete</button>
+          <button class="btn btn-raised btn-danger ripple" type="submit">Delete</button>
         </div>
       </div>
   </div>

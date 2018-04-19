@@ -32,14 +32,15 @@ Route::get('/dashboard/login', ['as' => 'dashboard_login', 'uses' => 'AdminContr
 
 Route::get('/data/importer', 'ContactImporterController@getData')->middleware('authSentinel');
 Route::post('/data/importer/save', 'ContactImporterController@save')->middleware('authSentinel');
-
+Route::post('/data/importer/edit', 'ContactImporterController@edit')->middleware('authSentinel');
+Route::post('/data/importer/delete', 'ContactImporterController@delete')->middleware('authSentinel');
 
 Route::post('/dashboard/login/doLogin', 'AuthController@doLogin');
 Route::get('/dashboard/login/logout', 'AuthController@logout');
 
 
 Route::get('/forms/importer/add', 'ContactImporterController@getAddForm')->middleware('authSentinel');
-Route::get('/forms/importer/edit', 'ContactImporterController@getEditForm')->middleware('authSentinel');
-Route::get('/forms/importer/delete', 'ContactImporterController@getDeleteForm')->middleware('authSentinel');
+Route::get('/forms/importer/edit/{id}', 'ContactImporterController@getEditForm')->middleware('authSentinel');
+Route::get('/forms/importer/delete/{id}', 'ContactImporterController@getDeleteForm')->middleware('authSentinel');
 Route::get('/forms/importer/run', 'ContactImporterController@getRunForm')->middleware('authSentinel');
 

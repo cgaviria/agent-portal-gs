@@ -45,12 +45,12 @@
     viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getAddForm')}}","@lang('strings.add_importer')");
   }
 
-  function showEditForm(){
-    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getEditForm')}}","@lang('strings.edit_importer')");
+  function showEditForm(id){
+    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getEditForm','')}}/"+id,"@lang('strings.edit_importer')");
   }
 
-  function showDeleteForm(){
-    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getDeleteForm')}}","@lang('strings.delete_importer')");
+  function showDeleteForm(id){
+    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getDeleteForm','')}}/"+id,"@lang('strings.delete_importer')");
   }
 
   function showRunForm(){

@@ -24,8 +24,15 @@ class ContactImporterController extends Controller
     public static $rules_add = array(
         'user_id'  => 'required',
         'email'  => 'required|email',
-        'password'  => 'required|confirmed|min:6',
-        'password_confirmation' => 'required|min:6',
+        'refresh'  => 'required',
+        'imap_host'  => 'required',
+        'imap_port'  => 'required|numeric|max:999999'
+    );
+
+    public static $rules_edit = array(
+        'ci_id'  => 'required',
+        'user_id'  => 'required',
+        'email'  => 'required|email',
         'refresh'  => 'required',
         'imap_host'  => 'required',
         'imap_port'  => 'required|numeric|max:999999'
@@ -55,9 +62,9 @@ class ContactImporterController extends Controller
 
                     })
                   ->addColumn('actions', function ($contactimporter) use ($userL){
-                        $buttons = '<button class="mb-sm btn btn-primary ripple" onclick="showEditForm();" type="button">Edit</button> ';
+                        $buttons = '<button class="mb-sm btn btn-primary ripple" onclick="showEditForm('.$contactimporter->id.');" type="button">Edit</button> ';
                         $buttons .= '<button class="mb-sm btn btn-primary ripple" onclick="showRunForm();" type="button">Import</button> ';
-                        $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm();" type="button">Delete</button> ';
+                        $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$contactimporter->id.');" type="button">Delete</button> ';
                         return $buttons;
                     })
                   ->rawColumns(['actions'])
@@ -74,19 +81,21 @@ class ContactImporterController extends Controller
       }  
     }
 
-    public function getEditForm(Request $request){
+    public function getEditForm($id){
 
       $userL = Sentinel::check();        
       if($userL){
-          return view('admin.importer.edit')->render();
+          $ci = ContactImporter::find($id);
+          return view('admin.importer.edit',['ci'=>$ci])->render();
       }  
     }
 
-    public function getDeleteForm(Request $request){
+    public function getDeleteForm($id){
 
       $userL = Sentinel::check();        
       if($userL){
-          return view('admin.importer.delete')->render();
+        $ci = ContactImporter::find($id);
+          return view('admin.importer.delete',['ci'=>$ci])->render();
       }  
     }
 
@@ -105,6 +114,10 @@ class ContactImporterController extends Controller
       if(!is_null($userL)){
           //if($userL->inRole('superadmin')){
           if(1 == 1){
+              if($request -> input('save_pawd') == 'y'){
+                $rules_add['password'] = 'required|confirmed|min:6';
+                $rules_add['password_confirmation'] = 'required|min:6'; 
+              }
               $validator = Validator::make(Input::all(), self::$rules_add);
               
               $response = new \stdClass();
@@ -135,5 +148,64 @@ class ContactImporterController extends Controller
               return RestResponse::sendResult(200,$response);
           }
       }
+    }
+
+    public function edit(Request $request){
+
+      $userL = Sentinel::check();
+        
+      if(!is_null($userL)){
+          //if($userL->inRole('superadmin')){
+          if(1 == 1){
+
+              if($request -> input('save_pawd') == 'y'){
+                $rules_edit['password'] = 'required|confirmed|min:6';
+                $rules_edit['password_confirmation'] = 'required|min:6'; 
+              }
+              $validator = Validator::make(Input::all(), self::$rules_edit);
+              
+              $response = new \stdClass();
+              $response->error  = false;
+              $response->errmens = [];
+
+              if ($validator->fails()) {
+                  
+                  $response->error  = true;
+                  $response->errmens = $validator->messages();
+                  return RestResponse::sendResult(200,$response);
+              }
+
+              
+              $ci = ContactImporter::find($request -> input('ci_id'));
+
+              $ci->email = $request -> input('email');
+              $ci->password = $request -> input('password');
+              $ci->refresh = $request -> input('refresh');
+              $ci->imap_host = $request -> input('imap_host');
+              $ci->imap_port = $request -> input('imap_port');
+              $ci->save_pawd = ($request -> input('save_pawd') ? $request -> input('save_pawd') : 'n');
+              
+              $ci->save();
+
+              $response->mens = Lang::get('Coupon edit successfully');
+              return RestResponse::sendResult(200,$response);
+          }
+      }
+    }
+
+    public function delete(Request $request){
+
+      $userL = Sentinel::check();        
+      if($userL){
+          $response = new \stdClass();
+          $response->error  = false;
+          $response->errmens = [];
+              
+          $ci = ContactImporter::find($request -> input('ci_id'));
+          $ci->delete();
+
+          $response->mens = Lang::get('Coupon delete successfully');
+          return RestResponse::sendResult(200,$response);
+      }  
     }
 }
