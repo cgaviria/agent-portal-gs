@@ -65,6 +65,11 @@ var ViewsGlobals = Class.extend({
 		  modal: (options.modal) ? options.modal : this.globalAlertOptions.modal
 		}).show();
 	},
+	sendForm: function(form,callBack) {
+	    this.sendPost(form.action, $("form#"+form.id).serialize(), callBack);
+	    $('input[type=submit]').attr('disabled', true);  
+	    return false;
+	},
 	sendPost: function(url, data, callBack) {    
 	    $.ajax({
 	        type: "POST",

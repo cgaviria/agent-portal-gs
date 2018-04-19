@@ -1,5 +1,5 @@
 
-  <form class="form-horizontal"  id="form_add_importer" method="post" action="{{URL::action('ContactImporterController@save')}}" onsubmit="return viewsAdminImporterInstance.sendFormAdd(this);">
+  <form class="form-horizontal"  id="form_add_importer" method="post" action="{{URL::action('ContactImporterController@save')}}" onsubmit="viewsGlobalInstance.sendForm(this,viewsAdminImporterInstance.responseForm);return  false;">
      {{ csrf_field() }}
      <input type="hidden" name="user_id" value="{{$user_login->id}}">
   <div class="modal-body">

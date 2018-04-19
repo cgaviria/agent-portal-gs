@@ -5,12 +5,7 @@ var ViewsAdminImporter = Class.extend({
 			
 		});
 	},
-  sendFormAdd: function(form) {
-    viewsGlobalInstance.sendPost(form.action, $("form#"+form.id).serialize(), this.responseFormAdd);
-    $('input[type=submit]').attr('disabled', true);  
-    return false;
-  },
-  responseFormAdd: function(results) {
+  responseForm: function(results) {
     try {
       var obj = jQuery.parseJSON(results);
       if(obj.data.error) {
