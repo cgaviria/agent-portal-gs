@@ -35,6 +35,10 @@
     </section>
 @endsection
 @section('extra_script')
+<script src="{{asset('js/views/admin/importer/index.js?'.Config::get('app.cache_buster'))}}"></script> 
+<script>
+  var viewsAdminImporterInstance = new ViewsAdminImporter();
+</script>
 <script type="text/javascript">
   
   function showAddForm(){

@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+
+use App\Library\RestResponse;
+
 use Sentinel;
 use Lang;
 use URL;
@@ -15,6 +20,16 @@ use Yajra\DataTables\DataTables;
 
 class ContactImporterController extends Controller
 {
+    
+    public static $rules_add = array(
+        'user_id'  => 'required',
+        'email'  => 'required|email',
+        'password'  => 'required|confirmed|min:6',
+        'password_confirmation' => 'required|min:6',
+        'refresh'  => 'required',
+        'imap_host'  => 'required',
+        'imap_port'  => 'required|numeric|max:999999'
+    );
     /**
      * Get the Admin Table
      *
@@ -81,5 +96,44 @@ class ContactImporterController extends Controller
       if($userL){
           return view('admin.importer.import')->render();
       }  
+    }
+
+    public function save(Request $request){
+
+      $userL = Sentinel::check();
+        
+      if(!is_null($userL)){
+          //if($userL->inRole('superadmin')){
+          if(1 == 1){
+              $validator = Validator::make(Input::all(), self::$rules_add);
+              
+              $response = new \stdClass();
+              $response->error  = false;
+              $response->errmens = [];
+
+              if ($validator->fails()) {
+                  
+                  $response->error  = true;
+                  $response->errmens = $validator->messages();
+                  return RestResponse::sendResult(200,$response);
+              }
+
+              
+              $ci = new ContactImporter;
+
+              $ci->email = $request -> input('email');
+              $ci->password = $request -> input('password');
+              $ci->refresh = $request -> input('refresh');
+              $ci->imap_host = $request -> input('imap_host');
+              $ci->imap_port = $request -> input('imap_port');
+              $ci->save_pawd = ($request -> input('save_pawd') ? $request -> input('save_pawd') : 'n');
+              $ci->user_id = $request -> input('user_id');
+              
+              $ci->save();
+
+              $response->mens = Lang::get('Coupon created successfully');
+              return RestResponse::sendResult(200,$response);
+          }
+      }
     }
 }

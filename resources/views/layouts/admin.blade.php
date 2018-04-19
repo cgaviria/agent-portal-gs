@@ -229,6 +229,9 @@
         <!-- Class.js-->
         <script src="{{asset('js/class.js?'.Config::get('app.cache_buster'))}}"></script>
         
+         <!--Noty-->
+        <script src="{{asset('js/vendor/needim/noty/lib/noty.js?'.Config::get('app.cache_buster'))}}"></script>
+
         <script src="{{asset('js/views/globals.js?'.Config::get('app.cache_buster'))}}"></script> 
          <script>
             var viewsGlobalInstance = new ViewsGlobals();

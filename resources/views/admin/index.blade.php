@@ -17,3 +17,7 @@
         </div>
     </section>
 @endsection
+
+@section('extra_script')
+       
+@endsection
