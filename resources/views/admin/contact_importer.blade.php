@@ -5,7 +5,7 @@
         <div class="content-heading bg-white">
             <div class="row">
                 <div class="col-sm-8">
-                    <h4 class="m0 text-thin">Contact Importer</h4><small>Manage your accounts to import contacts here</small>
+                    <h4 class="m0 text-thin">Contact Importer</h4><small>Import contacts here</small>
                 </div>
                 <div class="col-sm-4 text-right hidden-xs">
                     <button onclick="showAddForm();" class="btn btn-labeled btn-primary ripple" type="button"><span class="btn-label"><i class="ion-plus-round"></i></span>Add Contact Import Source</button>

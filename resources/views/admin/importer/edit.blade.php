@@ -30,13 +30,13 @@
         </fieldset>
         <fieldset>
           <div class="form-group">
-            <label class="col-sm-2 control-label" style="text-align:left !important;">Password</label>
+            <label class="col-sm-2 control-label" style="text-align:left !important;">{{$ci->save_pawd == 'y' ? 'Change Password' : 'Password'}}</label>
             <div class="col-sm-4">
-              <input class="form-control" name="password" type="password">
+              <input class="form-control" name="password" value="{{$ci->save_pawd == 'y' ? $ci->password : ''}}" type="password">
             </div>
             <label class="col-sm-2 control-label" style="text-align:left !important;">Confirm Password</label>
             <div class="col-sm-4">
-              <input class="form-control" name="password_confirmation" type="password">
+              <input class="form-control" name="password_confirmation" value="{{$ci->save_pawd == 'y' ? $ci->password : ''}}" type="password">
             </div>
             <div class="col-sm-2">&nbsp;</div>
             <div class="col-sm-10"><span class="help-block">Unless otherwise indicated by the Store Password setting below, we will not store your password and only use it once to fetch your contacts.</span>
@@ -68,7 +68,7 @@
         <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
       </div>
       <div class="col-sm-8">
-        <input class="btn btn-primary btn-flat col-sm-12" type="submit" value="Save">
+        <input class="btn btn-primary col-sm-12" type="submit" value="Save">
       </div>
     </div>  
   </div>

@@ -38,6 +38,9 @@ var ViewsGlobals = Class.extend({
 	showError: function(text) {
 		this.showNotification('error',text);
 	},
+	showSuccess: function(text) {
+		this.showNotification('success',text);
+	},
 	showWarning: function(text) {
 		this.showNotification('warning',text);
 	},

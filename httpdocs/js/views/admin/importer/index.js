@@ -15,7 +15,7 @@ var ViewsAdminImporter = Class.extend({
           }
         }  
       } else {
-          viewsGlobalInstance.showWarning(obj.data.mens);
+          viewsGlobalInstance.showSuccess(obj.data.mens);
           table = $('#datatable-responsive').DataTable().ajax.reload();
           $('#dynamic_modal').modal('hide');
       }
