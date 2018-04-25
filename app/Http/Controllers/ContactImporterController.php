@@ -144,7 +144,7 @@ class ContactImporterController extends Controller
               
               $ci->save();
 
-              $response->mens = Lang::get('Coupon created successfully');
+              $response->mens = Lang::get('Contact import source successfully created.');
               return RestResponse::sendResult(200,$response);
           }
       }
@@ -187,7 +187,7 @@ class ContactImporterController extends Controller
               
               $ci->save();
 
-              $response->mens = Lang::get('Coupon edit successfully');
+              $response->mens = Lang::get('Contact import source successfully modified.');
               return RestResponse::sendResult(200,$response);
           }
       }
@@ -204,7 +204,7 @@ class ContactImporterController extends Controller
           $ci = ContactImporter::find($request -> input('ci_id'));
           $ci->delete();
 
-          $response->mens = Lang::get('Coupon delete successfully');
+          $response->mens = Lang::get('Contact import source successfully deleted.');
           return RestResponse::sendResult(200,$response);
       }  
     }
