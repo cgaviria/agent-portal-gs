@@ -68,7 +68,7 @@
         <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
       </div>
       <div class="col-sm-8">
-        <input class="btn btn-primary col-sm-12" type="submit" value="Save">
+        <input class="btn btn-raised btn-primary ripple" type="submit" value="Save">
       </div>
     </div>  
   </div>

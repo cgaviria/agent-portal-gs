@@ -2,11 +2,9 @@
   {{ csrf_field() }}
   <input type="hidden" name="ci_id" value="{{$ci->id}}">
   <div class="modal-body">
-    <fieldset>
-        <div class="form-group">
-          <label class="col-sm-12 control-label"  style="text-align:left !important;">Are you sure you want to delete this contact import source?</label>
-        </div>
-    </fieldset>
+      <div class="form-group">
+        <label class="col-sm-12"  style="text-align:left !important; font-weight: normal !important;">Are you sure you want to delete this contact import source?</label>
+      </div>
   </div>
    <div class="modal-footer">
       <div class="form-group pull-right">

@@ -42,5 +42,5 @@ Route::get('/dashboard/login/logout', 'AuthController@logout');
 Route::get('/forms/importer/add', 'ContactImporterController@getAddForm')->middleware('authSentinel');
 Route::get('/forms/importer/edit/{id}', 'ContactImporterController@getEditForm')->middleware('authSentinel');
 Route::get('/forms/importer/delete/{id}', 'ContactImporterController@getDeleteForm')->middleware('authSentinel');
-Route::get('/forms/importer/run', 'ContactImporterController@getRunForm')->middleware('authSentinel');
+Route::get('/forms/importer/run/{id}', 'ContactImporterController@getRunForm')->middleware('authSentinel');
 

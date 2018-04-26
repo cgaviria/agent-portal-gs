@@ -63,7 +63,7 @@ class ContactImporterController extends Controller
                     })
                   ->addColumn('actions', function ($contactimporter) use ($userL){
                         $buttons = '<button class="mb-sm btn btn-primary ripple" onclick="showEditForm('.$contactimporter->id.');" type="button">Edit</button> ';
-                        $buttons .= '<button class="mb-sm btn btn-primary ripple" onclick="showRunForm();" type="button">Import</button> ';
+                        $buttons .= '<button class="mb-sm btn btn-primary ripple" onclick="showRunForm('.$contactimporter->id.');" type="button">Import</button> ';
                         $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$contactimporter->id.');" type="button">Delete</button> ';
                         return $buttons;
                     })
@@ -99,11 +99,12 @@ class ContactImporterController extends Controller
       }  
     }
 
-    public function getRunForm(Request $request){
+    public function getRunForm($id){
 
       $userL = Sentinel::check();        
       if($userL){
-          return view('admin.importer.import')->render();
+        $ci = ContactImporter::find($id);
+          return view('admin.importer.import',['ci'=>$ci])->render();
       }  
     }
 
