@@ -14,5 +14,9 @@ class ContactImporter extends Model{
 	public function User(){
 		return $this->belongsTo('App\User','user_id','id');
 	}
+
+	public function Imports(){
+       return $this->hasMany('App\Imports','importer_id');
+    }
 }
 

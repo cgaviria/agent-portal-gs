@@ -104,7 +104,7 @@ class ContactImporterController extends Controller
       $userL = Sentinel::check();        
       if($userL){
         $ci = ContactImporter::find($id);
-          return view('admin.importer.import',['ci'=>$ci])->render();
+        return view('admin.importer.import',['ci'=>$ci])->render();
       }  
     }
 

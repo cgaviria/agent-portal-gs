@@ -44,3 +44,5 @@ Route::get('/forms/importer/edit/{id}', 'ContactImporterController@getEditForm')
 Route::get('/forms/importer/delete/{id}', 'ContactImporterController@getDeleteForm')->middleware('authSentinel');
 Route::get('/forms/importer/run/{id}', 'ContactImporterController@getRunForm')->middleware('authSentinel');
 
+Route::post('/runimporter', 'ImapController@makeImportPaswd')->middleware('authSentinel');
+Route::post('/runimporterNP', 'ImapController@makeImportNoPaswd')->middleware('authSentinel');
