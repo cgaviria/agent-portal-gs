@@ -35,10 +35,16 @@ class ImapController extends BaseController{
 
     public function executeImport(ContactImporter $importer){
 
+    	$response = new \stdClass();
+      	$response->error  = false;
+      	$response->errmens = [];
+
     	$last_import = Import::where('importer_id',"=",$importer->id)->orderBy('created_at')->first();
     	if($last_import){
     		if($last_import->state == "running"){
-    			return "error";
+    			$response->error  = true;
+            	$response->errmens = ['error'=>['There a process running at the moment, please wait this process end.']];
+            	return RestResponse::sendResult(200,$response);
     		}
     	}
 
@@ -47,10 +53,6 @@ class ImapController extends BaseController{
     	$import->state = "nostate";
     	$import->num_imports = 0;
     	$import->save();
-
-    	$response = new \stdClass();
-      	$response->error  = false;
-      	$response->errmens = [];
 
     	$oClient = new Client([
 		    'host'          => $importer->imap_host,
