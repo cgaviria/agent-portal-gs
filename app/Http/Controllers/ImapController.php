@@ -8,6 +8,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+
 use App\Import;
 use App\ImportedBooking;
 use App\ContactBooking;
@@ -21,8 +24,33 @@ use App\Library\TravelerLeadersBusiness;
 class ImapController extends BaseController{
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public static $rules = array(
+        'password'  => 'required|confirmed',
+        'password_confirmation'  => 'required'
+    );
+
 	public function makeImportNoPaswd(Request $request){
 
+		$response = new \stdClass();
+      	$response->error  = false;
+      	$response->errmens = [];
+
+      	$validator = Validator::make(Input::all(), self::$rules);
+
+		$response = new \stdClass();
+		$response->error = false;
+		$response->errmens = [];
+
+		if ($validator->fails()) {
+			$response->error  = true;
+			$response->errmens = $validator->messages();
+			return RestResponse::sendResult(200, $response);
+		}
+
+		$importer = ContactImporter::find($request->input('importer_id'));
+		$importer->password = $request->input("password");
+
+		return $this->executeImport($importer);
     	
     }    
 

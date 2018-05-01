@@ -1,4 +1,4 @@
-<form class="form-horizontal"  id="form_run_importer"  method="post" action="{{$ci->save_password == 'y' ? URL::action('ImapController@makeImportPaswd') : URL::action('ImapController@makeImportNoPaswd')}}" onsubmit="viewsAdminImporterInstance.sendRunForm(this,viewsAdminImporterInstance.responseFormImporter);return  false;">
+<form class="form-horizontal"  id="form_run_importer"  method="post" action="{{$ci->save_password == 'y' ? URL::action('ImapController@makeImportPaswd') : URL::action('ImapController@makeImportNoPaswd')}}" @if($ci->save_password == 'y') onsubmit="viewsAdminImporterInstance.sendRunForm(this,viewsAdminImporterInstance.responseFormImporter);return  false;" @else onsubmit="viewsGlobalInstance.sendForm(this,viewsAdminImporterInstance.responseFormImporter);return  false;" @endif>
   <div class="modal-body">
      {{ csrf_field() }}
      <input type="hidden" name="importer_id" value="{{$ci->id}}">
@@ -11,7 +11,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">Password</label>
           <div class="col-sm-10">
-            <input class="form-control" type="password"><span class="help-block">The password of your email account</span>
+            <input class="form-control" name="password"  type="password"><span class="help-block">The password of your email account</span>
           </div>
         </div>
       </fieldset>
@@ -19,7 +19,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">Confirm Password</label>
           <div class="col-sm-10">
-            <input class="form-control" type="password">
+            <input class="form-control" name="password_confirmation" type="password">
           </div>
         </div>
       </fieldset>
