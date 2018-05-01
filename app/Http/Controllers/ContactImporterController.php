@@ -104,51 +104,49 @@ class ContactImporterController extends Controller
       $userL = Sentinel::check();        
       if($userL){
         $ci = ContactImporter::find($id);
-        return view('admin.importer.import',['ci'=>$ci])->render();
+          return view('admin.importer.import',['ci'=>$ci])->render();
       }  
     }
 
-    public function save(Request $request){
+    public function save(Request $request)
+	{
+		if (!is_null(Sentinel::check())) {
+			//if($userL->inRole('superadmin')){
+			if (1 == 1) {
+				if ($request->input('save_password') == 'y') {
+					$rules_add['password'] = 'required|confirmed|min:6';
+					$rules_add['password_confirmation'] = 'required|min:6';
+				}
 
-      $userL = Sentinel::check();
-        
-      if(!is_null($userL)){
-          //if($userL->inRole('superadmin')){
-          if(1 == 1){
-              if($request -> input('save_pawd') == 'y'){
-                $rules_add['password'] = 'required|confirmed|min:6';
-                $rules_add['password_confirmation'] = 'required|min:6'; 
-              }
-              $validator = Validator::make(Input::all(), self::$rules_add);
-              
-              $response = new \stdClass();
-              $response->error  = false;
-              $response->errmens = [];
+				$validator = Validator::make(Input::all(), self::$rules_add);
 
-              if ($validator->fails()) {
-                  
-                  $response->error  = true;
-                  $response->errmens = $validator->messages();
-                  return RestResponse::sendResult(200,$response);
-              }
+				$response = new \stdClass();
+				$response->error = false;
+				$response->errmens = [];
 
-              
-              $ci = new ContactImporter;
+				if ($validator->fails()) {
+					$response->error  = true;
+					$response->errmens = $validator->messages();
+					return RestResponse::sendResult(200, $response);
+				}
 
-              $ci->email = $request -> input('email');
-              $ci->password = $request -> input('password');
-              $ci->refresh = $request -> input('refresh');
-              $ci->imap_host = $request -> input('imap_host');
-              $ci->imap_port = $request -> input('imap_port');
-              $ci->save_pawd = ($request -> input('save_pawd') ? $request -> input('save_pawd') : 'n');
-              $ci->user_id = $request -> input('user_id');
-              
-              $ci->save();
+				$ci = new ContactImporter;
 
-              $response->mens = Lang::get('Contact import source successfully created.');
-              return RestResponse::sendResult(200,$response);
-          }
-      }
+				$ci->email = $request->input('email');
+				$ci->password = Crypt::encryptString($request->input('password'));
+				$ci->refresh = $request->input('refresh');
+				$ci->imap_host = $request->input('imap_host');
+				$ci->imap_port = $request->input('imap_port');
+				$ci->save_password = ($request->input('save_password') ? 'y' : 'n');
+				$ci->user_id = $request->input('user_id');
+
+				$ci->save();
+
+				$response->mens = Lang::get('Contact import source successfully created.');
+
+				return RestResponse::sendResult(200, $response);
+			}
+		}
     }
 
     public function edit(Request $request){
@@ -159,7 +157,7 @@ class ContactImporterController extends Controller
           //if($userL->inRole('superadmin')){
           if(1 == 1){
 
-              if($request -> input('save_pawd') == 'y'){
+              if($request -> input('save_password') == 'y'){
                 $rules_edit['password'] = 'required|confirmed|min:6';
                 $rules_edit['password_confirmation'] = 'required|min:6'; 
               }
@@ -184,7 +182,7 @@ class ContactImporterController extends Controller
               $ci->refresh = $request -> input('refresh');
               $ci->imap_host = $request -> input('imap_host');
               $ci->imap_port = $request -> input('imap_port');
-              $ci->save_pawd = ($request -> input('save_pawd') ? $request -> input('save_pawd') : 'n');
+              $ci->save_password = ($request -> input('save_password') ? $request -> input('save_password') : 'n');
               
               $ci->save();
 

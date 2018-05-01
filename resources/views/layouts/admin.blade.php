@@ -29,7 +29,7 @@
             <!-- sidebar-->
             <aside class="sidebar-container">
                 <div class="sidebar-header">
-                    <div class="pull-right pt-lg text-muted hidden"><em class="ion-close-round"></em></div><a href="#"><img src="{{asset('images/seg-logo.png')}}" alt="Logo"></a>
+                    <div class="pull-right pt-lg text-muted hidden"><em class="ion-close-round"></em></div><a href="#"><img src="{{asset('images/logo_white_text.png')}}" alt="Logo"></a>
                 </div>
                 <div class="sidebar-content">
                     <div class="sidebar-toolbar text-center"><a href=""><img class="img-circle thumb64" src="{{asset('images/christian_gaviria_foto_square.jpeg')}}" alt="Profile"></a>

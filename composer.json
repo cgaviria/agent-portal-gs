@@ -13,7 +13,8 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.6",
         "webklex/laravel-imap": "^1.1",
-        "yajra/laravel-datatables-oracle": "^8.4"
+        "yajra/laravel-datatables-oracle": "^8.4",
+        "doctrine/dbal": "*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

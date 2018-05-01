@@ -30,19 +30,19 @@
         </fieldset>
         <fieldset>
           <div class="form-group">
-            <label class="col-sm-2 control-label" style="text-align:left !important;">{{$ci->save_pawd == 'y' ? 'Change Password' : 'Password'}}</label>
+            <label class="col-sm-2 control-label" style="text-align:left !important;">{{$ci->save_password == 'y' ? 'Change Password' : 'Password'}}</label>
             <div class="col-sm-4">
-              <input class="form-control" name="password" value="{{$ci->save_pawd == 'y' ? $ci->password : ''}}" type="password">
+              <input class="form-control" name="password" value="{{$ci->save_password == 'y' ? $ci->password : ''}}" type="password">
             </div>
             <label class="col-sm-2 control-label" style="text-align:left !important;">Confirm Password</label>
             <div class="col-sm-4">
-              <input class="form-control" name="password_confirmation" value="{{$ci->save_pawd == 'y' ? $ci->password : ''}}" type="password">
+              <input class="form-control" name="password_confirmation" value="{{$ci->save_password == 'y' ? $ci->password : ''}}" type="password">
             </div>
             <div class="col-sm-2">&nbsp;</div>
             <div class="col-sm-10"><span class="help-block">Unless otherwise indicated by the Store Password setting below, we will not store your password and only use it once to fetch your contacts.</span>
               <div class="checkbox c-checkbox">
                 <label>
-                  <input type="checkbox" {{$ci->save_pawd == 'y' ? 'checked' : ''}} name="save_pawd" onchange="hideFrecuency()" id="store_password" value="y"><span class="ion-checkmark-round"></span> Store Password
+                  <input type="checkbox" {{$ci->save_password == 'y' ? 'checked' : ''}} name="save_password" onchange="hideFrecuency()" id="store_password" value="y"><span class="ion-checkmark-round"></span> Store Password
                 </label>
               </div>
             </div>
