@@ -31,7 +31,7 @@
             <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
           </div>
           <div class="col-sm-8">
-            <button class="btn btn-raised btn-primary ripple" type="button">Run Importer</button>
+            <button class="btn btn-raised btn-primary ripple" type="submit">Run Importer</button>
           </div>
         </div>
   </div>
