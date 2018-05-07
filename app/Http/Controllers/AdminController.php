@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 use Sentinel;
+use URL;
 
 class AdminController extends Controller
 {
@@ -42,5 +43,27 @@ class AdminController extends Controller
         }
 
         return view('login.index');
+    }
+
+    /**
+     * Shows the contact importer page.
+     *
+     * @return Response
+     */
+    public function getContactImporter(Request $request)
+    {
+        /*https://laravel-news.com/google-api-socialite*/ 
+
+        $param = array();
+        $param['url']  = URL::action('ContactImporterController@getData');
+        $param['fields'] = [
+                            [ 'id' => 'id', 'label' => 'Id', 'ordenable' => true,  'searchable' => false],
+                            [ 'id' => 'email', 'label' => 'Email', 'ordenable' => true,  'searchable' => true],
+                            [ 'id' => 'refresh', 'label' => 'Import Frequency', 'ordenable' => true,  'searchable' => false],
+                            [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
+                           ];
+
+        $param['order'] = ['order' => 0, 'way' => 'desc'];
+        return view('admin.contact_importer',$param);
     }
 }

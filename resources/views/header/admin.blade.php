@@ -38,7 +38,13 @@
     <!-- Bootgrid-->
     <link rel="stylesheet" href="{{asset('css/jquery.bootgrid.css?'.Config::get('app.cache_buster'))}}">
     <!-- Datatables-->
-    <link rel="stylesheet" href="{{asset('css/jquery.dataTables.css?'.Config::get('app.cache_buster'))}}">
+    <link rel="stylesheet" href="{{asset('js/vendor/datatables.net-bs/css/dataTables.bootstrap.min.css?'.Config::get('app.cache_buster'))}}">
+    <link rel="stylesheet" href="{{asset('js/vendor/datatables.net-buttons-bs/css/buttons.bootstrap.min.css?'.Config::get('app.cache_buster'))}}">
+    <link rel="stylesheet" href="{{asset('js/vendor/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css?'.Config::get('app.cache_buster'))}}">
+    <link rel="stylesheet" href="{{asset('js/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.min.css?'.Config::get('app.cache_buster'))}}">
+    <link rel="stylesheet" href="{{asset('js/vendor/datatables.net-scroller-bs/css/scroller.bootstrap.min.css?'.Config::get('app.cache_buster'))}}">
+    <link rel="stylesheet" href="{{asset('js/vendor/switchery/dist/switchery.min.css?'.Config::get('app.cache_buster'))}}">
+    <link rel="stylesheet" href="{{asset('js/vendor/jquery-datatables-checkboxes/css/dataTables.checkboxes.css?'.Config::get('app.cache_buster'))}}">
     <!-- Sweet Alert-->
     <link rel="stylesheet" href="{{asset('css/sweetalert.css?'.Config::get('app.cache_buster'))}}">
     <!-- Loaders.CSS-->
@@ -50,4 +56,8 @@
     <!-- endbuild-->
     <!-- Application styles-->
     <link rel="stylesheet" href="{{asset('css/app_admin.css?'.Config::get('app.cache_buster'))}}">
+    <!--noty-->
+    <link rel="stylesheet" href="{{asset('js/vendor/needim/noty/lib/noty.css?'.Config::get('app.cache_buster'))}}">
+     <!-- Bootstrap Custom-->
+    <link rel="stylesheet" href="{{asset('css/bootstrap.custom.css?'.Config::get('app.cache_buster'))}}">
 </head>
