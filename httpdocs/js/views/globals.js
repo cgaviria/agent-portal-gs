@@ -38,6 +38,9 @@ var ViewsGlobals = Class.extend({
 	showError: function(text) {
 		this.showNotification('error',text);
 	},
+	showSuccess: function(text) {
+		this.showNotification('success',text);
+	},
 	showWarning: function(text) {
 		this.showNotification('warning',text);
 	},
@@ -64,6 +67,11 @@ var ViewsGlobals = Class.extend({
 		  titleCount: (options.titleCount) ? options.titleCount : this.globalAlertOptions.titleCount,
 		  modal: (options.modal) ? options.modal : this.globalAlertOptions.modal
 		}).show();
+	},
+	sendForm: function(form,callBack) {
+	    this.sendPost(form.action, $("form#"+form.id).serialize(), callBack);
+	    $('input[type=submit]').attr('disabled', true);  
+	    return false;
 	},
 	sendPost: function(url, data, callBack) {    
 	    $.ajax({
