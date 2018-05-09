@@ -28,8 +28,10 @@ Route::get('/comments/feed', 'FrontController@getCommentsFeed');
 
 Route::get('/dashboard/home', ['as' => 'dashboard_home', 'uses' => 'AdminController@getIndex'])->middleware('authSentinel');
 Route::get('/dashboard/importer', ['as' => 'contact_importer', 'uses' => 'AdminController@getContactImporter'])->middleware('authSentinel');
+Route::get('/dashboard/bookings', ['as' => 'bookings', 'uses' => 'BookingController@getAdminTable'])->middleware('authSentinel');
 Route::get('/dashboard/login', ['as' => 'dashboard_login', 'uses' => 'AdminController@getLogin']);
 
+Route::get('/data/bookings', 'BookingController@getData')->middleware('authSentinel');
 Route::get('/data/importer', 'ContactImporterController@getData')->middleware('authSentinel');
 Route::post('/data/importer/save', 'ContactImporterController@save')->middleware('authSentinel');
 Route::post('/data/importer/edit', 'ContactImporterController@edit')->middleware('authSentinel');

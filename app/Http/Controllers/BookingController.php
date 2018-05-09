@@ -15,10 +15,10 @@ use App\Library\RestResponse;
 use Sentinel;
 use Lang;
 use URL;
-use App\ContactImporter;
+use App\Booking;
 use Yajra\DataTables\DataTables;    
 
-class ContactImporterController extends Controller
+class BookingController extends Controller
 {
     
     public static $rules_add = array(
@@ -48,16 +48,17 @@ class ContactImporterController extends Controller
         /*https://laravel-news.com/google-api-socialite*/ 
 
         $param = array();
-        $param['url']  = URL::action('ContactImporterController@getData');
+        $param['url']  = URL::action('BookingController@getData');
         $param['fields'] = [
-                            [ 'id' => 'id', 'label' => 'Id', 'ordenable' => true,  'searchable' => false],
-                            [ 'id' => 'email', 'label' => 'Email', 'ordenable' => true,  'searchable' => true],
-                            [ 'id' => 'refresh', 'label' => 'Import Frequency', 'ordenable' => true,  'searchable' => false],
+                            [ 'id' => 'booking_number', 'label' => 'Booking Number', 'ordenable' => true,  'searchable' => false],
+                            [ 'id' => 'name', 'label' => 'Name', 'ordenable' => true,  'searchable' => true],
+                            [ 'id' => 'sail_date', 'label' => 'Sail Date', 'ordenable' => true,  'searchable' => false],
+                            [ 'id' => 'ship_id', 'label' => 'Ship', 'ordenable' => true,  'searchable' => false],
                             [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
                            ];
 
         $param['order'] = ['order' => 0, 'way' => 'desc'];
-        return view('admin.contact_importer',$param);
+        return view('admin.bookings',$param);
     }
 
     /**
@@ -70,24 +71,18 @@ class ContactImporterController extends Controller
       $userL = Sentinel::check();        
       if($userL){
             
-            $contactimporters = ContactImporter::query();
+            $bookings = Booking::query();
             $datatables = new Datatables;
-            return $datatables->eloquent($contactimporters)
-                  ->editColumn('refresh', function ($contactimporter) use ($userL){
-                        if($contactimporter->refresh == 'auto')
-                            return 'Automatic';
-                        else if($contactimporter->refresh == 'daily')
-                            return 'Daily';
-                        else if($contactimporter->refresh == 'weekly')
-                            return 'Weekly';
-                        else
-                            return 'Monthly';
-
+            return $datatables->eloquent($bookings)
+                  ->editColumn('name', function ($booking){
+                            return $booking->getFullName();
                     })
-                  ->addColumn('actions', function ($contactimporter) use ($userL){
-                        $buttons = '<button class="mb-sm btn btn-primary ripple" onclick="showEditForm('.$contactimporter->id.');" type="button">Edit</button> ';
-                        $buttons .= '<button class="mb-sm btn btn-primary ripple" onclick="showRunForm('.$contactimporter->id.');" type="button">Import</button> ';
-                        $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$contactimporter->id.');" type="button">Delete</button> ';
+                  ->editColumn('ship_id', function ($booking){
+                            return $booking->ship->name;
+                    })
+                  ->addColumn('actions', function ($booking) use ($userL){
+                        $buttons = '<button class="mb-sm btn btn-primary ripple" onclick="showEditForm('.$booking->id.');" type="button">Edit</button> ';
+                        $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$booking->id.');" type="button">Delete</button> ';
                         return $buttons;
                     })
                   ->rawColumns(['actions'])
