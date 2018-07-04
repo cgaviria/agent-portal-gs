@@ -84,14 +84,14 @@
         <div class="wrap2">
             <div class="menu">
                 <ul id="menu-secondary-items" class="nav-menu">
-                    <li id="menu-item-50" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-13 current_page_item menu-item-50">
-                        <a href="{{action('FrontController@getIndex')}}">
-                            Travel Agent Home
-                        </a>
-                    </li>
                     <li id="menu-item-622" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-622">
                         <a target="_blank" href="https://www.shoreexcursionsgroup.com/travel-agents-signup">
                             New Agent Sign Up
+                        </a>
+                    </li>
+                    <li id="menu-item-623" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-623">
+                        <a target="_blank" href="https://www.shoreexcursionsgroup.com/contact-us">
+                            Request a Training
                         </a>
                     </li>
                     <li id="menu-item-48" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-48">
@@ -104,16 +104,6 @@
                             Groups
                         </a>
                     </li>
-                    <li id="menu-item-893" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-893">
-                        <a href="{{action('FrontController@getBookingBooster')}}">
-                            Booking Booster
-                        </a>
-                    </li>
-                    <li id="menu-item-45" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-45">
-                        <a href="{{action('FrontController@getTravelAgentFAQ')}}">
-                            Travel Agent FAQ
-                        </a>
-                    </li>
                     <li id="menu-item-44" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-44">
                         <a href="{{action('FrontController@getMediaCenter')}}">
                             Media Center
@@ -121,22 +111,12 @@
                     </li>
                     <li id="menu-item-42" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-42">
                         <a href="{{action('FrontController@getNewsletterArchive')}}">
-                            Travel Agent Newsletters
+                            Newsletter Archive
                         </a>
                     </li>
                     <li id="menu-item-41" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41">
                         <a href="{{action('FrontController@getWebinarsAndEvents')}}">
-                            Travel Agent Webinars and Events
-                        </a>
-                    </li>
-                    <li id="menu-item-623" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-623">
-                        <a target="_blank" href="https://www.shoreexcursionsgroup.com/contact-us">
-                            Request a Training
-                        </a>
-                    </li>
-                    <li id="menu-item-619" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-619">
-                        <a target="_blank" href="https://www.shoreexcursionsgroup.com/contact-us">
-                            Contact Us
+                            Webinars &amp; Events
                         </a>
                     </li>
                 </ul>
@@ -146,7 +126,7 @@
     <!-- #menu-secondary .menu-container -->
     <div class="sidecta">
         <div style="padding-bottom:14px;">
-            <a href="http://www.shoreexcursionsgroup.com/Travel-Agents-a/141.htm" style="text-decoration:none;">
+            <a href="https://www.shoreexcursionsgroup.com/travel-agents-signup" style="text-decoration:none;">
                 <button class="button button1">NEW AGENT SIGN UP &nbsp;<img src="http://agents.shoreexcursionsgroup.com/wp-content/uploads/2016/03/playicon.png" width="20" height="20"></button>
             </a>
         </div>

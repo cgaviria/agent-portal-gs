@@ -1,4 +1,3 @@
-
 var ViewsAdminImporter = Class.extend({
 	init: function() {
 		jQuery(document).ready(function(){

@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ship extends Model{
 
-    protected $table = "booking_ships";
+    protected $table = "cruise_ships";
 	protected $primaryKey = "id";
 	public $timestamps = true;
 

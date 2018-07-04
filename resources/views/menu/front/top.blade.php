@@ -28,11 +28,6 @@
                     Home
                 </a>
             </li>
-            <li id="menu-item-7" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-7">
-                <a href="/">
-                    Destinations
-                </a>
-            </li>
             <li id="menu-item-8" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-8">
                 <a href="https://www.shoreexcursionsgroup.com/about-us">
                     About Us

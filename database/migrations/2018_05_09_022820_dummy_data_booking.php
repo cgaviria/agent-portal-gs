@@ -19,7 +19,7 @@ class DummyDataBooking extends Migration
     {
         
         Schema::table('booking', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
@@ -43,8 +43,8 @@ class DummyDataBooking extends Migration
         $booking =
             [
                 'booking_number'=>"GTF123",
-                'first_name'=>"David",
-                'last_name'=>"Royo",
+                'first_name'=>"Christian",
+                'last_name'=>"Gaviria",
                 'sail_date'=>"2019-02-01",
                 'user_id'=>"1",
                 'ship_id'=>"1"

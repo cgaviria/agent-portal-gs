@@ -49,7 +49,7 @@ return [
     | Changing this value will cause all javascript files to reload for users.
     |
     */
-    'cache_buster' => 'v=2',
+    'cache_buster' => 'v=49',
 
     /*
     |--------------------------------------------------------------------------
@@ -175,6 +175,7 @@ return [
         Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
 
         Webklex\IMAP\Providers\LaravelServiceProvider::class,
+	    Folklore\Image\ImageServiceProvider::class,
 
     ],
 
@@ -228,6 +229,7 @@ return [
         'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
         'Client' => Webklex\IMAP\Facades\Client::class,
+	    'Image' => Folklore\Image\Facades\Image::class,
 
     ],
 

@@ -42,7 +42,7 @@
             <div class="col-sm-10"><span class="help-block">Unless otherwise indicated by the Store Password setting below, we will not store your password and only use it once to fetch your contacts.</span>
               <div class="checkbox c-checkbox">
                 <label>
-                  <input type="checkbox" {{$ci->save_password == 'y' ? 'checked' : ''}} name="save_password" onchange="hideFrecuency()" id="store_password" value="y"><span class="ion-checkmark-round"></span> Store Password
+                  <input type="checkbox" {{$ci->save_password == 'y' ? 'checked' : ''}} name="save_password" onchange="hideFrequency()" id="store_password" value="y"><span class="ion-checkmark-round"></span> Store Password
                 </label>
               </div>
             </div>
@@ -75,8 +75,8 @@
   </form>
 
   <script type="text/javascript">
-  hideFrecuency();
-  function hideFrecuency(){
+      hideFrequency();
+  function hideFrequency(){
 
       var ifischeking = $('#store_password:checkbox:checked').length > 0;
       if(ifischeking){

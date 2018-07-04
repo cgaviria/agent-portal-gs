@@ -14,15 +14,18 @@
                     </ul>
                     <h2 class="header-title">Web Portal</h2>
                     <ul class="pull-right">
-                        <li><a class="ripple" id="header-search" href="#"><em class="ion-ios-search-strong"></em></a></li>
-                        <li class="dropdown"><a class="dropdown-toggle has-badge ripple" href="#" data-toggle="dropdown"><em class="ion-person"></em><sup class="badge bg-danger">3</sup></a>
+                        @if ($logged_in_user = Sentinel::getUser())
+                        @endif
+                        @if ($agency = $logged_in_user->getAgency())
+                            <li class="agency-name">{{$agency->name}}</li>
+                        @endif
+                        <li class="dropdown"><a class="dropdown-toggle has-badge ripple" href="#" data-toggle="dropdown"><em class="ion-person"></em></a>
                             <ul class="dropdown-menu dropdown-menu-right md-dropdown-menu">
-                                <li><a href="profile.html"><em class="ion-home icon-fw"></em>My Account</a></li>
+                                <li><a href="{{URL::action('UsersController@getMyAccount')}}"><em class="ion-home icon-fw"></em>My Account</a></li>
                                 <li class="divider" role="presentation"></li>
                                 <li><a href="{{URL::action('AuthController@logout')}}"><em class="ion-log-out icon-fw"></em>Logout</a></li>
                             </ul>
                         </li>
-                        <li><a class="ripple" id="header-settings" href="#"><em class="ion-gear-b"></em></a></li>
                     </ul>
                 </nav>
             </header>
@@ -38,9 +41,10 @@
                     <nav class="sidebar-nav">
                         <ul>
                             <li><a class="ripple" href="{{URL::action('AdminController@getIndex')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Dashboard</span></a></li>
+
                             <li><a class="ripple" href="{{URL::action('AdminController@getContactImporter')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Contact Importer</span></a></li>
-                            <li><a class="ripple" href="{{URL::action('BookingController@getAdminTable')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Bookings</span></a></li>
-                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
+                            <li><a class="ripple" href="{{URL::action('BookingsController@getAdminTable')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Bookings</span></a></li>
+                            <li><a class="ripple" href="{{URL::action('GroupsController@getAdminTable')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
                             <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Clients</span></a></li>
                             <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Request Training</span></a></li>
                             <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
@@ -114,10 +118,7 @@
         <!-- build:js(../app) js/vendor.js-->
         <!-- Modernizr-->
         <script src="{{asset('js/modernizr.custom.js?'.Config::get('app.cache_buster'))}}"></script>
-        <!-- jQuery-->
-        <script src="{{asset('js/jquery.js?'.Config::get('app.cache_buster'))}}"></script>
-        <!-- Bootstrap-->
-        <script src="{{asset('js/bootstrap.js?'.Config::get('app.cache_buster'))}}"></script>
+
         <!-- jQuery Browser-->
         <script src="{{asset('js/jquery.browser.js?'.Config::get('app.cache_buster'))}}"></script>
         <!-- Material Colors-->
@@ -218,7 +219,6 @@
         <script src="{{asset('js/blueimp-gallery-youtube.js?'.Config::get('app.cache_buster'))}}"></script>
         <script src="{{asset('js/jquery.blueimp-gallery.js?'.Config::get('app.cache_buster'))}}"></script>
 
-        
         <!-- Datamaps-->
         <script src="{{asset('js/topojson.min.js?'.Config::get('app.cache_buster'))}}"></script>
         <script src="{{asset('js/datamaps.all.js?'.Config::get('app.cache_buster'))}}"></script>
@@ -226,19 +226,17 @@
         <!-- App script-->
         <script src="{{asset('js/app_admin.js?'.Config::get('app.cache_buster'))}}"></script>
 
-        <!-- Class.js-->
-        <script src="{{asset('js/class.js?'.Config::get('app.cache_buster'))}}"></script>
-        
          <!--Noty-->
         <script src="{{asset('js/vendor/needim/noty/lib/noty.js?'.Config::get('app.cache_buster'))}}"></script>
 
         <script src="{{asset('js/views/globals.js?'.Config::get('app.cache_buster'))}}"></script> 
-         <script>
+        <script>
             var viewsGlobalInstance = new ViewsGlobals();
+            viewsGlobalInstance.displayMessages({!! json_encode(Session::get('messages')) !!});
         </script>
 
         <script src="{{asset('js/views/layouts/admin.js?'.Config::get('app.cache_buster'))}}"></script> 
-         <script>
+        <script>
             var viewsAdminInstance = new ViewsLayoutsAdmin();
         </script>
         @yield('extra_script')

@@ -55,9 +55,22 @@
     <link rel="stylesheet" href="{{asset('css/colors.css?'.Config::get('app.cache_buster'))}}">
     <!-- endbuild-->
     <!-- Application styles-->
+    <link rel="stylesheet" href="{{asset('css/app2.css?'.Config::get('app.cache_buster'))}}">
     <link rel="stylesheet" href="{{asset('css/app_admin.css?'.Config::get('app.cache_buster'))}}">
     <!--noty-->
     <link rel="stylesheet" href="{{asset('js/vendor/needim/noty/lib/noty.css?'.Config::get('app.cache_buster'))}}">
      <!-- Bootstrap Custom-->
     <link rel="stylesheet" href="{{asset('css/bootstrap.custom.css?'.Config::get('app.cache_buster'))}}">
+
+    <!-- Class.js-->
+    <script src="{{asset('js/class.js?'.Config::get('app.cache_buster'))}}"></script>
+
+    <!-- jQuery-->
+    <script src="{{asset('js/jquery.js?'.Config::get('app.cache_buster'))}}"></script>
+
+    <!--ScrollTo-->
+    <script src="{{asset('js/jquery.scrollTo.min.js?'.Config::get('app.cache_buster'))}}"></script>
+
+    <!-- Bootstrap-->
+    <script src="{{asset('js/bootstrap.js?'.Config::get('app.cache_buster'))}}"></script>
 </head>

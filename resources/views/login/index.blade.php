@@ -1,12 +1,12 @@
 @extends('layouts.login')
 @section('content')
     <div class="layout-container">
-        <div class="page-container bg-blue-grey-900">
+        <div class="page-container">
             <div class="container-full">
                 <div class="container container-xs">
                     <form class="card b0 form-validate mt-md-2" id="user-login" action="{{URL::action('AuthController@doLogin')}}" onsubmit="viewsLoginInstance.sendFormLogin(this);" name="loginForm" novalidate="">
                         <div class="card-offset pb0">
-                            <div class="card-offset-item text-right"><a class="btn-raised btn btn-info btn-circle btn-lg" href="signup.html"><em class="ion-person-add"></em></a></div>
+                            <div class="card-offset-item text-right"><a class="btn-raised btn btn-info btn-circle btn-lg" href="https://www.shoreexcursionsgroup.com/travel-agents-signup"><em class="ion-person-add"></em></a></div>
                             <div class="card-offset-item text-right hidden">
                                 <div class="btn btn-success btn-circle btn-lg"><em class="ion-checkmark-round"></em></div>
                             </div>
@@ -38,7 +38,7 @@
                             </div>
 
                         </div>
-                        <button class="btn btn-primary btn-flat" type="submit">Authenticate</button>
+                        <button class="btn btn-primary" type="submit">Login</button>
                     </form>
                     <div class="text-center text-sm"><a class="text-inherit" href="recover.html">Forgot password?</a></div>
                 </div>

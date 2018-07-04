@@ -93,5 +93,15 @@ var ViewsGlobals = Class.extend({
 	            callBack(result);
 	        }
 	    });
-	}
+	},
+    displayMessages: function(messages) {
+        if (messages != null) {
+            if (messages.success != null) {
+                this.showNotification('success', messages.success);
+            }
+            if (messages.error != null) {
+                this.showNotification('error', messages.error);
+            }
+		}
+    }
 });
