@@ -8040,3 +8040,12 @@ textarea.no-resize {
     color:red;
     margin-top:5px;
 }
+
+.my-account-image {
+    width:150px;
+    margin-bottom:15px;
+}
+
+.sidebar-no-picture {
+    font-size:40px;
+}

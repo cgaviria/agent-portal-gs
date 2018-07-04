@@ -23,8 +23,13 @@
                         <div class="card-body">
                             <fieldset>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label">Upload Picture</label>
+                                    <label class="col-sm-2 control-label"> @if ($logged_in_user->photo)Change @else Upload @endif Picture</label>
                                     <div class="col-sm-10">
+                                        @if ($logged_in_user->photo)
+                                            <div>
+                                                <img class="my-account-image" src="{{asset(((!empty($logged_in_user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT])) ? $logged_in_user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT] : $logged_in_user->photo))}}">
+                                            </div>
+                                        @endif
                                         <input class="form-control" id="photo" name="photo" type="file"><span class="help-block">Your picture. Used throughout the dashboard.</span>
                                     </div>
                                 </div>

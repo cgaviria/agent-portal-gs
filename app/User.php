@@ -11,6 +11,7 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
 	const PUBLIC_STORAGE_DIR = '/user_photos/';
 
 	const THUMB_MY_ACCOUNT = 'thumb_my_account';
+	const THUMB_SIDEBAR = 'thumb_sidebar';
 
 	public static $rules = array(
 		'first_name'  => 'required',
@@ -21,7 +22,8 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
 		'photo'  => 'image'
 	);
 
-	protected $image_crops = array(self::THUMB_MY_ACCOUNT => array(150, 150, array('crop')));
+	protected $image_crops = array(self::THUMB_MY_ACCOUNT => array(150, 150, array('crop')),
+											self::THUMB_SIDEBAR => array(64, 64, array('crop')));
 
 	protected $appends = ['image_thumbnails'];
 
@@ -89,8 +91,8 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
 
 		foreach ($this->image_crops as $crop_name => $image_crop) {
 			if (!empty($image_crop[0]) && !empty($image_crop[1]) && isset($image_crop[2]) && is_array($image_crop[2])) {
-				if (@is_array(getimagesize(\App\Helpers\AppHelper::instance()->publicPath() . $this->asset_image))) {
-					if (!file_exists(str_replace('//', '/', \App\Helpers\AppHelper::instance()->publicPath() . Image::url($this->asset_image, $image_crop[0], $image_crop[1], $image_crop[2])))) {
+				if (@is_array(getimagesize(\App\Helpers\AppHelper::instance()->publicPath() . $this->photo))) {
+					if (!file_exists(str_replace('//', '/', \App\Helpers\AppHelper::instance()->publicPath() . Image::url($this->photo, $image_crop[0], $image_crop[1], $image_crop[2])))) {
 						$crop_details = array();
 						$crop_details['width'] = $image_crop[0];
 						$crop_details['height'] = $image_crop[1];
@@ -103,11 +105,11 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
 							}
 						}
 
-						Image::make(\App\Helpers\AppHelper::instance()->publicPath() . $this->asset_image, $crop_details)
-							->save(str_replace('//', '/', \App\Helpers\AppHelper::instance()->publicPath() . Image::url($this->asset_image, $image_crop[0], $image_crop[1], $image_crop[2])));
+						Image::make(\App\Helpers\AppHelper::instance()->publicPath() . $this->photo, $crop_details)
+							->save(str_replace('//', '/', \App\Helpers\AppHelper::instance()->publicPath() . Image::url($this->photo, $image_crop[0], $image_crop[1], $image_crop[2])));
 					}
 
-					$crop_urls[$crop_name] = Image::url($this->asset_image, $image_crop[0], $image_crop[1], $image_crop[2]);
+					$crop_urls[$crop_name] = Image::url($this->photo, $image_crop[0], $image_crop[1], $image_crop[2]);
 				}
 			}
 		}

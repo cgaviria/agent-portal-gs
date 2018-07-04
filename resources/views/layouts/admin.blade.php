@@ -35,12 +35,17 @@
                     <div class="pull-right pt-lg text-muted hidden"><em class="ion-close-round"></em></div><a href="#"><img src="{{asset('images/logo_white_text.png')}}" alt="Logo"></a>
                 </div>
                 <div class="sidebar-content">
-                    <div class="sidebar-toolbar text-center"><a href=""><img class="img-circle thumb64" src="{{asset('images/christian_gaviria_foto_square.jpeg')}}" alt="Profile"></a>
+                    <div class="sidebar-toolbar text-center">
+                        @if ($user_login->photo)
+                            <img class="img-circle thumb64" src="{{asset(((!empty($user_login->image_thumbnails[\App\User::THUMB_SIDEBAR])) ? $user_login->image_thumbnails[\App\User::THUMB_SIDEBAR] : $user_login->photo))}}" alt="Profile">
+                        @else
+                            <span class="ion-person sidebar-no-picture"></span>
+                        @endif
                         <div class="mt">Welcome, {{$user_login->first_name}}</div>
                     </div>
                     <nav class="sidebar-nav">
                         <ul>
-                            <li><a class="ripple" href="{{URL::action('AdminController@getIndex')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Dashboard</span></a></li>
+                            <li><a class="ripple" href="{{URL::action('AdminController@getIndex')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Home</span></a></li>
 
                             <li><a class="ripple" href="{{URL::action('AdminController@getContactImporter')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Contact Importer</span></a></li>
                             <li><a class="ripple" href="{{URL::action('BookingsController@getAdminTable')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Bookings</span></a></li>

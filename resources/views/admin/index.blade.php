@@ -5,7 +5,7 @@
         <div class="content-heading bg-white">
             <div class="row">
                 <div class="col-sm-9">
-                    <h4 class="m0 text-thin">Dashboard</h4><small>General overview of everything</small>
+                    <h4 class="m0 text-thin">Home Dashboard</h4><small>General overview of everything</small>
                 </div>
             </div>
         </div>
