@@ -31,6 +31,17 @@ Route::get('/dashboard/importer', ['as' => 'contact_importer', 'uses' => 'AdminC
 Route::get('/dashboard/bookings', ['as' => 'bookings', 'uses' => 'BookingsController@getAdminTable'])->middleware('authSentinel');
 Route::get('/dashboard/login', ['as' => 'dashboard_login', 'uses' => 'AdminController@getLogin']);
 
+/******************Client module*****************/
+
+Route::get('/dashboard/clients', ['as' => 'clients', 'uses' => 'ClientsController@getClientTable'])->middleware('authSentinel');
+Route::get('/data/clients', 'ClientsController@getData')->middleware('authSentinel');
+
+Route::get('/dashboard/clients/view/{id}', 'ClientsController@getBooking')->middleware('authSentinel');
+Route::get('/forms/client/add', 'ClientsController@getAddForm')->middleware('authSentinel');
+Route::post('/data/clients/save', 'ClientsController@save')->middleware('authSentinel');
+
+/*************************************************/
+
 Route::get('/data/bookings', 'BookingsController@getData')->middleware('authSentinel');
 Route::get('/data/importer', 'ContactImporterController@getData')->middleware('authSentinel');
 Route::post('/data/importer/save', 'ContactImporterController@save')->middleware('authSentinel');
