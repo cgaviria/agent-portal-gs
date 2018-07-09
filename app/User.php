@@ -134,6 +134,10 @@ class User extends \Cartalyst\Sentinel\Users\EloquentUser
 		$this->attributes['password'] = $hasher->hash($value);
 	}
 
+	public function agency(){
+		return $this->HasOne('App\Agency','id','agency_id');
+	}
+
 	static public function getSaveDirectory()
 	{
 		return self::PUBLIC_STORAGE_DIR . self::getTimeBasedDirectories();

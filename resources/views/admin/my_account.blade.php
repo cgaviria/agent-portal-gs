@@ -1,6 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-    <!-- Page content-->
     <script src="{{asset('js/views/admin/my_account.js?'.Config::get('app.cache_buster'))}}"></script>
     <script>
         var ViewsAdminMyAccountInstance = new ViewsAdminMyAccount('{{action('UsersController@postMyAccount')}}');
@@ -20,6 +19,9 @@
                 <div class="col-sm-12">
                     <form class="card form-validate" id="form-my-account" name="form-my-account" method="post" action="{{action('UsersController@postMyAccount')}}" enctype="multipart/form-data">
                         {!! csrf_field() !!}
+                        @if (isset($edit_user) && $edit_user)
+                            <input type="hidden" id="user_id_to_edit" name="user_id_to_edit" value="{{$logged_in_user->id}}"/>
+                        @endif
                         <div class="card-body">
                             <fieldset>
                                 <div class="form-group">

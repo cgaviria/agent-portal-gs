@@ -18,6 +18,10 @@
                         @endif
                         @if ($agency = $logged_in_user->getAgency())
                             <li class="agency-name">{{$agency->name}}</li>
+                        @elseif ($logged_in_user->inRole(\App\Role::ROLE_ADMIN))
+                            <li class="agency-name">System Administrator</li>
+                        @elseif ($logged_in_user->inRole(\App\Role::ROLE_OWNER))
+                            <li class="agency-name">Agency Owner</li>
                         @endif
                         <li class="dropdown"><a class="dropdown-toggle has-badge ripple" href="#" data-toggle="dropdown"><em class="ion-person"></em></a>
                             <ul class="dropdown-menu dropdown-menu-right md-dropdown-menu">
@@ -46,14 +50,13 @@
                     <nav class="sidebar-nav">
                         <ul>
                             <li><a class="ripple" href="{{URL::action('AdminController@getIndex')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Home</span></a></li>
-
                             <li><a class="ripple" href="{{URL::action('AdminController@getContactImporter')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Contact Importer</span></a></li>
                             <li><a class="ripple" href="{{URL::action('BookingsController@getAdminTable')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Bookings</span></a></li>
                             <li><a class="ripple" href="{{URL::action('GroupsController@getAdminTable')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
                             <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Clients</span></a></li>
-                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Request Training</span></a></li>
-                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
-                            <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Media Center</span></a></li>
+                            @if (!Sentinel::inRole(\App\Role::ROLE_AGENT))
+                                <li><a class="ripple" href="{{URL::action('UsersController@getUsers')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Users</span></a></li>
+                            @endif
                         </ul>
                     </nav>
                 </div>

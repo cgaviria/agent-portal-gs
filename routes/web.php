@@ -36,6 +36,7 @@ Route::get('/data/importer', 'ContactImporterController@getData')->middleware('a
 Route::post('/data/importer/save', 'ContactImporterController@save')->middleware('authSentinel');
 Route::post('/data/importer/edit', 'ContactImporterController@edit')->middleware('authSentinel');
 Route::post('/data/importer/delete', 'ContactImporterController@delete')->middleware('authSentinel');
+Route::get('/data/users', 'UsersController@getData')->middleware('authSentinel');
 
 Route::post('/dashboard/login/doLogin', 'AuthController@doLogin');
 Route::get('/dashboard/login/logout', 'AuthController@logout');
@@ -61,3 +62,6 @@ Route::get('/dashboard/bookings/export/csv', 'BookingsController@exportCSV')->mi
 
 Route::get('/dashboard/users/my_account', 'UsersController@getMyAccount')->middleware('authSentinel');
 Route::post('/dashboard/users/my_account', 'UsersController@postMyAccount')->middleware('authSentinel');
+
+Route::get('/dashboard/users', 'UsersController@getUsers')->middleware('authSentinel');
+Route::get('/dashboard/users/edit/{id}', 'UsersController@getEditUser')->middleware('authSentinel');
