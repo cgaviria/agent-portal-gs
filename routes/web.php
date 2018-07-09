@@ -38,7 +38,9 @@ Route::get('/data/clients', 'ClientsController@getData')->middleware('authSentin
 
 Route::get('/dashboard/clients/view/{id}', 'ClientsController@getBooking')->middleware('authSentinel');
 Route::get('/forms/client/add', 'ClientsController@getAddForm')->middleware('authSentinel');
+Route::get('/forms/client/import', 'ClientsController@getImportCLient')->middleware('authSentinel');
 Route::post('/data/clients/save', 'ClientsController@save')->middleware('authSentinel');
+Route::post('/data/clients/import_client', 'ClientsController@import')->middleware('authSentinel');
 
 /*************************************************/
 

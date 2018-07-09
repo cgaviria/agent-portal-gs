@@ -5,12 +5,54 @@ var ViewsAdminClients = Class.extend({
     tour_date_start: null,
     tour_date_end: null,
     datatable: null,
-    init: function() {
+    fields : null,
+    getdataurl : null,
+    order : null,
+    init: function(fields, getdataurl, order) {
         // this.cancel_booking_endpoint = cancel_booking_endpoint;
-
-        jQuery(document).data("ViewsAdminClients", this);
-
         
+        jQuery(document).data("ViewsAdminClients", this);
+        fieldsdata = JSON.parse(fields);
+       
+        var table;
+        var arr = [];
+        var len = fieldsdata.length;
+        for (var i = 0; i < len; i++) {
+            arr.push({
+                data: fieldsdata[i].id,
+                name: fieldsdata[i].id,
+                orderable: true,
+                searchable: true
+            });
+        }
+        jQuery(document).data("ViewsAdminClients").datatable = jQuery("#datatable-responsive").DataTable({
+          processing: true,
+          serverSide: true,
+          pageLength: 100,
+          fixedHeader: {
+              header: true
+          },
+          ajax:{
+              url: getdataurl,
+          },
+          columns: arr,
+          'select': {
+              'style': 'multi'
+          },
+          'order': [[1, 'asc']],
+          'bFilter': 'false',
+          
+          fnInitComplete: function () {
+              jQuery('#card-body-loader').hide();
+              jQuery('#card-body').fadeIn(1000);
+          }
+      });
+  
+
+  function refreshTable(){
+    table = jQuery('#datatable-responsive').DataTable().ajax.reload();
+  }
+         
     },
     orderDateFilterClick: function(event) {
         jQuery('#dynamic_modal_title').html('Order Date Filter');
@@ -113,8 +155,10 @@ var ViewsAdminClients = Class.extend({
         jQuery(document).data("ViewsAdminClients").datatable.ajax.reload();
     },
     responseForm: function(results) {
+   
     try {
       var obj = jQuery.parseJSON(results);
+
       if(obj.data.error) {
         for (var e in obj.data.errmens) {
           for (var i = 0; i < obj.data.errmens[e].length; i++ ) {
@@ -131,4 +175,41 @@ var ViewsAdminClients = Class.extend({
 
     }
   },
+  sendForm: function(form,callBack) {
+    
+      var formData = new FormData();
+      //this.sendPost(form.action, formData, callBack);
+      $.ajax({
+          type: "POST",
+          url: form.action,
+          data: new FormData(form),
+          dataType: "JSON",
+          processData: false,
+          contentType: false,
+          //success: callBack(result, status)
+          success: function(result, status) {
+               try {
+                  var obj = result;
+
+                  if(obj.data.error) {
+                    for (var e in obj.data.errmens) {
+                      for (var i = 0; i < obj.data.errmens[e].length; i++ ) {
+                          viewsGlobalInstance.showError(obj.data.errmens[e][i]);
+                      }
+                    }  
+                  } else {
+                      viewsGlobalInstance.showSuccess(obj.data.mens);
+                      table = $('#datatable-responsive').DataTable().ajax.reload();
+                      $('#dynamic_modal').modal('hide');
+                  }
+                  $('input[type=submit]').attr('disabled', false);  
+                } catch(error) {
+
+                }
+          }
+      });
+      $('input[type=submit]').attr('disabled', true);  
+      return false;
+  },
+ 
 });

@@ -18,6 +18,7 @@ use Sentinel;
 use Lang;
 use URL;
 use App\Client;
+use App\Ship;
 use Yajra\DataTables\DataTables;    
 
 class ClientsController extends Controller
@@ -39,7 +40,13 @@ class ClientsController extends Controller
         'imap_host'  => 'required',
         'imap_port'  => 'required|numeric|max:999999'
     );
-    
+    public static $rules_import = array(
+       
+        'ship'  => 'required',
+        'sail_date'  => 'required',
+        'duration'  => 'required',
+       
+    );
     /**
      * Shows the bookings page.
      *
@@ -140,9 +147,10 @@ class ClientsController extends Controller
 	 */
 	public function getAddForm(Request $request){
 
-      $userL = Sentinel::check();        
+      $userL = Sentinel::check(); 
+      $ships = Ship::get(); 
       if($userL){
-          return view('admin.client.add')->render();
+          return view('admin.client.add', ['ships' => $ships])->render();
       }  
     }
     /**
@@ -188,54 +196,73 @@ class ClientsController extends Controller
 		}
 	}
 	/**
-	 * Cancels a booking.
+	 * Get client import form
 	 *
 	 * @return Response
 	 */
-	/*public function cancelBooking($id, Request $request)
+	public function getImportCLient(Request $request){
+
+      $userL = Sentinel::check(); 
+      $ships = Ship::get(); 
+      if($userL){
+          return view('admin.client.import', ['ships' => $ships])->render();
+      }  
+    }
+    /**
+	 * Import clients on CSV upload
+	 *
+	 * @return Response
+	 */
+     public function import(Request $request)
 	{
-		$booking = Booking::find($id);
 
-		$logged_in_user = Sentinel::getUser();
+		if (!is_null(Sentinel::check())) {
+			//if($userL->inRole('superadmin')){
+			if (1 == 1) {
 
-		try {
-			Mail::to("christiangaviria@christiangaviria.com")->send(new CancelBooking($booking, $logged_in_user));
+				$validator = Validator::make(Input::all(), self::$rules_import);
 
-			return response()->json([
-				'status' => 'success',
-				'data' => array()
-			]);
-		} catch (\Exception $e) {
-			return response()->json([
-				'status' => 'error',
-				'data' => array()
-			]);
+				$response = new \stdClass();
+				$response->error = false;
+				$response->errmens = [];
+
+				if ($validator->fails()) {
+					$response->error  = true;
+					$response->errmens = $validator->messages();
+					return RestResponse::sendResult(200, $response);
+				}
+
+				$ci = new Client;
+               
+			    $path = $request->file('csv_file')->getRealPath();
+			    $customerArr = $this->csvToArray($file);
+			    dd($customerArr);
+
+				$response->mens = Lang::get('Client successfully created.');
+
+				return RestResponse::sendResult(200, $response);
+			}
 		}
 	}
-
-	public function exportCSV()
+	function csvToArray($filename = '', $delimiter = ',')
 	{
-		$headers = [
-			'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
-			'Content-type'        => 'text/csv',
-			'Content-Disposition' => 'attachment; filename=bookings.csv',
-			'Expires'             => '0',
-			'Pragma'              => 'public'
-		];
+	    if (!file_exists($filename) || !is_readable($filename))
+	        return false;
 
-		$list = Booking::all()->toArray();
+	    $header = null;
+	    $data = array();
+	    if (($handle = fopen($filename, 'r')) !== false)
+	    {
+	        while (($row = fgetcsv($handle, 1000, $delimiter)) !== false)
+	        {
+	            if (!$header)
+	                $header = $row;
+	            else
+	                $data[] = array_combine($header, $row);
+	        }
+	        fclose($handle);
+	    }
 
-		array_unshift($list, array_keys($list[0]));
-
-		$callback = function() use ($list)
-		{
-			$file_pointer = fopen('php://output', 'w');
-			foreach ($list as $row) {
-				fputcsv($file_pointer, $row);
-			}
-			fclose($file_pointer);
-		};
-
-		return Response::stream($callback, 200, $headers); //use Illuminate\Support\Facades\Response;
-	}*/
+	    return $data;
+	}
 }

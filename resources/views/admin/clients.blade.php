@@ -10,9 +10,11 @@
                 </div>
                 <div class="col-sm-8 text-right hidden-xs upper-right-buttons">
                     
-                    <a href="#" id="btn-export-csv" class="btn btn-labeled btn-primary ripple" type="button" style="padding: 6px 16px;">Import Clients by CSV</a>
+                   
                     <div class="btn-group">
-                        
+                       <button  onclick="importClient();" class="btn ripple btn-primary" type="button">Import Clients by CSV</button>
+                    </div>
+                    <div class="btn-group">
                         <button onclick="showAddForm();" class="btn btn-labeled btn-primary ripple" type="button"><span class="btn-label"><i class="ion-plus-round"></i></span>Add New Client</button>
                     </div>
                     
@@ -43,20 +45,21 @@
             </div>
         </div>
     </section>
-    
+  
 @endsection
 @section('extra_script')
 <script src="{{asset('js/views/admin/client.js?'.Config::get('app.cache_buster'))}}"></script>
-
 <script>
-  var ViewsAdminClientsInstance = new ViewsAdminClients();
+  var ViewsAdminClientsInstance = new ViewsAdminClients('{!! json_encode($fields) !!}','{{ url($url) }}','{!! json_encode($order) !!}');
 </script>
 <script type="text/javascript">
   
   function showAddForm(){
-    viewsAdminInstance.showDialog("{{URL::action('ClientsController@getAddForm')}}","@lang('strings_client.add_importer')");
+    viewsAdminInstance.showDialog("{{URL::action('ClientsController@getAddForm')}}","@lang('strings_client.add_client')");
   }
-
+  function importClient(){
+     viewsAdminInstance.showDialog("{{URL::action('ClientsController@getImportCLient')}}","@lang('strings_client.import_client')");
+  }
   function showEditForm(id){
     viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getEditForm','')}}/"+id,"@lang('strings.edit_importer')");
   }
@@ -68,65 +71,5 @@
   function showRunForm(id){
     viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getRunForm','')}}/"+id,"@lang('strings.run_importer')");
   }
-
-  var table;
-  $(document).ready(function() {    
-      //$('#admintable').hide();
-
-      jQuery(document).data("ViewsAdminClients").datatable = $("#datatable-responsive").DataTable({
-          processing: true,
-          serverSide: true,
-          pageLength: 100,
-          fixedHeader: {
-              header: true
-          },
-          ajax:{
-              url: '{{ url($url) }}',
-          }
-          ,
-          columns: [
-                  @foreach($fields as $field)
-              {data: '{{$field['id']}}', name: '{{$field['id']}}', orderable: {{$field['ordenable'] ? 'true' : 'false' }}, searchable: {{$field['searchable'] ? 'true' : 'false' }} {!!isset($field['width']) ? ',width : "' . $field['width'] .'"' : ''!!}   },
-              @endforeach
-          ],
-          @if(isset($checkboxes))
-          'columnDefs': [
-              {
-                  'targets': 0,
-                  'searchable':false,
-                  'orderable':false,
-                  "checkboxes": {
-                      "selectRow": true
-                  },
-                  'render': function (data, type, full, meta){
-                      return '<input type="checkbox" class="dt-checkboxes" name="data_id[]" value="' + $('<div/>').text(data).html() + '">';
-                  }
-              }
-          ],
-          @endif
-          'select': {
-              'style': 'multi'
-          },
-          @if(isset($order))
-          "order": [
-              [{{$order['order']}}, "{{$order['way']}}"]
-          ],
-          @else
-          'order': [[1, 'asc']],
-          @endif
-                  @if(isset($searching))
-          "bFilter": {{$searching ? 'true' : 'false'}},
-          @endif
-          fnInitComplete: function () {
-              $('#card-body-loader').hide();
-              $('#card-body').fadeIn(1000);
-          }
-      });
-  });
-
-  function refreshTable(){
-    table = $('#datatable-responsive').DataTable().ajax.reload();
-  }
-
 </script>    
 @endsection

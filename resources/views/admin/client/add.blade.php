@@ -31,7 +31,11 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left !important;">Ship</label>
             <div class="col-sm-4">
-              <input class="form-control" name="ship" type="text">
+              <select class="form-control" name="ship">
+                @foreach ($ships as $each_ship)
+                     <option value="{{ $each_ship->id }}">{{ $each_ship->name }}</option>
+                @endforeach
+              </select>
             </div>
           </div>
         </fieldset>
