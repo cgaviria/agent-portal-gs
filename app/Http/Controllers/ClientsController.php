@@ -61,7 +61,7 @@ class ClientsController extends Controller
         $param = array();
         $param['url']  = URL::action('ClientsController@getData');
         $param['fields'] = [
-                            [ 'id' => 'name', 'label' => 'Name', 'ordenable' => false,  'searchable' => true],
+                            [ 'id' => 'first_name', 'label' => 'Name', 'ordenable' => false,  'searchable' => true],
                             [ 'id' => 'itinerary', 'label' => 'Itinerary', 'ordenable' => true,  'searchable' => true],
                             [ 'id' => 'email', 'label' => 'Email', 'ordenable' => true,  'searchable' => true],
                             [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
@@ -88,7 +88,7 @@ class ClientsController extends Controller
 
 			$datatables = new Datatables;
 			return $datatables->eloquent($clients)
-				->editColumn('name', function ($client){
+				->editColumn('first_name', function ($client){
 					return $client->getFullName();
 				})
 				->editColumn('itinerary', function ($client){
