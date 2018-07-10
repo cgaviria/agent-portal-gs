@@ -25,11 +25,12 @@ class ClientsController extends Controller
 {
     
     public static $rules_add = array(
-        'first_name'  => 'required',
-        'email'  => 'required|email',
+        'first_name'  => 'required|regex:/^[a-zA-Z]+$/u',
+        'last_name'=>'regex:/^[a-zA-Z]+$/u',
+        'email'  => 'required|email|unique:clients,email,$this->id,id',
         'ship'  => 'required',
         'sail_date'  => 'required',
-        'duration' =>'required'
+        'duration' =>'required|numeric'
     );
 
     public static $rules_edit = array(
@@ -41,10 +42,11 @@ class ClientsController extends Controller
         'imap_port'  => 'required|numeric|max:999999'
     );
     public static $rules_import = array(
-       
+        'csv_file'=>'required',
         'ship'  => 'required',
         'sail_date'  => 'required',
-        'duration'  => 'required',
+        'duration'  => 'required|numeric',
+
        
     );
     /**
@@ -95,6 +97,7 @@ class ClientsController extends Controller
 				
 				->addColumn('actions', function ($client) use ($user_check){
 					$buttons = '<a href="' . action('ClientsController@getBooking', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View Bookings</a> ';
+					 $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$client->id.');" type="button">Delete</button> ';
 					return $buttons;
 				})
 				->rawColumns(['actions'])
@@ -118,12 +121,13 @@ class ClientsController extends Controller
      *
      * @return Response
      */
-    public function getBooking($id=NULL ,Request $request)
+    public function getBooking($id ,Request $request)
     {
         /*https://laravel-news.com/google-api-socialite*/
        
         $param = array();
         $param['url']  = URL::action('BookingsController@getData');
+        $param['client_id'] = $id;
         $param['fields'] = [
                             [ 'id' => 'order_id', 'label' => 'Order ID', 'ordenable' => true,  'searchable' => true],
                             [ 'id' => 'order_date', 'label' => 'Order Date', 'ordenable' => true,  'searchable' => true],
@@ -232,14 +236,23 @@ class ClientsController extends Controller
 					return RestResponse::sendResult(200, $response);
 				}
 
-				$ci = new Client;
+				
                
 			    $path = $request->file('csv_file')->getRealPath();
-			    $customerArr = $this->csvToArray($file);
-			    dd($customerArr);
+			    $customerArr = $this->csvToArray($path);
 
-				$response->mens = Lang::get('Client successfully created.');
-
+			    foreach ($customerArr as  $value) {
+			    	$ci = new Client;
+					$ci->first_name = $value['first_name'];
+					$ci->last_name = $value['last_name'];
+					$ci->email = $value['email'];
+					$ci->ship_id = $request->input('ship');
+					$ci->sail_date = $request->input('sail_date');
+					$ci->duration = $request->input('duration');
+					$ci->itinerary = $value['itinerary'];
+				    $ci->save();
+			    }
+				$response->mens = Lang::get('Clients successfully created.');
 				return RestResponse::sendResult(200, $response);
 			}
 		}
@@ -265,4 +278,37 @@ class ClientsController extends Controller
 
 	    return $data;
 	}
+	/**
+	 * Client Delete confirmation form
+	 *
+	 * @return Response
+	 */
+	public function getDeleteForm($id){
+
+      $userL = Sentinel::check();        
+      if($userL){
+        $ci = Client::find($id);
+          return view('admin.client.delete',['ci'=>$ci])->render();
+      }  
+    }
+    /**
+	 * Delete functionality
+	 *
+	 * @return Response
+	 */
+    public function delete(Request $request){
+
+      $userL = Sentinel::check();        
+      if($userL){
+          $response = new \stdClass();
+          $response->error  = false;
+          $response->errmens = [];
+              
+          $ci = Client::find($request -> input('ci_id'));
+          $ci->delete();
+
+          $response->mens = Lang::get('Client successfully deleted.');
+          return RestResponse::sendResult(200,$response);
+      }  
+    }
 }

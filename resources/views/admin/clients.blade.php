@@ -65,7 +65,7 @@
   }
 
   function showDeleteForm(id){
-    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getDeleteForm','')}}/"+id,"@lang('strings.delete_importer')");
+    viewsAdminInstance.showDialog("{{URL::action('ClientsController@getDeleteForm','')}}/"+id,"@lang('strings_client.delete_client')");
   }
 
   function showRunForm(id){

@@ -64,6 +64,12 @@
                 </div>
             </div>
         </div>
+        @if(isset($client_id))
+        <input type="hidden" value={{$client_id}} id="client_id">
+        @else
+        <input type="hidden" value='' id="client_id">
+        @endif
+
         <div class="content-heading bg-white">
             <div class="row">
                 <div class="col-sm-4">
@@ -156,6 +162,8 @@
                   d.order_date_end = jQuery(document).data("ViewsAdminBookings").order_date_end;
                   d.tour_date_start = jQuery(document).data("ViewsAdminBookings").tour_date_start;
                   d.tour_date_end = jQuery(document).data("ViewsAdminBookings").tour_date_end;
+                  d.tour_date_end = jQuery(document).data("ViewsAdminBookings").tour_date_end;
+                  d.client_id = jQuery(document).data("ViewsAdminBookings").client_id;
               }
           }
           ,

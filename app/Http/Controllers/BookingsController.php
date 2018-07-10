@@ -75,7 +75,7 @@ class BookingsController extends Controller
     public function getData(Request $request)
     {
 		$user_check = Sentinel::check();
-
+		
 		if ($user_check) {
 			$bookings = Booking::query();
 
@@ -88,7 +88,10 @@ class BookingsController extends Controller
 			$bookings->select('bookings.*');
 
 			$bookings->leftJoin('cruise_ships', 'cruise_ships.id', '=', 'bookings.ship_id');
-
+            if($request->client_id){
+            	$bookings->leftJoin('clients', 'email', '=', 'bookings.customer_email_address');
+            	$bookings->where('clients.id', $request->client_id);
+            }
 			if ($search_term = $request->input('search.value')) {
 				$bookings->where(function($bookings) use ($search_term) {
 					$bookings->where('cruise_ships.name', 'LIKE', '%' . strtolower($search_term) . '%');
