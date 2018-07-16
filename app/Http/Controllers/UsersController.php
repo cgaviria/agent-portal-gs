@@ -61,14 +61,14 @@ class UsersController extends Controller
 				$users->where('users.id', $logged_in_user->id);
 
 				if (!Sentinel::inRole(Role::ROLE_ADMIN)) {
-					if ($logged_in_user->agency_id && Sentinel::inRole(Role::ROLE_AGENCY_MANAGER)) {
+					if ($user->agency_id && Sentinel::inRole(Role::ROLE_AGENCY_MANAGER)) {
 						$agent_role = Sentinel::findRoleBySlug(Role::ROLE_AGENT);
 
 						$users->select('users.*');
 
 						$users->join('role_users', 'role_users.user_id', '=', 'users.id');
 
-						$users->where('users.agency_id', $logged_in_user->agency_id);
+						$users->where('users.agency_id', $user->agency_id);
 						$users->where('role_users.role_id', $agent_role->id);
 					} else if (Sentinel::inRole(Role::ROLE_OWNER)) {
 						$agent_role = Sentinel::findRoleBySlug(Role::ROLE_AGENT);
@@ -79,7 +79,7 @@ class UsersController extends Controller
 						$users->join('agencies', 'agencies.id', '=', 'users.agency_id');
 						$users->join('role_users', 'role_users.user_id', '=', 'users.id');
 
-						$users->where('agencies.owner_id', $logged_in_user->id);
+						$users->where('agencies.owner_id', $user->id);
 						$users->whereNotNull('users.agency_id');
 
 						$users->where(function($users) use ($agent_role, $agency_manager_role) {
@@ -134,8 +134,8 @@ class UsersController extends Controller
 					'status' => 'success',
 					'data' => array(
 						'new_user_info' => $logged_in_user,
-						'redirect' => action('AdminController@getIndex'),
-						'message' => Lang::get('Your account was successfully modified.')
+						'redirect' => (isset($user_id_to_edit)) ? action('UsersController@getEditUser', array($user_id_to_edit)) : action('AdminController@getIndex'),
+						'message' => (isset($user_id_to_edit)) ? Lang::get('User was successfully modified.') : Lang::get('Your account was successfully modified.')
 					)
 				]);
 			}
@@ -152,10 +152,11 @@ class UsersController extends Controller
 		$param = array();
 		$param['url']  = URL::action('UsersController@getData');
 		$param['fields'] = [
+			[ 'id' => 'photo', 'label' => 'Photo', 'ordenable' => false,  'searchable' => false,  'className' => 'dt-body-center'],
 			[ 'id' => 'first_name', 'label' => 'First Name', 'ordenable' => true,  'searchable' => true],
 			[ 'id' => 'last_name', 'label' => 'Last Name', 'ordenable' => true,  'searchable' => true],
 			[ 'id' => 'email', 'label' => 'Email', 'ordenable' => true,  'searchable' => true],
-			[ 'id' => 'role', 'label' => 'Role', 'ordenable' => true,  'searchable' => true],
+			[ 'id' => 'role', 'label' => 'Role', 'ordenable' => true,  'searchable' => false],
 			[ 'id' => 'agency_id', 'label' => 'Agency', 'ordenable' => true,  'searchable' => false],
 			[ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
 		];
@@ -215,6 +216,13 @@ class UsersController extends Controller
 			$datatables = new Datatables;
 
 			return $datatables->eloquent($users)
+				->editColumn('photo', function ($user) {
+					if ($user->photo) {
+						return '<img class="users-module-image img-circle" src="' . asset(((!empty($user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT])) ? $user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT] : $user->photo)) . '">';
+					}
+
+					return '<span class="ion-person users-module-no-picture"></span>';
+				})
 				->editColumn('role', function ($user){
 					foreach (Sentinel::findById($user->id)->roles as $role) {
 						$roles[] = $role->name;
@@ -229,11 +237,11 @@ class UsersController extends Controller
 						return 'N/A';
 					}
 				})
-				->addColumn('actions', function ($user) use ($user_check){
+				->addColumn('actions', function ($user) use ($user_check) {
 					$buttons = '<a href="' . action('UsersController@getEditUser', array($user->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View</a> ';
 					return $buttons;
 				})
-				->rawColumns(['actions'])
+				->rawColumns(['photo', 'actions'])
 				->make(true);
 		}
 	}

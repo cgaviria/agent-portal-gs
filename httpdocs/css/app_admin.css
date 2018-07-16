@@ -8049,3 +8049,15 @@ textarea.no-resize {
 .sidebar-no-picture {
     font-size:40px;
 }
+
+.users-module-image {
+    width:45px;
+}
+
+.users-module-no-picture {
+    font-size:20px;
+}
+
+.dt-body-center {
+    text-align:center;
+}
