@@ -33,8 +33,8 @@
     <!-- Dropzone-->
     <link rel="stylesheet" href="{{asset('css/basic.css?'.Config::get('app.cache_buster'))}}">
     <link rel="stylesheet" href="{{asset('css/dropzone.css?'.Config::get('app.cache_buster'))}}">
-    <!-- Xeditable-->
-    <link rel="stylesheet" href="{{asset('css/bootstrap-editable.css?'.Config::get('app.cache_buster'))}}">
+    <!-- Xeditable
+    <link rel="stylesheet" href="{{asset('css/bootstrap-editable.css?'.Config::get('app.cache_buster'))}}">-->
     <!-- Bootgrid-->
     <link rel="stylesheet" href="{{asset('css/jquery.bootgrid.css?'.Config::get('app.cache_buster'))}}">
     <!-- Datatables-->

@@ -30,6 +30,8 @@ var ViewsAdminMyAccount = Class.extend({
                     }
 
                     jQuery.scrollTo(jQuery(".validation-errors:first"), 800);
+                } else if (data.status == 'error') {
+                    viewsGlobalInstance.showNotification('error', data.data.message);
                 } else {
                     viewsGlobalInstance.showNotification('success', data.data.message);
                     setTimeout(function() {

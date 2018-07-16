@@ -41,7 +41,7 @@
                 <div class="sidebar-content">
                     <div class="sidebar-toolbar text-center">
                         @if ($user_login->photo)
-                            <img class="img-circle thumb64" src="{{asset(((!empty($user_login->image_thumbnails[\App\User::THUMB_SIDEBAR])) ? $user_login->image_thumbnails[\App\User::THUMB_SIDEBAR] : $user_login->photo))}}" alt="Profile">
+                            <img class="img-circle thumb64" src="{{asset(((!empty($user_login->image_thumbnails[\App\User::THUMB_SIDEBAR])) ? $user_login->image_thumbnails[\App\User::THUMB_SIDEBAR] : $user_login->photo))}}">
                         @else
                             <span class="ion-person sidebar-no-picture"></span>
                         @endif

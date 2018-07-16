@@ -29,7 +29,7 @@
                                     <div class="col-sm-10">
                                         @if ($logged_in_user->photo)
                                             <div>
-                                                <img class="my-account-image" src="{{asset(((!empty($logged_in_user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT])) ? $logged_in_user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT] : $logged_in_user->photo))}}">
+                                                <img class="my-account-image img-circle" src="{{asset(((!empty($logged_in_user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT])) ? $logged_in_user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT] : $logged_in_user->photo))}}">
                                             </div>
                                         @endif
                                         <input class="form-control" id="photo" name="photo" type="file"><span class="help-block">Your picture. Used throughout the dashboard.</span>

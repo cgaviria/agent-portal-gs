@@ -8,7 +8,7 @@ var ViewsAdminUsers = Class.extend({
         jQuery(document).data("ViewsAdminUsers", this);
 
         jQuery(document).ready(function(){
-            console.log(jQuery(document).data("ViewsAdminUsers").datatables_params.fields);
+            jQuery("#btn-create-user").click($(document).data("ViewsAdminUsers").createUserClick);
 
             for (i = 0; i < jQuery(document).data("ViewsAdminUsers").datatables_params.fields.length; i++) {
                 var filtered_field_columns = {
@@ -22,10 +22,12 @@ var ViewsAdminUsers = Class.extend({
                     filtered_field_columns.width = jQuery(document).data("ViewsAdminUsers").datatables_params.fields[i].width;
                 }
 
+                if (jQuery(document).data("ViewsAdminUsers").datatables_params.fields[i].className != null) {
+                    filtered_field_columns.className = jQuery(document).data("ViewsAdminUsers").datatables_params.fields[i].className;
+                }
+
                 jQuery(document).data("ViewsAdminUsers").datatables_fields.push(filtered_field_columns);
             }
-
-            console.log(filtered_field_columns);
 
             jQuery(document).data("ViewsAdminUsers").datatable = $("#datatable-responsive").DataTable({
                 processing: true,
@@ -54,5 +56,10 @@ var ViewsAdminUsers = Class.extend({
                 }
             });
         });
+    },
+    createUserClick: function(event) {
+        jQuery('#dynamic_modal_title').html('Create User');
+        jQuery('#dynamic_modal_body').html(jQuery('#modal-create-user').html());
+        jQuery('#dynamic_modal').modal('show');
     }
 });

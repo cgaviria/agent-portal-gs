@@ -35,7 +35,7 @@ class AuthController extends BaseController
     public function doLogin(Request $request)
     {
 
-
+        
         $response = new \stdClass();
         $response->error  = false;
         $response->errmens = [];
@@ -52,13 +52,13 @@ class AuthController extends BaseController
             'email' => $request->input('accountName'),
             'password' => $request->input('accountPassword'),
         ];
-
+        
         if ($request->keep_login == self::KEEP_LOGIN_YES) {
             $res = Sentinel::authenticateAndRemember($credentials);
         } else {
             $res = Sentinel::authenticate($credentials);
         }
-
+        
         if ($res != null) {
             $response->mens = Lang::get('login_ok');
             if ($request->redirect == '')
