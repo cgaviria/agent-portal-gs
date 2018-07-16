@@ -54,6 +54,9 @@
                             <li><a class="ripple" href="{{URL::action('BookingsController@getAdminTable')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Bookings</span></a></li>
                             <li><a class="ripple" href="{{URL::action('GroupsController@getAdminTable')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Groups</span></a></li>
                             <li><a class="ripple disabled" href="#"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Clients</span></a></li>
+                            @if($user_login->roles->first()->slug == "agent")
+                                <li><a class="ripple" href="{{URL::action('ClientsController@getClientTable')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Clients</span></a></li>
+                            @endif
                             @if (!Sentinel::inRole(\App\Role::ROLE_AGENT))
                                 <li><a class="ripple" href="{{URL::action('UsersController@getUsers')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Users</span></a></li>
                             @endif
