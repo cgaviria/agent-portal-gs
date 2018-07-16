@@ -225,7 +225,7 @@ class ClientsController extends Controller
 			if (1 == 1) {
 
 				$validator = Validator::make(Input::all(), self::$rules_import);
-
+				
 				$response = new \stdClass();
 				$response->error = false;
 				$response->errmens = [];
@@ -235,25 +235,29 @@ class ClientsController extends Controller
 					$response->errmens = $validator->messages();
 					return RestResponse::sendResult(200, $response);
 				}
-
-				
-               
 			    $path = $request->file('csv_file')->getRealPath();
 			    $customerArr = $this->csvToArray($path);
-
-			    foreach ($customerArr as  $value) {
-			    	$ci = new Client;
-					$ci->first_name = $value['first_name'];
-					$ci->last_name = $value['last_name'];
-					$ci->email = $value['email'];
-					$ci->ship_id = $request->input('ship');
-					$ci->sail_date = $request->input('sail_date');
-					$ci->duration = $request->input('duration');
-					$ci->itinerary = $value['itinerary'];
-				    $ci->save();
-			    }
-				$response->mens = Lang::get('Clients successfully created.');
-				return RestResponse::sendResult(200, $response);
+			    $file_validation = $this->csv_valid($customerArr);
+			    if($file_validation){
+			    	$response->error  = true;
+					$response->errmens = $file_validation;
+					return RestResponse::sendResult(200, $response);
+				}
+				else{
+				    foreach ($customerArr as  $value) {
+				    	$ci = new Client;
+						$ci->first_name = $value['first_name'];
+						$ci->last_name = $value['last_name'];
+						$ci->email = $value['email'];
+						$ci->ship_id = $request->input('ship');
+						$ci->sail_date = $request->input('sail_date');
+						$ci->duration = $request->input('duration');
+						$ci->itinerary = $value['itinerary'];
+					    $ci->save();
+				    }
+					$response->mens = Lang::get('Clients successfully created.');
+					return RestResponse::sendResult(200, $response);
+			  }
 			}
 		}
 	}
@@ -310,5 +314,42 @@ class ClientsController extends Controller
           $response->mens = Lang::get('Client successfully deleted.');
           return RestResponse::sendResult(200,$response);
       }  
+    }
+    public function csv_valid($data){
+        $clients = Client::select('email')->get()->toArray();
+		foreach($clients as $client){
+			$mail[] = $client['email'];
+		}
+		$error = array();
+	    foreach($data as $each_arr){
+	    	if($each_arr['first_name'] == ""){
+	    		$error['first_name']=array("First name is mandatory");
+	    		break;
+	    	}
+	    	elseif(!ctype_alpha($each_arr['first_name'])){
+	    		$error['first_name']=array("First name should be alphabet only");
+	    		break;
+	    	}
+	    	if($each_arr['last_name']){
+		    	if(!ctype_alpha($each_arr['last_name'])){
+		    		$error['first_name']=array("Last name should be alphabet only");
+		    		break;
+		    	}
+		    }
+	    	if($each_arr['email'] == ""){
+	    		$error['email']=array("Email is mandatory");
+	    		break;
+	    	}
+	    	elseif(in_array($each_arr['email'],$mail)){
+	    		$error['email']=array("Duplicate Email Found");
+	    		break;
+	    	}
+	    }
+
+	    if(!empty($error)){
+		    $error['check']= array("Kindly check and upload the CSV file to import.");
+		   
+		}
+		return  $error;
     }
 }

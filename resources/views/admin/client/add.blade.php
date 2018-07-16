@@ -30,36 +30,47 @@
         <fieldset>
           <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left !important;">Ship</label>
-            <div class="col-sm-4">
+            <div class="col-sm-10">
               <select class="form-control" name="ship">
                 @foreach ($ships as $each_ship)
                      <option value="{{ $each_ship->id }}">{{ $each_ship->name }}</option>
                 @endforeach
               </select>
+              <span class="help-block">Select the ship this client will be embarking on.</span>
             </div>
           </div>
         </fieldset>
         <fieldset>
           <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left !important;">Duration</label>
-            <div class="col-sm-4">
+            <div class="col-sm-10">
               <input class="form-control" name="duration" type="text">
+              <span class="help-block">The duration of the cruise.</span>
             </div>
           </div>
         </fieldset>
         <fieldset>
           <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left !important;">Itinerary</label>
-            <div class="col-sm-4">
+            <div class="col-sm-10">
               <input class="form-control" name="itinerary" type="text">
+              <span class="help-block">The ID of the itinerary</span>
             </div>
           </div>
         </fieldset>
         <fieldset>
           <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left !important;">Sail Date</label>
-            <div class="col-sm-4">
-              <input class="form-control" name="sail_date" type="text">
+            <div class="col-sm-10">
+              <div class="rel-wrapper ui-datepicker ui-datepicker-popup dp-theme-primary" id="example-datepicker-container-9">
+                  <div class="mda-form-control">
+                    <input class="form-control" id="example-datepicker-9" type="text" placeholder="Select a date.." name="sail_date" >
+                    <div class="mda-form-control-line"></div>
+                  </div>
+                </div>
+               
+              
+              <span class="help-block">Select a sail date for the cruise.</span>
             </div>
           </div>
         </fieldset>
@@ -87,4 +98,5 @@
         $("#frequency_import").slideUp();
       }
   }
+
   </script>

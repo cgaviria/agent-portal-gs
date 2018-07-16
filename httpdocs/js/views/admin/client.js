@@ -10,10 +10,10 @@ var ViewsAdminClients = Class.extend({
     order : null,
     init: function(fields, getdataurl, order) {
         // this.cancel_booking_endpoint = cancel_booking_endpoint;
-        
+       
         jQuery(document).data("ViewsAdminClients", this);
         fieldsdata = JSON.parse(fields);
-       
+        console.log(fieldsdata);
         var table;
         var arr = [];
         var len = fieldsdata.length;
@@ -22,7 +22,8 @@ var ViewsAdminClients = Class.extend({
                 data: fieldsdata[i].id,
                 name: fieldsdata[i].id,
                 orderable: true,
-                searchable: true
+                searchable: true,
+                width : fieldsdata[i].width
             });
         }
         jQuery(document).data("ViewsAdminClients").datatable = jQuery("#datatable-responsive").DataTable({

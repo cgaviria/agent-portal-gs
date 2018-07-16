@@ -2,7 +2,6 @@
 @section('content')
     <!-- Page content-->
     <section>
-      
         <div class="content-heading bg-white">
             <div class="row">
                 <div class="col-sm-4">
@@ -21,7 +20,11 @@
                 </div>
             </div>
         </div>
+        
+                   
+                   
         <div class="container-fluid">
+
             <div id="card-body" class="card display-none">
               <div class="card-heading">&nbsp;</div>
               <!-- START table-responsive-->
@@ -45,6 +48,7 @@
             </div>
         </div>
     </section>
+
   
 @endsection
 @section('extra_script')
