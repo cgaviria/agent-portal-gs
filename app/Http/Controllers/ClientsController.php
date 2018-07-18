@@ -34,12 +34,12 @@ class ClientsController extends Controller
     );
 
     public static $rules_edit = array(
-        'ci_id'  => 'required',
-        'user_id'  => 'required',
-        'email'  => 'required|email',
-        'refresh'  => 'required',
-        'imap_host'  => 'required',
-        'imap_port'  => 'required|numeric|max:999999'
+        'first_name'  => 'required|regex:/^[a-zA-Z]+$/u',
+        'last_name'=>'regex:/^[a-zA-Z]+$/u',
+      //  'email'  => 'required|email|unique:clients,email,$this->id,id',
+        'ship'  => 'required',
+        'sail_date'  => 'required',
+        'duration' =>'required|numeric'
     );
     public static $rules_import = array(
         'csv_file'=>'required',
@@ -97,6 +97,7 @@ class ClientsController extends Controller
 				
 				->addColumn('actions', function ($client) use ($user_check){
 					$buttons = '<a href="' . action('ClientsController@getBooking', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View Bookings</a> ';
+					 $buttons .= '<a href="' . action('ClientsController@editClient', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View</a> ';
 					 $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$client->id.');" type="button">Delete</button> ';
 					return $buttons;
 				})
@@ -352,4 +353,55 @@ class ClientsController extends Controller
 		}
 		return  $error;
     }
+     /**
+	 * Delete functionality
+	 *
+	 * @return Response
+	 */
+	 public function editClient($client_id){
+	 	    $ships = Ship::get();
+	 	    $clients = Client::where('id',$client_id)->get();
+	 		return view('admin.client.edit', ['ships'=>$ships,'clients'=>$clients,'edit_user' => true]);
+	 }
+	 /**
+	 * Save the edit form of client
+	 *
+	 * @return Response
+	 */
+     public function saveEdit(Request $request)
+	{
+		$user_check = Sentinel::check();
+		$validator = Validator::make(Input::all(), self::$rules_edit);
+		if ($validator->fails()) {
+				return response()->json([
+					'status' => 'alert',
+					'data' => $validator->errors()
+				]);
+			} 
+		else{
+			if ($user_check) {
+				if ($request->input('user_id_to_edit')!='') {
+					$user_id_to_edit = $request->input('user_id_to_edit');
+					$clients = Client::find($user_id_to_edit);
+					$clients->first_name = $request->input('first_name');
+					$clients->last_name = $request->input('last_name');
+					$clients->email = $request->input('email');
+					$clients->ship_id = $request->input('ship');
+					$clients->sail_date = $request->input('sail_date');
+					$clients->duration = $request->input('duration');
+					$clients->itinerary = $request->input('itinerary');
+					$clients->save();
+					
+			}
+		}
+		return response()->json([
+						'status' => 'success',
+						'data' => array(
+							'new_user_info' => $clients,
+							'redirect' =>  action('ClientsController@getClientTable') ,
+							'message' => Lang::get('Client was successfully modified.') 
+						)
+					]);
+		}
+	}
 }

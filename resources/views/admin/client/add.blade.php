@@ -23,7 +23,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label" style="text-align:left !important;">Email</label>
             <div class="col-sm-10">
-              <input class="form-control" name="email" type="text"><span class="help-block">Your email account.</span>
+              <input class="form-control" name="email" type="text"><span class="help-block">Client's email account.</span>
             </div>
           </div>
         </fieldset>

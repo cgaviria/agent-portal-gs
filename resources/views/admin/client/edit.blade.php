@@ -1,88 +1,107 @@
-
-  <form class="form-horizontal"  id="form_edit_importer" method="post" action="{{URL::action('ContactImporterController@edit')}}" onsubmit="viewsGlobalInstance.sendForm(this,viewsAdminImporterInstance.responseForm);return  false;">
-     {{ csrf_field() }}
-     <input type="hidden" name="user_id" value="{{$user_login->id}}">
-     <input type="hidden" name="ci_id" value="{{$ci->id}}">
-  <div class="modal-body">
-        <fieldset>
-          <div class="form-group">
-            <label class="col-sm-2 control-label" style="text-align:left !important;">IMAP Host</label>
-            <div class="col-sm-10">
-              <input class="form-control" name="imap_host" value="{{$ci->imap_host}}" type="text"><span class="help-block">The IMAP host of your email account.</span>
+@extends('layouts.admin')
+@section('content')
+    
+    <section>
+        <div class="content-heading bg-white">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h4 class="m0 text-thin">Edit {{$clients[0]->first_name}}</h4>
+                </div>
             </div>
-          </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-group">
-            <label class="col-sm-2 control-label" style="text-align:left !important;">IMAP Port</label>
-            <div class="col-sm-10">
-              <input class="form-control" name="imap_port" value="{{$ci->imap_port}}" type="text"><span class="help-block">The IMAP port of your email account.</span>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Left column-->
+                <div class="col-sm-12">
+                    <form class="card form-validate" id="form-edit-client" name="form-edit-client" method="post" action="{{action('ClientsController@saveEdit')}}" enctype="multipart/form-data">
+                        {!! csrf_field() !!}
+                       <div class="card-body">
+                            <input type="hidden" id="user_id_to_edit" name="user_id_to_edit" value="{{$clients[0]->id}}"/>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">First Name</label>
+                                    <div class="col-sm-10">
+                                        <input id="first_name" name="first_name" class="form-control" type="text" value="{{$clients[0]->first_name}}"><span class="help-block">First Name of the client.</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Last Name</label>
+                                    <div class="col-sm-10">
+                                        <input id="last_name" name="last_name" class="form-control" type="text" value="{{$clients[0]->last_name}}"><span class="help-block">Last Name of the client.</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input id="email" name="email" class="form-control" type="text" value="{{$clients[0]->email}}"><span class="help-block">Client's email account.</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Ship</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="ship" id="ship" >
+                                            @foreach ($ships as $each_ship)
+                                                 <option value="{{ $each_ship->id }}">{{ $each_ship->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="help-block">Select the ship this client will be embarking on.</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Duration</label>
+                                    <div class="col-sm-10">
+                                       <input class="form-control" name="duration" id="duration" type="text" value="{{$clients[0]->duration}}"><span class="help-block">The duration of the cruise.</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Itinerary</label>
+                                    <div class="col-sm-10">
+                                       <input class="form-control" name="itinerary" id="itinerary" type="text" value="{{$clients[0]->itinerary}}"><span class="help-block">The ID of the itinerary</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label" style="text-align:left !important;">Sail Date</label>
+                                <div class="col-sm-10">
+                                  <div class="rel-wrapper ui-datepicker ui-datepicker-popup dp-theme-primary" id="sail_date">
+                                      <div class="mda-form-control">
+                                        <input class="form-control" id="example-datepicker-9" type="text" placeholder="Select a date.." name="sail_date"  value="{{$clients[0]->sail_date}}">
+                                        <div class="mda-form-control-line"></div>
+                                      </div>
+                                    </div>
+                                   
+                                  
+                                  <span class="help-block">Select a sail date for the cruise.</span>
+                                </div>
+                              </div>
+                            </fieldset>
+                            <div class="text-right">
+                                <button class="btn btn-labeled btn-primary ripple" type="submit" style="padding: 6px 16px;">Submit</button>
+                            </div>
+                          </div>
+                            </form>
+                        </div>
+                    
+                </div>
             </div>
-          </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-group">
-            <label class="col-sm-2 control-label" style="text-align:left !important;">Email</label>
-            <div class="col-sm-10">
-              <input class="form-control" name="email" value="{{$ci->email}}" type="text"><span class="help-block">Your email account.</span>
-            </div>
-          </div>
-        </fieldset>
-        <fieldset>
-          <div class="form-group">
-            <label class="col-sm-2 control-label" style="text-align:left !important;">{{$ci->save_password == 'y' ? 'Change Password' : 'Password'}}</label>
-            <div class="col-sm-4">
-              <input class="form-control" name="password" value="{{$ci->save_password == 'y' ? $ci->password : ''}}" type="password">
-            </div>
-            <label class="col-sm-2 control-label" style="text-align:left !important;">Confirm Password</label>
-            <div class="col-sm-4">
-              <input class="form-control" name="password_confirmation" value="{{$ci->save_password == 'y' ? $ci->password : ''}}" type="password">
-            </div>
-            <div class="col-sm-2">&nbsp;</div>
-            <div class="col-sm-10"><span class="help-block">Unless otherwise indicated by the Store Password setting below, we will not store your password and only use it once to fetch your contacts.</span>
-              <div class="checkbox c-checkbox">
-                <label>
-                  <input type="checkbox" {{$ci->save_password == 'y' ? 'checked' : ''}} name="save_password" onchange="hideFrequency()" id="store_password" value="y"><span class="ion-checkmark-round"></span> Store Password
-                </label>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-        <fieldset id="frequency_import">
-          <div class="form-group">
-            <label class="col-sm-2 control-label" style="text-align:left !important;">Frequency of Import</label>
-            <div class="col-sm-10">
-              <select class="form-control" name="refresh">
-                <option {{$ci->refresh == 'daily' ? 'selected' : ''}}  value="daily">Daily</option>
-                <option {{$ci->refresh == 'weekly' ? 'selected' : ''}} value="weekly" selected>Weekly</option>
-                <option {{$ci->refresh == 'monthly' ? 'selected' : ''}} value="monthly">Monthly</option>
-              </select>
-              <span class="help-block">How often you want us to access your inbox to retrieve contacts.</span>
-            </div>
-          </div>
-        </fieldset>
-  </div>
-  <div class="modal-footer">
-    <div class="form-group pull-right">
-      <div class="col-sm-4">
-        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-      </div>
-      <div class="col-sm-8">
-        <input class="btn btn-raised btn-primary ripple" type="submit" value="Save">
-      </div>
-    </div>  
-  </div>
-  </form>
-
-  <script type="text/javascript">
-      hideFrequency();
-  function hideFrequency(){
-
-      var ifischeking = $('#store_password:checkbox:checked').length > 0;
-      if(ifischeking){
-        $("#frequency_import").slideDown();
-      }else{
-        $("#frequency_import").slideUp();
-      }
-  }
-  </script>
+        
+    </section>
+@endsection
+@section('extra_script')
+<script src="{{asset('js/views/admin/client.js?'.Config::get('app.cache_buster'))}}"></script>
+<script>
+  var ViewsAdminClientsInstance = new ViewsAdminClients('','','','{{action('ClientsController@saveEdit')}}');
+</script>
+   
+@endsection

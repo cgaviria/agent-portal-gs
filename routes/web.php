@@ -37,6 +37,8 @@ Route::get('/dashboard/clients', ['as' => 'clients', 'uses' => 'ClientsControlle
 Route::get('/data/clients', 'ClientsController@getData')->middleware('authSentinel','checkRole:Agent');
 
 Route::get('/dashboard/clients/view/{id}', 'ClientsController@getBooking')->middleware('authSentinel','checkRole:Agent');
+Route::get('/dashboard/clients/edit/{id}', 'ClientsController@editClient')->middleware('authSentinel','checkRole:Agent');
+Route::post('/dashboard/clients/saveEdit/', 'ClientsController@saveEdit')->middleware('authSentinel');
 Route::get('/forms/client/add', 'ClientsController@getAddForm')->middleware('authSentinel','checkRole:Agent');
 Route::get('/forms/client/import', 'ClientsController@getImportCLient')->middleware('authSentinel','checkRole:Agent');
 Route::post('/data/clients/save', 'ClientsController@save')->middleware('authSentinel','checkRole:Agent');
@@ -81,3 +83,4 @@ Route::post('/dashboard/users/my_account', 'UsersController@postMyAccount')->mid
 
 Route::get('/dashboard/users', 'UsersController@getUsers')->middleware('authSentinel');
 Route::get('/dashboard/users/edit/{id}', 'UsersController@getEditUser')->middleware('authSentinel');
+Route::post('/data/users/save', 'UsersController@save')->middleware('authSentinel');

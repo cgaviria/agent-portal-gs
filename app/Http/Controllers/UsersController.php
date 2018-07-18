@@ -25,7 +25,15 @@ use Yajra\DataTables\DataTables;
 
 class UsersController extends Controller
 {
-    
+    public static $rules_add = array(
+        'first_name'  => 'required|regex:/^[a-zA-Z]+$/u',
+        'last_name'=>'regex:/^[a-zA-Z]+$/u',
+        'email'  => 'required|email|unique:users,email',
+        'password'  => 'required|confirmed|min:6',
+        'password_confirmation' =>'required|min:6',
+        'role'  => 'required',
+        'agency_id'  => 'required',
+    );
     /**
 	 * Gets the My Account page to make user edits.
 	 *
@@ -224,6 +232,7 @@ class UsersController extends Controller
 					return '<span class="ion-person users-module-no-picture"></span>';
 				})
 				->editColumn('role', function ($user){
+					$roles = array();
 					foreach (Sentinel::findById($user->id)->roles as $role) {
 						$roles[] = $role->name;
 					}
@@ -257,5 +266,49 @@ class UsersController extends Controller
 
 		return view('admin.my_account', ['logged_in_user' => $user_to_edit,
 											'edit_user' => true]);
+	}
+	 /**
+	 * Save the user
+	 *
+	 * @return Response
+	 */
+     public function save(Request $request)
+	{
+		if (!is_null(Sentinel::check())) {
+			//if($userL->inRole('superadmin')){
+			if (1 == 1) {
+
+				$validator = Validator::make(Input::all(), self::$rules_add);
+
+				$response = new \stdClass();
+				$response->error = false;
+				$response->errmens = [];
+
+				if ($validator->fails()) {
+					$response->error  = true;
+					$response->errmens = $validator->messages();
+					return RestResponse::sendResult(200, $response);
+				}
+
+				$user = new User;
+
+				$user->first_name = $request->input('first_name');
+				$user->last_name = $request->input('last_name');
+				$user->email = $request->input('email');
+				$user->password = $request->input('password');
+				$user->agency_id = $request->input('agency_id');
+				$user->save();
+
+				$role = Role::where('slug',$request->input('role'))->get();
+				$role_id = $role[0]->id;
+				$role = Role::find($role_id);
+				$user->roles()->attach($role);
+				
+
+				$response->mens = Lang::get('User successfully created.');
+
+				return RestResponse::sendResult(200, $response);
+			}
+		}
 	}
 }

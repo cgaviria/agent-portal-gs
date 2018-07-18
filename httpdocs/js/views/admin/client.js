@@ -8,10 +8,20 @@ var ViewsAdminClients = Class.extend({
     fields : null,
     getdataurl : null,
     order : null,
-    init: function(fields, getdataurl, order) {
+    edit: null,
+    init: function(fields, getdataurl, order, edit) {
+        this.edit = edit;
         // this.cancel_booking_endpoint = cancel_booking_endpoint;
-       
+        jQuery(document).ready(function(){
+            $("#form-edit-client").submit($(document).data("ViewsAdminClients").onClientSubmit);
+        });
         jQuery(document).data("ViewsAdminClients", this);
+        $('#example-datepicker-9')
+          .datepicker({
+              container:'#sail_date',
+              startDate: '+0d',
+              format: 'yyyy-mm-dd',
+          });
         fieldsdata = JSON.parse(fields);
         console.log(fieldsdata);
         var table;
@@ -212,5 +222,44 @@ var ViewsAdminClients = Class.extend({
       $('input[type=submit]').attr('disabled', true);  
       return false;
   },
+   onClientSubmit: function(event) {
+    
+       jQuery.ajax({
+            url: jQuery(document).data("ViewsAdminClients").edit,
+            type: 'POST',
+            dataType: "JSON",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function (data, status) {
+               
+                $(".validation-errors").remove();
+                $(".form-validate .error").removeClass("error");
+
+                if (data.status == 'alert') {
+                    for (var message_group in data.data) {
+                        for (i = 0; i < data.data[message_group].length; i++) {
+                            $("#" + message_group).addClass("error");
+                            $("#" + message_group).after( '<label class="error validation-errors" for="' + message_group + '">' + data.data[message_group][i] + '</label>');
+                        }
+                    }
+
+                    jQuery.scrollTo(jQuery(".validation-errors:first"), 800);
+                } else if (data.status == 'error') {
+                    viewsGlobalInstance.showNotification('error', data.data.message);
+                } else {
+                    viewsGlobalInstance.showNotification('success', data.data.message);
+                    setTimeout(function() {
+                        window.location = data.data.redirect;
+                    }, 3000)
+                }
+            },
+            error: function (xhr, desc, err) {
+                console.log(xhr);
+            }
+        });
+
+        return false;
+    }
  
 });

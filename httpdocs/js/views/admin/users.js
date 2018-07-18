@@ -61,5 +61,26 @@ var ViewsAdminUsers = Class.extend({
         jQuery('#dynamic_modal_title').html('Create User');
         jQuery('#dynamic_modal_body').html(jQuery('#modal-create-user').html());
         jQuery('#dynamic_modal').modal('show');
+    },
+    responseForm: function(results) {
+   
+    try {
+      var obj = jQuery.parseJSON(results);
+
+      if(obj.data.error) {
+        for (var e in obj.data.errmens) {
+          for (var i = 0; i < obj.data.errmens[e].length; i++ ) {
+              viewsGlobalInstance.showError(obj.data.errmens[e][i]);
+          }
+        }  
+      } else {
+          viewsGlobalInstance.showSuccess(obj.data.mens);
+          table = $('#datatable-responsive').DataTable().ajax.reload();
+          $('#dynamic_modal').modal('hide');
+      }
+      $('input[type=submit]').attr('disabled', false);  
+    } catch(error) {
+
     }
+  },
 });
