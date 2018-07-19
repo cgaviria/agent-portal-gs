@@ -81,6 +81,6 @@ Route::get('/dashboard/bookings/export/csv', 'BookingsController@exportCSV')->mi
 Route::get('/dashboard/users/my_account', 'UsersController@getMyAccount')->middleware('authSentinel');
 Route::post('/dashboard/users/my_account', 'UsersController@postMyAccount')->middleware('authSentinel');
 
-Route::get('/dashboard/users', 'UsersController@getUsers')->middleware('authSentinel');
-Route::get('/dashboard/users/edit/{id}', 'UsersController@getEditUser')->middleware('authSentinel');
+Route::get('/dashboard/users', 'UsersController@getUsers')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
+Route::get('/dashboard/users/edit/{id}', 'UsersController@getEditUser')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
 Route::post('/data/users/save', 'UsersController@save')->middleware('authSentinel');

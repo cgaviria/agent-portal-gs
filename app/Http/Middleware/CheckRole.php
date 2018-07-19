@@ -16,11 +16,11 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$role)
     {
         $user_login = Sentinel::check();
-
-        if($user_login->roles->first()->name == $role){
+        
+        if(in_array($user_login->roles->first()->name, $role)){
             
            View::share('user_login', $user_login);
          }

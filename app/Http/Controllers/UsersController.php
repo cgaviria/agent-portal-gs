@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\CancelBooking;
 use App\Role;
 use App\User;
+use App\Agency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -18,6 +19,7 @@ use Illuminate\Validation\Rule;
 use App\Library\RestResponse;
 
 use Sentinel;
+use Activation;
 use Lang;
 use URL;
 use App\Booking;
@@ -32,7 +34,8 @@ class UsersController extends Controller
         'password'  => 'required|confirmed|min:6',
         'password_confirmation' =>'required|min:6',
         'role'  => 'required',
-        'agency_id'  => 'required',
+        'agency_id'  => 'required_if:role,agent',
+        'agency_name'  => 'required_if:role,agency',
     );
     /**
 	 * Gets the My Account page to make user edits.
@@ -158,6 +161,28 @@ class UsersController extends Controller
 	public function getUsers(Request $request)
 	{
 		$param = array();
+		$logged_in_user = Sentinel::getUser();
+		$current_user_role = $logged_in_user->roles->first()->slug;
+		$role = Role::when($current_user_role == 'admin', function ($q) use($current_user_role) {
+						return $q;
+			    			//return $q->where('slug', '<>', 'admin')->where('slug','<>',$current_user_role);
+						  })
+					  ->when($current_user_role == 'owner', function ($q) use($current_user_role) {
+			    			return $q->where('slug', '<>', 'admin')->where('slug','<>',$current_user_role);
+						  })
+					  ->when($current_user_role == 'agency', function ($q) use($current_user_role) {
+			    			return $q->where('slug', '<>', 'admin')->where('slug', '<>', 'owner')->where('slug','<>',$current_user_role);
+						  })->get();
+		$agencies = Agency::when($current_user_role == 'agency', function ($q) use($logged_in_user) {
+			    			return $q->where('owner_id', $logged_in_user->id);
+						  		})
+							->when($current_user_role == 'owner', function ($q) use($logged_in_user) {
+								return $q->where('owner_id', $logged_in_user->id);
+							 })
+							->get();
+		$param['roles']  = $role;
+		$param['current_user_role'] = $current_user_role;
+		$param['agencies']  = $agencies;
 		$param['url']  = URL::action('UsersController@getData');
 		$param['fields'] = [
 			[ 'id' => 'photo', 'label' => 'Photo', 'ordenable' => false,  'searchable' => false,  'className' => 'dt-body-center'],
@@ -296,14 +321,32 @@ class UsersController extends Controller
 				$user->last_name = $request->input('last_name');
 				$user->email = $request->input('email');
 				$user->password = $request->input('password');
-				$user->agency_id = $request->input('agency_id');
+				$user->agency_id = $request->input('agency_id')?$request->input('agency_id'):NULL;
 				$user->save();
+				$insertedId = $user->id;
 
-				$role = Role::where('slug',$request->input('role'))->get();
+				$role_slug = $request->input('role');
+				$role = Role::where('slug',$role_slug)->get();
 				$role_id = $role[0]->id;
 				$role = Role::find($role_id);
 				$user->roles()->attach($role);
 				
+				
+				$activation = Activation::create($user);
+				$getactivationdata = Activation::exists($user);
+				Activation::complete($user, $getactivationdata->code);
+
+				$logged_in_user = Sentinel::getUser();
+				if($role_slug == "agency"){
+					$agency = new Agency;
+					$agency->name = $request->input('agency_name');
+					$agency->owner_id = $logged_in_user->id;
+					$agency->save();
+					$agencyId = $agency->id;
+					$user = User::find($insertedId);
+					$user->agency_id = $agencyId;
+					$user->save();
+				}
 
 				$response->mens = Lang::get('User successfully created.');
 

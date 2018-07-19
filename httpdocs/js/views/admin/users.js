@@ -55,6 +55,7 @@ var ViewsAdminUsers = Class.extend({
                     $('#card-body').fadeIn(1000);
                 }
             });
+            
         });
     },
     createUserClick: function(event) {
