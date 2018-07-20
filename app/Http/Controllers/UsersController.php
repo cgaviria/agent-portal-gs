@@ -35,7 +35,7 @@ class UsersController extends Controller
         'password_confirmation' =>'required|min:6',
         'role'  => 'required',
         'agency_id'  => 'required_if:role,agent',
-        'agency_name'  => 'required_if:role,agency',
+        
     );
     /**
 	 * Gets the My Account page to make user edits.
@@ -174,12 +174,15 @@ class UsersController extends Controller
 			    			return $q->where('slug', '<>', 'admin')->where('slug', '<>', 'owner')->where('slug','<>',$current_user_role);
 						  })->get();
 		$agencies = Agency::when($current_user_role == 'agency', function ($q) use($logged_in_user) {
-			    			return $q->where('owner_id', $logged_in_user->id);
+								$q->leftjoin('users', 'users.agency_id', '=', 'agencies.id');
+								$q->select('agency_id as id','name');
+			    			return $q->where('users.id', $logged_in_user->id);
 						  		})
 							->when($current_user_role == 'owner', function ($q) use($logged_in_user) {
 								return $q->where('owner_id', $logged_in_user->id);
 							 })
 							->get();
+						
 		$param['roles']  = $role;
 		$param['current_user_role'] = $current_user_role;
 		$param['agencies']  = $agencies;
@@ -231,7 +234,7 @@ class UsersController extends Controller
 
 					$users->select('users.*');
 
-					$users->join('agencies', 'agencies.id', '=', 'users.agency_id');
+					$users->leftjoin('agencies', 'agencies.id', '=', 'users.agency_id');
 					$users->join('role_users', 'role_users.user_id', '=', 'users.id');
 
 					$users->where('agencies.owner_id', $logged_in_user->id);
@@ -245,9 +248,9 @@ class UsersController extends Controller
 					$users->limit(0);
 				}
 			}
-
+			
 			$datatables = new Datatables;
-
+			
 			return $datatables->eloquent($users)
 				->editColumn('photo', function ($user) {
 					if ($user->photo) {
@@ -277,6 +280,7 @@ class UsersController extends Controller
 				})
 				->rawColumns(['photo', 'actions'])
 				->make(true);
+		
 		}
 	}
 
@@ -337,16 +341,6 @@ class UsersController extends Controller
 				Activation::complete($user, $getactivationdata->code);
 
 				$logged_in_user = Sentinel::getUser();
-				if($role_slug == "agency"){
-					$agency = new Agency;
-					$agency->name = $request->input('agency_name');
-					$agency->owner_id = $logged_in_user->id;
-					$agency->save();
-					$agencyId = $agency->id;
-					$user = User::find($insertedId);
-					$user->agency_id = $agencyId;
-					$user->save();
-				}
 
 				$response->mens = Lang::get('User successfully created.');
 

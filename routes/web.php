@@ -84,3 +84,9 @@ Route::post('/dashboard/users/my_account', 'UsersController@postMyAccount')->mid
 Route::get('/dashboard/users', 'UsersController@getUsers')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
 Route::get('/dashboard/users/edit/{id}', 'UsersController@getEditUser')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
 Route::post('/data/users/save', 'UsersController@save')->middleware('authSentinel');
+
+Route::get('/dashboard/agency', 'AgencyController@getAgency')->middleware('authSentinel','checkRole:Owner');
+Route::get('/data/agencies', 'AgencyController@getData')->middleware('authSentinel','checkRole:Owner');
+Route::post('/data/agencies/save', 'AgencyController@save')->middleware('authSentinel','checkRole:Owner');
+Route::get('/dashboard/agencies/edit/{id}', 'AgencyController@getEditAgent')->middleware('authSentinel','checkRole:Owner');
+Route::post('/dashboard/agency/saveEdit', 'AgencyController@saveEdit')->middleware('authSentinel','checkRole:Owner');

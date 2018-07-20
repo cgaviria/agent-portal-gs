@@ -80,14 +80,27 @@ class BookingsController extends Controller
 			$bookings = Booking::query();
 
 			$logged_in_user = Sentinel::getUser();
+			$current_user_role = $logged_in_user->roles->first()->slug;
 
 			if ($logged_in_user->agency_id) {
-				$bookings->where('agency_id', $logged_in_user->agency_id);
+				$bookings->where('bookings.agency_id', $logged_in_user->agency_id);
 			}
 
 			$bookings->select('bookings.*');
 
 			$bookings->leftJoin('cruise_ships', 'cruise_ships.id', '=', 'bookings.ship_id');
+			if($current_user_role == "owner"){
+				$bookings->leftJoin('agencies', 'agencies.id', '=', 'bookings.agency_id');
+            	$bookings->where('agencies.owner_id', $logged_in_user->id);
+			}
+			if($current_user_role == "agency"){
+				$bookings->leftJoin('users', 'users.agency_id', '=', 'bookings.agency_id');
+            	$bookings->where('users.id', $logged_in_user->id);
+			}
+			if($current_user_role == "agent"){
+				$bookings->leftJoin('users', 'users.agency_id', '=', 'bookings.agency_id');
+            	$bookings->where('users.id', $logged_in_user->id) ->orWhere('bookings.agency_email_address', '=', $logged_in_user->email);
+			}
             if($request->client_id){
             	$bookings->leftJoin('clients', 'email', '=', 'bookings.customer_email_address');
             	$bookings->where('clients.id', $request->client_id);

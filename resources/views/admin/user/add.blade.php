@@ -56,14 +56,7 @@
                         </div>
                     </div>
                 </fieldset>
-                 <fieldset class="agencyname" style="display:none">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" style="text-align:left !important;">Agency Name</label>
-                        <div class="col-sm-10">
-                           <input class="form-control" id="agency_name" name="agency_name" type="text"><span class="help-block">The agency name of the agency manager.</span>
-                        </div>
-                    </div>
-                </fieldset>
+                
                 <fieldset class="agentselect" style="display:none">
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align:left !important;">Agency</label>
@@ -92,16 +85,10 @@
       </div>
       <script>
         function show_agency(a){
-          if(a.value == "agency"){
-            $('.agentselect').css('display','none');
-            $('.agencyname').css('display','block');
-          }
-          else if(a.value == "agent"){
-            $('.agencyname').css('display','none');
+          if(a.value == "agency" || a.value == "agent"){
             $('.agentselect').css('display','block');
           }
           else{
-            $('.agencyname').css('display','none');
             $('.agentselect').css('display','none');
           }
         }

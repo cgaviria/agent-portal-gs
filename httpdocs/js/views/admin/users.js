@@ -61,6 +61,7 @@ var ViewsAdminUsers = Class.extend({
     createUserClick: function(event) {
         jQuery('#dynamic_modal_title').html('Create User');
         jQuery('#dynamic_modal_body').html(jQuery('#modal-create-user').html());
+        jQuery('.agentselect').css('display','none');
         jQuery('#dynamic_modal').modal('show');
     },
     responseForm: function(results) {

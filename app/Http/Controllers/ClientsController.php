@@ -395,13 +395,13 @@ class ClientsController extends Controller
 			}
 		}
 		return response()->json([
-						'status' => 'success',
-						'data' => array(
-							'new_user_info' => $clients,
-							'redirect' =>  action('ClientsController@getClientTable') ,
-							'message' => Lang::get('Client was successfully modified.') 
-						)
-					]);
+				'status' => 'success',
+				'data' => array(
+					'new_user_info' => $clients,
+					'redirect' =>  action('ClientsController@getClientTable') ,
+					'message' => Lang::get('Client was successfully modified.') 
+				)
+			]);
 		}
 	}
 }
