@@ -318,39 +318,29 @@ class ClientsController extends Controller
     }
     public function csv_valid($data){
         $clients = Client::select('email')->get()->toArray();
-		foreach($clients as $client){
-			$mail[] = $client['email'];
-		}
-		$error = array();
-	    foreach($data as $each_arr){
-	    	if($each_arr['first_name'] == ""){
-	    		$error['first_name']=array("First name is mandatory");
-	    		break;
-	    	}
-	    	elseif(!ctype_alpha($each_arr['first_name'])){
-	    		$error['first_name']=array("First name should be alphabet only");
-	    		break;
-	    	}
-	    	if($each_arr['last_name']){
-		    	if(!ctype_alpha($each_arr['last_name'])){
-		    		$error['first_name']=array("Last name should be alphabet only");
-		    		break;
-		    	}
+		    foreach($clients as $client){
+			    $mail[] = $client['email'];
 		    }
-	    	if($each_arr['email'] == ""){
-	    		$error['email']=array("Email is mandatory");
-	    		break;
-	    	}
-	    	elseif(in_array($each_arr['email'],$mail)){
-	    		$error['email']=array("Duplicate Email Found");
-	    		break;
-	    	}
-	    }
+		    $error = array();
+		    foreach($data as $each_arr){
+			    if($each_arr['first_name'] == ""){
+				    $error['first_name']=array("First name field is required.");
+				    break;
+			    }
+			    if($each_arr['email'] == ""){
+				    $error['email']=array("Email is required.");
+				    break;
+			    } elseif(in_array($each_arr['email'], $mail)){
+				    $error['email']=array("There was a duplicate email that was found.");
+				    break;
+			    }
+		    }
 
-	    if(!empty($error)){
-		    $error['check']= array("Kindly check and upload the CSV file to import.");
+		    if (!empty($error)) {
+			    $error['check']= array("Kindly check and upload the CSV file to import.");
 		   
 		}
+
 		return  $error;
     }
      /**

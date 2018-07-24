@@ -1481,7 +1481,7 @@
         });
 
         // Datepicker
-                        
+
         $('#example-datepicker-1').datepicker();
         $('#example-datepicker-2').datepicker();
         $('#example-datepicker-3').datepicker();

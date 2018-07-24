@@ -14,7 +14,7 @@
                        <button  onclick="importClient();" class="btn ripple btn-primary" type="button">Import Clients by CSV</button>
                     </div>
                     <div class="btn-group">
-                        <button onclick="showAddForm();" class="btn btn-labeled btn-primary ripple" type="button"><span class="btn-label"><i class="ion-plus-round"></i></span>Add New Client</button>
+                        <button  onclick="showAddForm();" class="btn ripple btn-primary" type="button">Add New Client</button>
                     </div>
                     
                 </div>

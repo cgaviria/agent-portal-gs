@@ -21,6 +21,7 @@ var ViewsAdminClients = Class.extend({
               container:'#sail_date',
               startDate: '+0d',
               format: 'yyyy-mm-dd',
+              autoclose: true
           });
         fieldsdata = JSON.parse(fields);
         console.log(fieldsdata);
@@ -223,7 +224,7 @@ var ViewsAdminClients = Class.extend({
       return false;
   },
    onClientSubmit: function(event) {
-    
+
        jQuery.ajax({
             url: jQuery(document).data("ViewsAdminClients").edit,
             type: 'POST',
@@ -232,7 +233,7 @@ var ViewsAdminClients = Class.extend({
             processData: false,
             contentType: false,
             success: function (data, status) {
-               
+
                 $(".validation-errors").remove();
                 $(".form-validate .error").removeClass("error");
 
@@ -261,5 +262,5 @@ var ViewsAdminClients = Class.extend({
 
         return false;
     }
- 
+
 });

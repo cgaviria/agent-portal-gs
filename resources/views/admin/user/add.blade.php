@@ -1,5 +1,5 @@
 <div id="modal-create-user" class="display-none">
-   <form class="form-horizontal"  id="form_add_user" method="post" action="{{URL::action('UsersController@save')}}" onsubmit="viewsGlobalInstance.sendForm(this,ViewsAdminUsersInstance.responseForm);return  false;">
+   <form class="form-horizontal form_add_user" id="form_add_user" method="post" action="{{URL::action('UsersController@save')}}">
             {{ csrf_field() }}
 
             <div class="modal-body">
@@ -7,7 +7,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align:left !important;">First Name</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="first-name" name="first_name" type="text"><span class="help-block">The first name of the new user.</span>
+                            <input class="form-control first_name" id="first_name" name="first_name" type="text"><span class="help-block">The first name of the new user.</span>
                         </div>
                     </div>
                 </fieldset>
@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align:left !important;">Last Name</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="last-name" name="last_name" type="text"><span class="help-block">The last name of the new user.</span>
+                            <input class="form-control last_name" id="last_name" name="last_name" type="text"><span class="help-block">The last name of the new user.</span>
                         </div>
                     </div>
                 </fieldset>
@@ -23,7 +23,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align:left !important;">Email</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="email" name="email" type="text"><span class="help-block">The email of the new user.</span>
+                            <input class="form-control email" id="email" name="email" type="text"><span class="help-block">The email of the new user.</span>
                         </div>
                     </div>
                 </fieldset>
@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align:left !important;">Password</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="password" name="password" type="password"><span class="help-block">The password of the new user.</span>
+                            <input class="form-control password" id="password" name="password" type="password"><span class="help-block">The password of the new user.</span>
                         </div>
                     </div>
                 </fieldset>
@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align:left !important;">Confirm Password</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="password_confirmation" name="password_confirmation" type="password"><span class="help-block">Confirm the password entered above.</span>
+                            <input class="form-control password_confirmation" id="password_confirmation" name="password_confirmation" type="password"><span class="help-block">Confirm the password entered above.</span>
                         </div>
                     </div>
                 </fieldset>
@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align:left !important;">Role</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="role" id="role" onchange = "show_agency(this)">
+                            <select class="form-control role" name="role" id="role" onchange = "show_agency(this)">
                               <option value="">Select</option>
                               @foreach($datatables_params['roles'] as $role)
                                 <option value="{{$role->slug}}">{{$role->name}}</option>
@@ -61,7 +61,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" style="text-align:left !important;">Agency</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="agency_id">
+                            <select class="form-control agency_id" name="agency_id">
                                   <option value="">Select agency</option>
                                 @foreach($datatables_params['agencies'] as $agency)
                                   <option value="{{$agency->id}}">{{$agency->name}}</option>

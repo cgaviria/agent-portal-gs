@@ -2,8 +2,10 @@ var ViewsAdminUsers = Class.extend({
     datatable: null,
     datatables_params: null,
     datatables_fields: [],
-    init: function(datatables_params) {
+    add_user_endpoint: null,
+    init: function(datatables_params, add_user_endpoint) {
         this.datatables_params = datatables_params;
+        this.add_user_endpoint = add_user_endpoint;
 
         jQuery(document).data("ViewsAdminUsers", this);
 
@@ -55,7 +57,6 @@ var ViewsAdminUsers = Class.extend({
                     $('#card-body').fadeIn(1000);
                 }
             });
-            
         });
     },
     createUserClick: function(event) {
@@ -63,26 +64,42 @@ var ViewsAdminUsers = Class.extend({
         jQuery('#dynamic_modal_body').html(jQuery('#modal-create-user').html());
         jQuery('.agentselect').css('display','none');
         jQuery('#dynamic_modal').modal('show');
+
+        jQuery(".form_add_user").submit($(document).data("ViewsAdminUsers").addUserSubmit);
     },
-    responseForm: function(results) {
-   
-    try {
-      var obj = jQuery.parseJSON(results);
+    addUserSubmit: function(event) {
+        jQuery.ajax({
+            url: $(this).attr("action"),
+            type: $(this).attr("method"),
+            dataType: "JSON",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function (data, status) {
+                $(".validation-errors").remove();
+                $(".form-validate .error").removeClass("error");
 
-      if(obj.data.error) {
-        for (var e in obj.data.errmens) {
-          for (var i = 0; i < obj.data.errmens[e].length; i++ ) {
-              viewsGlobalInstance.showError(obj.data.errmens[e][i]);
-          }
-        }  
-      } else {
-          viewsGlobalInstance.showSuccess(obj.data.mens);
-          table = $('#datatable-responsive').DataTable().ajax.reload();
-          $('#dynamic_modal').modal('hide');
-      }
-      $('input[type=submit]').attr('disabled', false);  
-    } catch(error) {
+                if (data.status == 'alert') {
+                    for (var message_group in data.data) {
+                        for (i = 0; i < data.data[message_group].length; i++) {
+                            viewsGlobalInstance.showError(data.data[message_group][i]);
+                        }
+                    }
 
+                    jQuery.scrollTo(jQuery(".validation-errors:first"), 800);
+                } else if (data.status == 'error') {
+                    viewsGlobalInstance.showNotification('error', data.data.message);
+                } else {
+                    viewsGlobalInstance.showSuccess(data.data.mens);
+                    table = $('#datatable-responsive').DataTable().ajax.reload();
+                    $('#dynamic_modal').modal('hide');
+                }
+            },
+            error: function (xhr, desc, err) {
+                console.log(xhr);
+            }
+        });
+
+        return false;
     }
-  },
 });

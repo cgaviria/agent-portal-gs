@@ -69,7 +69,6 @@ var ViewsGlobals = Class.extend({
 		}).show();
 	},
 	sendForm: function(form,callBack) {
-		
 	    this.sendPost(form.action, $("form#"+form.id).serialize(), callBack);
 	    $('input[type=submit]').attr('disabled', true);  
 	    return false;

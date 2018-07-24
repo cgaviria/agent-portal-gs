@@ -24,8 +24,7 @@ var ViewsAdminMyAccount = Class.extend({
                 if (data.status == 'alert') {
                     for (var message_group in data.data) {
                         for (i = 0; i < data.data[message_group].length; i++) {
-                            $("#" + message_group).addClass("error");
-                            $("#" + message_group).after( '<label class="error validation-errors" for="' + message_group + '">' + data.data[message_group][i] + '</label>');
+                            viewsGlobalInstance.showError(data.data[message_group][i]);
                         }
                     }
 

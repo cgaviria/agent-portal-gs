@@ -19,7 +19,7 @@ class CheckRole
     public function handle($request, Closure $next, ...$role)
     {
         $user_login = Sentinel::check();
-        
+
         if(in_array($user_login->roles->first()->name, $role)){
             
            View::share('user_login', $user_login);

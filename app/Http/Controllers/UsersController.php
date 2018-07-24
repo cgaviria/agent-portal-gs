@@ -214,6 +214,8 @@ class UsersController extends Controller
 		if ($user_check) {
 			$users = User::query();
 
+			$users->orderBy('created_at', 'DESC');
+
 			$logged_in_user = Sentinel::getUser();
 
 			$users->where('users.id', '!=', $logged_in_user->id);
@@ -314,9 +316,10 @@ class UsersController extends Controller
 				$response->errmens = [];
 
 				if ($validator->fails()) {
-					$response->error  = true;
-					$response->errmens = $validator->messages();
-					return RestResponse::sendResult(200, $response);
+					return response()->json([
+						'status' => 'alert',
+						'data' => $validator->errors()
+					]);
 				}
 
 				$user = new User;

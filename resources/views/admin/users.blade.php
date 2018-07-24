@@ -7,7 +7,7 @@
     <section>
 
          @include('admin.user.add')
-       
+
         <div class="content-heading bg-white">
             <div class="row">
                 <div class="col-sm-4">
@@ -22,11 +22,9 @@
                         <small>View users in your agency</small>
                     @endif
                 </div>
-                
                 <div class="col-sm-8 text-right hidden-xs upper-right-buttons">
                     <a href="#" id="btn-create-user" class="btn btn-labeled btn-primary ripple" type="button" style="padding: 6px 16px;">Create User</a>
                 </div>
-                
             </div>
         </div>
         <div class="container-fluid">
