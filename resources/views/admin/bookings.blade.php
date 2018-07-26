@@ -73,9 +73,18 @@
         <div class="content-heading bg-white">
             <div class="row">
                 <div class="col-sm-4">
-                    <h4 class="m0 text-thin">Bookings</h4><small>View your bookings</small>
+                  @if($title)
+                      <h4 class="m0 text-thin">{{$title}}</h4><small>View your bookings</small>
+                  @else
+                      <h4 class="m0 text-thin">Bookings</h4><small>View your bookings</small>
+                  @endif
+                    
                 </div>
                 <div class="col-sm-8 text-right hidden-xs upper-right-buttons">
+                  
+                        <a href="#" id="btn-all-remove-filter" class="btn btn-danger ripple" type="button" style="padding: 6px 16px;">Clear Search</a></li>
+                           
+                    
                     <div class="btn-group">
                         <button id="btn-order-date-range-main" class="btn ripple btn-primary" type="button">Order Date: <span id="span-order-dates-filtering">All</span></button>
                         <button class="btn dropdown-toggle ripple btn-primary" type="button" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">primary</span></button>

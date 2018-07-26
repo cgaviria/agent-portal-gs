@@ -18,6 +18,7 @@ var ViewsLayoutsAdmin = Class.extend({
 	            container:'#example-datepicker-container-9',
 	            startDate: '+0d',
 	            format: 'yyyy-mm-dd',
+                    autoclose: true
 	        });
 	}
 });

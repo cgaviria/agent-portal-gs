@@ -65,15 +65,7 @@
                 </div>
             </div>
         </fieldset>
-        <fieldset>
-            <div class="form-group">
-                <label class="col-sm-2 control-label" style="text-align:left !important;">Itinerary</label>
-                <div class="col-sm-10">
-                    <input class="form-control" name="itinerary" type="text">
-                    <span class="help-block">The ID of the itinerary</span>
-                </div>
-            </div>
-        </fieldset>
+        
 
 
     </div>

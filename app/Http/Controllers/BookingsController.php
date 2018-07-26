@@ -51,6 +51,7 @@ class BookingsController extends Controller
 
         $param = array();
         $param['url']  = URL::action('BookingsController@getData');
+        $param['title'] = "Booking";
         $param['fields'] = [
                             [ 'id' => 'order_id', 'label' => 'Order ID', 'ordenable' => true,  'searchable' => true],
                             [ 'id' => 'order_date', 'label' => 'Order Date', 'ordenable' => true,  'searchable' => true],
@@ -102,7 +103,7 @@ class BookingsController extends Controller
             	$bookings->where('users.id', $logged_in_user->id) ->orWhere('bookings.agency_email_address', '=', $logged_in_user->email);
 			}
             if($request->client_id){
-            	$bookings->leftJoin('clients', 'email', '=', 'bookings.customer_email_address');
+            	$bookings->leftJoin('clients', 'clients.email', '=', 'bookings.customer_email_address');
             	$bookings->where('clients.id', $request->client_id);
             }
 			if ($search_term = $request->input('search.value')) {

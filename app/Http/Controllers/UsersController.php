@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
-
+use App\Traits\ActivitesTrait;
 use App\Library\RestResponse;
 
 use Sentinel;
@@ -27,6 +27,7 @@ use Yajra\DataTables\DataTables;
 
 class UsersController extends Controller
 {
+	use ActivitesTrait;
     public static $rules_add = array(
         'first_name'  => 'required|regex:/^[a-zA-Z]+$/u',
         'last_name'=>'regex:/^[a-zA-Z]+$/u',
@@ -63,7 +64,7 @@ class UsersController extends Controller
 		if ($user_check) {
 			if ($user_id_to_edit = $request->input('user_id_to_edit')) {
 				$logged_in_user = Sentinel::findById($user_id_to_edit);
-
+				$current_user = Sentinel::getUser();
 				$users = User::query();
 
 				$user = Sentinel::getUser();
@@ -109,7 +110,7 @@ class UsersController extends Controller
 					]);
 				}
 			} else {
-				$logged_in_user = Sentinel::getUser();
+				$logged_in_user  = $current_user = Sentinel::getUser();
 			}
 
 			$logged_in_user->first_name = $request->input('first_name');
@@ -140,7 +141,12 @@ class UsersController extends Controller
 				}
 
 				$logged_in_user->save();
-
+				if ($user_id_to_edit = $request->input('user_id_to_edit')) {
+					$this->insertActivity( url("/dashboard/users/edit/$logged_in_user->id"),'edited an existing  <a href="%a" target="_blank">User</a>',$current_user->id);
+				}
+				else{
+					$this->insertActivity( url("/dashboard/users/my_account"),'updated own <a href="%a" target="_blank">Profile</a>',$current_user->id);
+				}
 				return response()->json([
 					'status' => 'success',
 					'data' => array(
@@ -277,7 +283,7 @@ class UsersController extends Controller
 					}
 				})
 				->addColumn('actions', function ($user) use ($user_check) {
-					$buttons = '<a href="' . action('UsersController@getEditUser', array($user->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View</a> ';
+					$buttons = '<a href="' . action('UsersController@getEditUser', array($user->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">Edit</a> ';
 					return $buttons;
 				})
 				->rawColumns(['photo', 'actions'])
@@ -310,7 +316,7 @@ class UsersController extends Controller
 			if (1 == 1) {
 
 				$validator = Validator::make(Input::all(), self::$rules_add);
-
+				$logged_in_user = Sentinel::getUser();
 				$response = new \stdClass();
 				$response->error = false;
 				$response->errmens = [];
@@ -342,7 +348,7 @@ class UsersController extends Controller
 				$activation = Activation::create($user);
 				$getactivationdata = Activation::exists($user);
 				Activation::complete($user, $getactivationdata->code);
-
+				$this->insertActivity( url("/dashboard/users/edit/$insertedId"),'added a new  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
 				$logged_in_user = Sentinel::getUser();
 
 				$response->mens = Lang::get('User successfully created.');
