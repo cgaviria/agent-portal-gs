@@ -90,18 +90,19 @@ class BookingsController extends Controller
 			$bookings->select('bookings.*');
 
 			$bookings->leftJoin('cruise_ships', 'cruise_ships.id', '=', 'bookings.ship_id');
-			if($current_user_role == "owner"){
+			if($current_user_role == "owner" && !$request->client_id){
 				$bookings->leftJoin('agencies', 'agencies.id', '=', 'bookings.agency_id');
             	$bookings->where('agencies.owner_id', $logged_in_user->id);
 			}
-			if($current_user_role == "agency"){
+			if($current_user_role == "agency" && !$request->client_id){
 				$bookings->leftJoin('users', 'users.agency_id', '=', 'bookings.agency_id');
             	$bookings->where('users.id', $logged_in_user->id);
 			}
-			if($current_user_role == "agent"){
+			if($current_user_role == "agent" && !$request->client_id){
 				$bookings->leftJoin('users', 'users.agency_id', '=', 'bookings.agency_id');
             	$bookings->where('users.id', $logged_in_user->id) ->orWhere('bookings.agency_email_address', '=', $logged_in_user->email);
 			}
+
             if($request->client_id){
             	$bookings->leftJoin('clients', 'clients.email', '=', 'bookings.customer_email_address');
             	$bookings->where('clients.id', $request->client_id);
@@ -130,7 +131,7 @@ class BookingsController extends Controller
 			if ($tour_date_end = $request->input('tour_date_end')) {
 				$bookings->where('bookings.tour_date', '<=', $tour_date_end);
 			}
-
+			
 			$datatables = new Datatables;
 			return $datatables->eloquent($bookings)
 				->editColumn('first_name', function ($booking){

@@ -15,6 +15,8 @@
         </div>
         <div class="container-fluid">
             <div class="row">
+
+
                 <!-- Left column-->
                 <div class="col-sm-12">
                     <form class="card form-validate" id="form-my-account" name="form-my-account" method="post" action="{{action('UsersController@postMyAccount')}}" enctype="multipart/form-data">
@@ -22,6 +24,7 @@
                         @if (isset($edit_user) && $edit_user)
                             <input type="hidden" id="user_id_to_edit" name="user_id_to_edit" value="{{$logged_in_user->id}}"/>
                         @endif
+
                         <div class="card-body">
                             <fieldset>
                                 <div class="form-group">
@@ -76,6 +79,52 @@
                                     </div>
                                 </div>
                             </fieldset>
+                            @if($edit_user)
+                             <fieldset>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" style="text-align:left !important;">Role</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control role" name="role" id="role" onchange = "show_agency(this)">
+                                          <option value="">Select</option>
+                                          <?php foreach($roles as $role){
+                                                
+                                                  if($role->id == $logged_in_user->role_id)
+                                                     $selected = "selected";
+                                                  else
+                                                      $selected = "";
+                                             ?>
+                                            <option value="{{$role->id}}" <?php echo $selected;?>>{{$role->name}}</option>
+                                          <?php }?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            @if($logged_in_user->agency_id)
+                              @php $style = ""; @endphp
+                            @else
+                                @php $style = "display : none;"; @endphp
+                            @endif
+                             <fieldset class="agentselect" style= "<?php echo $style;?>">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" style="text-align:left !important;">Agency</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control agency_id" name="agency_id">
+                                              <option value="">Select agency</option>
+                                            @foreach($agencies as $agency)
+                                              @if($agency->id == $logged_in_user->agency_id)
+                                                   @php  $selected = "selected"; @endphp
+                                                  @else
+                                                    @php  $selected = ""; @endphp
+                                              @endif
+                                              <option value="{{$agency->id}}" <?php echo $selected;?>>{{$agency->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            
+                            @endif
                             <div class="text-right">
                                 <button class="btn btn-labeled btn-primary ripple" type="submit" style="padding: 6px 16px;">Submit</button>
                             </div>
@@ -85,4 +134,14 @@
             </div>
         </div>
     </section>
+     <script>
+        function show_agency(a){
+          if(a.value == "2" || a.value == "1"){
+            $('.agentselect').css('display','block');
+          }
+          else{
+            $('.agentselect').css('display','none');
+          }
+        }
+      </script>
 @endsection

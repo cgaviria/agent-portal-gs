@@ -313,7 +313,7 @@ class ClientsController extends Controller
 	 * @return Response
 	 */
     public function delete(Request $request){
-
+      $logged_in_user = Sentinel::getUser();
       $userL = Sentinel::check();        
       if($userL){
           $response = new \stdClass();

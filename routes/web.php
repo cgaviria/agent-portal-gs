@@ -83,6 +83,10 @@ Route::post('/dashboard/users/my_account', 'UsersController@postMyAccount')->mid
 
 Route::get('/dashboard/users', 'UsersController@getUsers')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
 Route::get('/dashboard/users/edit/{id}', 'UsersController@getEditUser')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
+Route::post('/dashboard/users/delete', 'UsersController@delete')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
+Route::post('/dashboard/users/activate', 'UsersController@activate')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
+Route::get('/forms/users/delete/{id}', 'UsersController@getDeleteForm')->middleware('authSentinel');
+Route::get('/forms/users/activate/{id}', 'UsersController@getActivateForm')->middleware('authSentinel');
 Route::post('/data/users/save', 'UsersController@save')->middleware('authSentinel');
 
 Route::get('/dashboard/agency', 'AgencyController@getAgency')->middleware('authSentinel','checkRole:Owner');
