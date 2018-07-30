@@ -14,10 +14,16 @@ var ViewsAdminBookings = Class.extend({
         jQuery(document).data("ViewsAdminBookings").client_id = client_id;
         jQuery(document).ready(function(){
             jQuery("#btn-order-date-range, #btn-order-date-range-main").click($(document).data("ViewsAdminBookings").orderDateFilterClick);
-            jQuery("#btn-order-date-range-remove-filter").click(jQuery(document).data("ViewsAdminBookings").removeOrderDateFilter);
+            //jQuery("#btn-order-date-range-remove-filter").click(jQuery(document).data("ViewsAdminBookings").removeOrderDateFilter);
 
             jQuery("#btn-tour-date-range, #btn-tour-date-range-main").click($(document).data("ViewsAdminBookings").tourDateFilterClick);
             jQuery("#btn-tour-date-range-remove-filter").click(jQuery(document).data("ViewsAdminBookings").removeTourDateFilter);
+
+            jQuery("#btn-all-remove-filter").click(function(){
+                jQuery(document).data("ViewsAdminBookings").removeOrderDateFilter();
+                jQuery(document).data("ViewsAdminBookings").removeTourDateFilter();
+                });
+
         });
     },
     orderDateFilterClick: function(event) {

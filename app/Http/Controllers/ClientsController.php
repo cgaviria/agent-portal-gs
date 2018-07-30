@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 
 use App\Library\RestResponse;
+use App\Traits\ActivitesTrait;
 
 use Sentinel;
 use Lang;
@@ -23,7 +24,7 @@ use Yajra\DataTables\DataTables;
 
 class ClientsController extends Controller
 {
-    
+     use ActivitesTrait;
     public static $rules_add = array(
         'first_name'  => 'required|regex:/^[a-zA-Z]+$/u',
         'last_name'=>'regex:/^[a-zA-Z]+$/u',
@@ -57,12 +58,12 @@ class ClientsController extends Controller
     public function getClientTable(Request $request)
     {
         /*https://laravel-news.com/google-api-socialite*/
-
+        
         $param = array();
         $param['url']  = URL::action('ClientsController@getData');
         $param['fields'] = [
                             [ 'id' => 'first_name', 'label' => 'Name', 'ordenable' => false,  'searchable' => true],
-                            [ 'id' => 'itinerary', 'label' => 'Itinerary', 'ordenable' => true,  'searchable' => true],
+                          
                             [ 'id' => 'email', 'label' => 'Email', 'ordenable' => true,  'searchable' => true],
                             [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
                            ];
@@ -84,20 +85,30 @@ class ClientsController extends Controller
 		if ($user_check) {
 			$clients = Client::query();
 			$logged_in_user = Sentinel::getUser();
-			$clients->select('clients.*');
+			$current_user_role = $logged_in_user->roles->first()->slug;
 
+			$clients->select('clients.*');
+            $clients->when($current_user_role  == 'agent', function ($q) use($logged_in_user){
+			    return $q->where('clients.user_id', '=', $logged_in_user->id);
+			});
+			$clients->when($current_user_role  == 'agency', function ($q) use($logged_in_user) {
+				$q->leftjoin('users', 'clients.user_id', '=', 'users.id');
+			    return $q->where('users.agency_id', '=', $logged_in_user->agency_id);
+			});
+			$clients->when($current_user_role  == 'owner', function ($q) use($logged_in_user) {
+				$q->leftjoin('users', 'clients.user_id', '=', 'users.id');
+				$q->leftjoin('agencies', 'agencies.id', '=', 'users.agency_id');
+			    return $q->where('agencies.owner_id', '=', $logged_in_user->id);
+			});
+			
 			$datatables = new Datatables;
 			return $datatables->eloquent($clients)
 				->editColumn('first_name', function ($client){
 					return $client->getFullName();
 				})
-				->editColumn('itinerary', function ($client){
-					return $client->itinerary;
-				})
-				
 				->addColumn('actions', function ($client) use ($user_check){
 					$buttons = '<a href="' . action('ClientsController@getBooking', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View Bookings</a> ';
-					 $buttons .= '<a href="' . action('ClientsController@editClient', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View</a> ';
+					 $buttons .= '<a href="' . action('ClientsController@editClient', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">Edit</a> ';
 					 $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$client->id.');" type="button">Delete</button> ';
 					return $buttons;
 				})
@@ -129,6 +140,7 @@ class ClientsController extends Controller
         $param = array();
         $param['url']  = URL::action('BookingsController@getData');
         $param['client_id'] = $id;
+        $param['title'] = "Bookings for Client ID ".$id;
         $param['fields'] = [
                             [ 'id' => 'order_id', 'label' => 'Order ID', 'ordenable' => true,  'searchable' => true],
                             [ 'id' => 'order_date', 'label' => 'Order Date', 'ordenable' => true,  'searchable' => true],
@@ -170,7 +182,7 @@ class ClientsController extends Controller
 			if (1 == 1) {
 
 				$validator = Validator::make(Input::all(), self::$rules_add);
-
+				$logged_in_user = Sentinel::getUser();
 				$response = new \stdClass();
 				$response->error = false;
 				$response->errmens = [];
@@ -189,11 +201,10 @@ class ClientsController extends Controller
 				$ci->ship_id = $request->input('ship');
 				$ci->sail_date = $request->input('sail_date');
 				$ci->duration = $request->input('duration');
-				$ci->itinerary = $request->input('itinerary');
-				
-
+				$ci->user_id = $logged_in_user->id;
 				$ci->save();
 
+                $this->insertActivity( url("/dashboard/clients/edit/$ci->id"),'added a new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
 				$response->mens = Lang::get('Client successfully created.');
 
 				return RestResponse::sendResult(200, $response);
@@ -226,7 +237,7 @@ class ClientsController extends Controller
 			if (1 == 1) {
 
 				$validator = Validator::make(Input::all(), self::$rules_import);
-				
+				$logged_in_user = Sentinel::getUser();
 				$response = new \stdClass();
 				$response->error = false;
 				$response->errmens = [];
@@ -253,7 +264,7 @@ class ClientsController extends Controller
 						$ci->ship_id = $request->input('ship');
 						$ci->sail_date = $request->input('sail_date');
 						$ci->duration = $request->input('duration');
-						$ci->itinerary = $value['itinerary'];
+						$ci->user_id = $logged_in_user->id;
 					    $ci->save();
 				    }
 					$response->mens = Lang::get('Clients successfully created.');
@@ -302,7 +313,7 @@ class ClientsController extends Controller
 	 * @return Response
 	 */
     public function delete(Request $request){
-
+      $logged_in_user = Sentinel::getUser();
       $userL = Sentinel::check();        
       if($userL){
           $response = new \stdClass();
@@ -310,19 +321,19 @@ class ClientsController extends Controller
           $response->errmens = [];
               
           $ci = Client::find($request -> input('ci_id'));
-          $ci->delete();
 
+          $ci->delete();
+          $this->insertActivity( url("/dashboard/clients/"),'deleted a client {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
           $response->mens = Lang::get('Client successfully deleted.');
           return RestResponse::sendResult(200,$response);
       }  
     }
     public function csv_valid($data){
-        $clients = Client::select('email')->get()->toArray();
-		    foreach($clients as $client){
-			    $mail[] = $client['email'];
-		    }
+       
+		    
 		    $error = array();
 		    foreach($data as $each_arr){
+		    	$mail_check = Client::where('email',$each_arr['email'])->count();
 			    if($each_arr['first_name'] == ""){
 				    $error['first_name']=array("First name field is required.");
 				    break;
@@ -330,8 +341,8 @@ class ClientsController extends Controller
 			    if($each_arr['email'] == ""){
 				    $error['email']=array("Email is required.");
 				    break;
-			    } elseif(in_array($each_arr['email'], $mail)){
-				    $error['email']=array("There was a duplicate email that was found.");
+			    } elseif($mail_check>0){
+				    $error['email']=array("There is a duplicate email that was found.");
 				    break;
 			    }
 		    }
@@ -362,6 +373,7 @@ class ClientsController extends Controller
 	{
 		$user_check = Sentinel::check();
 		$validator = Validator::make(Input::all(), self::$rules_edit);
+		$logged_in_user = Sentinel::getUser();
 		if ($validator->fails()) {
 				return response()->json([
 					'status' => 'alert',
@@ -379,9 +391,9 @@ class ClientsController extends Controller
 					$clients->ship_id = $request->input('ship');
 					$clients->sail_date = $request->input('sail_date');
 					$clients->duration = $request->input('duration');
-					$clients->itinerary = $request->input('itinerary');
-					$clients->save();
 					
+					$clients->save();
+					$this->insertActivity( url("/dashboard/clients/edit/$clients->id"),'edited a <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
 			}
 		}
 		return response()->json([

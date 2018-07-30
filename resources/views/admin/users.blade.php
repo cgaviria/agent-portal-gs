@@ -3,6 +3,14 @@
     <script src="{{asset('js/views/admin/users.js?'.Config::get('app.cache_buster'))}}"></script>
     <script>
         var ViewsAdminUsersInstance = new ViewsAdminUsers({!! json_encode($datatables_params) !!});
+        function showDeleteForm(id){
+            
+            viewsAdminInstance.showDialog("{{URL::action('UsersController@getDeleteForm','')}}/"+id,"@lang('strings_client.delete_user')");
+          }
+          function showActivateForm(id){
+            
+            viewsAdminInstance.showDialog("{{URL::action('UsersController@getActivateForm','')}}/"+id,"@lang('strings_client.activate_user')");
+          }
     </script>
     <section>
 

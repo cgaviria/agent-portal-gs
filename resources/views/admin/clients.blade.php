@@ -9,13 +9,14 @@
                 </div>
                 <div class="col-sm-8 text-right hidden-xs upper-right-buttons">
                     
-                   
+                    @if (Sentinel::inRole(\App\Role::ROLE_AGENT))
                     <div class="btn-group">
                        <button  onclick="importClient();" class="btn ripple btn-primary" type="button">Import Clients by CSV</button>
                     </div>
                     <div class="btn-group">
                         <button  onclick="showAddForm();" class="btn ripple btn-primary" type="button">Add New Client</button>
                     </div>
+                    @endif
                     
                 </div>
             </div>

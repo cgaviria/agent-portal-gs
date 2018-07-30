@@ -9,6 +9,7 @@
                 </div>
             </div>
         </div>
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-6 col-lg-3">
@@ -16,7 +17,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">50</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Bookings</small>
+                                    <h4 class="m0 text-thin">{{$booking}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Bookings</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <div class="sparkline" id="sparkline2" data-line-color="#4caf50"></div>
@@ -30,7 +31,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">3</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-down-b"></em>Groups</small>
+                                    <h4 class="m0 text-thin">{{$group}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-down-b"></em>Groups</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <div class="sparkline" id="sparkline1" data-line-color="#03A9F4"></div>
@@ -44,7 +45,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">300</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Clients</small>
+                                    <h4 class="m0 text-thin">{{$client}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Clients</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <div class="sparkline" id="sparkline3" data-line-color="#ab47bc"></div>
@@ -58,7 +59,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">100</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Imported Contacts</small>
+                                    <h4 class="m0 text-thin">{{$ContactImporter}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Imported Contacts</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <div class="sparkline" id="sparkline4" data-line-color="#e91e63"></div>
@@ -86,51 +87,41 @@
                                 <!-- END dropdown-->
                                 <div class="card-title">Activity</div><small>What's been going on</small>
                             </div>
+                            @foreach($activites_user as $activity)
                             <div class="card-body bb">
-                                <p class="pull-left mr"><a href=""><img class="img-circle thumb32" src="{{asset('images/christian_gaviria_foto_square.jpeg')}}" alt="User"></a></p>
+                                <p class="pull-left mr">
+                                    <a href=""> 
+                                        @if ($activity->photo)
+                                            <img class="img-circle thumb40" src="{{asset(((!empty($activity->image_thumbnails[\App\User::THUMB_SIDEBAR])) ? $activity->image_thumbnails[\App\User::THUMB_SIDEBAR] : $activity->photo))}}">
+                                        @else
+                                            <span class="ion-person sidebar-no-picture"></span>
+                                        @endif
+                                    </a></p>
                                 <div class="oh">
-                                    <p><strong class="spr">Christian</strong><span class="spr">added a new Booking</span><a href="">Jane Smith - Norwegian Cruise Line - Sail Date 5/11/2018</a></p>
+                                    <p><strong class="spr">{{$activity->first_name}}</strong><span class="spr">{!! str_replace('%a', $activity->url , $activity->description) !!}</span></p>
                                     <div class="clearfix">
-                                        <div class="pull-left text-muted"><em class="ion-android-time mr-sm"></em><span>2 hours ago</span></div>
+                                        <div class="pull-left text-muted"><em class="ion-android-time mr-sm"></em><span>
+                                            <?php 
+                                              $secondsDifference=strtotime(date('Y-m-d H:i:s'))-strtotime($activity->created_at);
+                                              $minutes = $secondsDifference>60?intval($secondsDifference/60):"";
+                                              $hour = $minutes>60?intval($minutes/60):"";
+                                              $days = $hour>24?intval($hour/24):"";
+                                              if($secondsDifference<60)
+                                                echo $secondsDifference." seconds ago";
+                                              if($days>0)
+                                                 echo $days." days ago";
+                                              else if($hour>0)
+                                                 echo $hour." hours ago";
+                                              else if($minutes>0 )
+                                                 echo $minutes." minutes ago";
+                                              
+                                             ?>
+                                             </span></div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body bb">
-                                <p class="pull-left mr"><a href=""><img class="img-circle thumb32" src="{{asset('images/christian_gaviria_foto_square.jpeg')}}" alt="User"></a></p>
-                                <div class="oh">
-                                    <p><strong class="spr">Christian</strong><span class="spr">added a new Booking</span><a href="">Jane Smith - Norwegian Cruise Line - Sail Date 5/11/2018</a></p>
-                                    <div class="clearfix">
-                                        <div class="pull-left text-muted"><em class="ion-android-time mr-sm"></em><span>2 hours ago</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body bb">
-                                <p class="pull-left mr"><a href=""><img class="img-circle thumb32" src="{{asset('images/christian_gaviria_foto_square.jpeg')}}" alt="User"></a></p>
-                                <div class="oh">
-                                    <p><strong class="spr">Christian</strong><span class="spr">added a new Booking</span><a href="">Jane Smith - Norwegian Cruise Line - Sail Date 5/11/2018</a></p>
-                                    <div class="clearfix">
-                                        <div class="pull-left text-muted"><em class="ion-android-time mr-sm"></em><span>2 hours ago</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body bb">
-                                <p class="pull-left mr"><a href=""><img class="img-circle thumb32" src="{{asset('images/christian_gaviria_foto_square.jpeg')}}" alt="User"></a></p>
-                                <div class="oh">
-                                    <p><strong class="spr">Christian</strong><span class="spr">added a new Booking</span><a href="">Jane Smith - Norwegian Cruise Line - Sail Date 5/11/2018</a></p>
-                                    <div class="clearfix">
-                                        <div class="pull-left text-muted"><em class="ion-android-time mr-sm"></em><span>2 hours ago</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body bb">
-                                <p class="pull-left mr"><a href=""><img class="img-circle thumb32" src="{{asset('images/christian_gaviria_foto_square.jpeg')}}" alt="User"></a></p>
-                                <div class="oh">
-                                    <p><strong class="spr">Christian</strong><span class="spr">added a new Booking</span><a href="">Jane Smith - Norwegian Cruise Line - Sail Date 5/11/2018</a></p>
-                                    <div class="clearfix">
-                                        <div class="pull-left text-muted"><em class="ion-android-time mr-sm"></em><span>2 hours ago</span></div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
+                            
                             <a class="card-footer btn btn-flat btn-default" href=""><small class="text-center text-muted lh1">See more activities</small></a>
                         </div>
                     </div>

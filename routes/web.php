@@ -33,18 +33,18 @@ Route::get('/dashboard/login', ['as' => 'dashboard_login', 'uses' => 'AdminContr
 
 /******************Client module*****************/
 
-Route::get('/dashboard/clients', ['as' => 'clients', 'uses' => 'ClientsController@getClientTable'])->middleware('authSentinel','checkRole:Agent');
-Route::get('/data/clients', 'ClientsController@getData')->middleware('authSentinel','checkRole:Agent');
+Route::get('/dashboard/clients', ['as' => 'clients', 'uses' => 'ClientsController@getClientTable'])->middleware('authSentinel');
+Route::get('/data/clients', 'ClientsController@getData')->middleware('authSentinel');
 
-Route::get('/dashboard/clients/view/{id}', 'ClientsController@getBooking')->middleware('authSentinel','checkRole:Agent');
-Route::get('/dashboard/clients/edit/{id}', 'ClientsController@editClient')->middleware('authSentinel','checkRole:Agent');
+Route::get('/dashboard/clients/view/{id}', 'ClientsController@getBooking')->middleware('authSentinel');
+Route::get('/dashboard/clients/edit/{id}', 'ClientsController@editClient')->middleware('authSentinel');
 Route::post('/dashboard/clients/saveEdit/', 'ClientsController@saveEdit')->middleware('authSentinel');
-Route::get('/forms/client/add', 'ClientsController@getAddForm')->middleware('authSentinel','checkRole:Agent');
-Route::get('/forms/client/import', 'ClientsController@getImportCLient')->middleware('authSentinel','checkRole:Agent');
-Route::post('/data/clients/save', 'ClientsController@save')->middleware('authSentinel','checkRole:Agent');
-Route::post('/data/clients/import_client', 'ClientsController@import')->middleware('authSentinel','checkRole:Agent');
-Route::get('/forms/client/delete/{id}', 'ClientsController@getDeleteForm')->middleware('authSentinel','checkRole:Agent');
-Route::post('/data/client/delete', 'ClientsController@delete')->middleware('authSentinel','checkRole:Agent');
+Route::get('/forms/client/add', 'ClientsController@getAddForm')->middleware('authSentinel');
+Route::get('/forms/client/import', 'ClientsController@getImportCLient')->middleware('authSentinel');
+Route::post('/data/clients/save', 'ClientsController@save')->middleware('authSentinel');
+Route::post('/data/clients/import_client', 'ClientsController@import')->middleware('authSentinel');
+Route::get('/forms/client/delete/{id}', 'ClientsController@getDeleteForm')->middleware('authSentinel');
+Route::post('/data/client/delete', 'ClientsController@delete')->middleware('authSentinel');
 
 
 /*************************************************/
@@ -83,6 +83,10 @@ Route::post('/dashboard/users/my_account', 'UsersController@postMyAccount')->mid
 
 Route::get('/dashboard/users', 'UsersController@getUsers')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
 Route::get('/dashboard/users/edit/{id}', 'UsersController@getEditUser')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
+Route::post('/dashboard/users/delete', 'UsersController@delete')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
+Route::post('/dashboard/users/activate', 'UsersController@activate')->middleware('authSentinel','checkRole:Owner,Admin,Agency Manager');
+Route::get('/forms/users/delete/{id}', 'UsersController@getDeleteForm')->middleware('authSentinel');
+Route::get('/forms/users/activate/{id}', 'UsersController@getActivateForm')->middleware('authSentinel');
 Route::post('/data/users/save', 'UsersController@save')->middleware('authSentinel');
 
 Route::get('/dashboard/agency', 'AgencyController@getAgency')->middleware('authSentinel','checkRole:Owner');

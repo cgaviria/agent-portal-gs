@@ -101,5 +101,63 @@ var ViewsAdminUsers = Class.extend({
         });
 
         return false;
+    },
+     responseForm: function(results) {
+   
+    try {
+      var obj = jQuery.parseJSON(results);
+
+      if(obj.data.error) {
+        for (var e in obj.data.errmens) {
+          for (var i = 0; i < obj.data.errmens[e].length; i++ ) {
+              viewsGlobalInstance.showError(obj.data.errmens[e][i]);
+          }
+        }  
+      } else {
+          viewsGlobalInstance.showSuccess(obj.data.mens);
+          table = $('#datatable-responsive').DataTable().ajax.reload();
+          $('#dynamic_modal').modal('hide');
+      }
+      $('input[type=submit]').attr('disabled', false);  
+    } catch(error) {
+
     }
+  },
+   sendForm: function(form,callBack) {
+    
+      var formData = new FormData();
+      //this.sendPost(form.action, formData, callBack);
+      $.ajax({
+          type: "POST",
+          url: form.action,
+          data: new FormData(form),
+          dataType: "JSON",
+          processData: false,
+          contentType: false,
+          //success: callBack(result, status)
+          success: function(result, status) {
+               try {
+                  var obj = result;
+
+                  if(obj.data.error) {
+                    for (var e in obj.data.errmens) {
+                      for (var i = 0; i < obj.data.errmens[e].length; i++ ) {
+                          viewsGlobalInstance.showError(obj.data.errmens[e][i]);
+                      }
+                    }  
+                  } else {
+                      viewsGlobalInstance.showSuccess(obj.data.mens);
+                      table = $('#datatable-responsive').DataTable().ajax.reload();
+                      $('#dynamic_modal').modal('hide');
+                  }
+                  $('input[type=submit]').attr('disabled', false);  
+                } catch(error) {
+
+                }
+          }
+      });
+      $('input[type=submit]').attr('disabled', true);  
+      return false;
+  }
+
 });

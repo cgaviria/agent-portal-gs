@@ -47,7 +47,11 @@
                                     <div class="col-sm-10">
                                         <select class="form-control" name="ship" id="ship" >
                                             @foreach ($ships as $each_ship)
-                                                 <option value="{{ $each_ship->id }}">{{ $each_ship->name }}</option>
+                                              <?php $selected = "";
+                                              if($clients[0]->ship_id == $each_ship->id )
+                                                    $selected = "selected";
+                                              ?>
+                                                 <option value="{{ $each_ship->id }}" <?php echo $selected;?>  >{{ $each_ship->name }}</option>
                                             @endforeach
                                         </select>
                                         <span class="help-block">Select the ship this client will be embarking on.</span>
@@ -62,14 +66,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">Itinerary</label>
-                                    <div class="col-sm-10">
-                                       <input class="form-control" name="itinerary" id="itinerary" type="text" value="{{$clients[0]->itinerary}}"><span class="help-block">The ID of the itinerary</span>
-                                    </div>
-                                </div>
-                            </fieldset>
+                           
                             <fieldset>
                               <div class="form-group">
                                 <label class="col-sm-2 control-label" style="text-align:left !important;">Sail Date</label>

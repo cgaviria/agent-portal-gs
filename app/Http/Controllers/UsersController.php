@@ -15,18 +15,21 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
-
+use App\Traits\ActivitesTrait;
 use App\Library\RestResponse;
 
 use Sentinel;
 use Activation;
 use Lang;
 use URL;
+use DB;
 use App\Booking;
+use App\Activities;
 use Yajra\DataTables\DataTables;    
 
 class UsersController extends Controller
 {
+	use ActivitesTrait;
     public static $rules_add = array(
         'first_name'  => 'required|regex:/^[a-zA-Z]+$/u',
         'last_name'=>'regex:/^[a-zA-Z]+$/u',
@@ -46,7 +49,8 @@ class UsersController extends Controller
 	{
 		$logged_in_user = Sentinel::getUser();
 
-		return view('admin.my_account', ['logged_in_user' => $logged_in_user]);
+		return view('admin.my_account', ['logged_in_user' => $logged_in_user,
+											'edit_user' => false]);
 	}
 
 	/**
@@ -63,7 +67,7 @@ class UsersController extends Controller
 		if ($user_check) {
 			if ($user_id_to_edit = $request->input('user_id_to_edit')) {
 				$logged_in_user = Sentinel::findById($user_id_to_edit);
-
+				$current_user = Sentinel::getUser();
 				$users = User::query();
 
 				$user = Sentinel::getUser();
@@ -100,7 +104,10 @@ class UsersController extends Controller
 					} else {
 						$users->limit(0);
 					}
+					
 				}
+				$validation_rules['role'] ='required';
+				$validation_rules['agency_id'] ='required_if:role,1,2';
 
 				if (!$user_to_edit = $users->first()) {
 					return response()->json([
@@ -109,13 +116,13 @@ class UsersController extends Controller
 					]);
 				}
 			} else {
-				$logged_in_user = Sentinel::getUser();
+				$logged_in_user  = $current_user = Sentinel::getUser();
 			}
 
 			$logged_in_user->first_name = $request->input('first_name');
 			$logged_in_user->last_name = $request->input('last_name');
 			$logged_in_user->email = $request->input('email');
-
+			$logged_in_user->agency_id = ($request->input('role') == '1' | $request->input('role') == '2')? $request->input('agency_id') : NULL ;
 			if ($change_password = $request->input('password')) {
 				if ($change_password == $request->input('password_confirmation')) {
 					$logged_in_user->password = $change_password;
@@ -124,10 +131,12 @@ class UsersController extends Controller
 				unset($validation_rules['password']);
 				unset($validation_rules['password_confirmation']);
 			}
-
+            
 			$validation_rules['email'] = array('required', 'email', Rule::unique('users')->ignore($logged_in_user->id));
-
-			$validator = Validator::make($request->all(), $validation_rules);
+			$customMessages = [
+			        'required_if' => 'The agency field can not be blank.'
+			    ];
+			$validator = Validator::make($request->all(), $validation_rules ,$customMessages );
 
 			if ($validator->fails()) {
 				return response()->json([
@@ -140,7 +149,14 @@ class UsersController extends Controller
 				}
 
 				$logged_in_user->save();
-
+				$logged_in_user->roles()->sync([$request->input('role')]);
+				
+				if ($user_id_to_edit = $request->input('user_id_to_edit')) {
+					$this->insertActivity( url("/dashboard/users/edit/$logged_in_user->id"),'edited an existing  <a href="%a" target="_blank">User</a>',$current_user->id);
+				}
+				else{
+					$this->insertActivity( url("/dashboard/users/my_account"),'updated own <a href="%a" target="_blank">Profile</a>',$current_user->id);
+				}
 				return response()->json([
 					'status' => 'success',
 					'data' => array(
@@ -212,19 +228,19 @@ class UsersController extends Controller
 		$user_check = Sentinel::check();
 
 		if ($user_check) {
-			$users = User::query();
+			$users = User::query()->select('users.*','activations.id as activation_id');
 
-			$users->orderBy('created_at', 'DESC');
+			$users->orderBy('users.created_at', 'DESC');
 
 			$logged_in_user = Sentinel::getUser();
 
 			$users->where('users.id', '!=', $logged_in_user->id);
-
+			$users->leftjoin('activations','users.id','=','activations.user_id');
 			if (!Sentinel::inRole(Role::ROLE_ADMIN)) {
 				if ($logged_in_user->agency_id && Sentinel::inRole(Role::ROLE_AGENCY_MANAGER)) {
 					$agent_role = Sentinel::findRoleBySlug(Role::ROLE_AGENT);
 
-					$users->select('users.*');
+					$users->select('users.*','activations.id as activation_id');
 
 					$users->join('role_users', 'role_users.user_id', '=', 'users.id');
 
@@ -234,7 +250,7 @@ class UsersController extends Controller
 					$agent_role = Sentinel::findRoleBySlug(Role::ROLE_AGENT);
 					$agency_manager_role = Sentinel::findRoleBySlug(Role::ROLE_AGENCY_MANAGER);
 
-					$users->select('users.*');
+					$users->select('users.*','activations.id as activation_id');
 
 					$users->leftjoin('agencies', 'agencies.id', '=', 'users.agency_id');
 					$users->join('role_users', 'role_users.user_id', '=', 'users.id');
@@ -277,7 +293,9 @@ class UsersController extends Controller
 					}
 				})
 				->addColumn('actions', function ($user) use ($user_check) {
-					$buttons = '<a href="' . action('UsersController@getEditUser', array($user->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View</a> ';
+					$buttons = '<a href="' . action('UsersController@getEditUser', array($user->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">Edit</a> ';
+					//$buttons.= '<a href="' . action('UsersController@delete', array($user->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">Delete</a> ';
+					$buttons .= $user->activation_id?'<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$user->id.');" type="button">Deactivate</button> ':'<button class="mb-sm btn btn-success ripple" onclick="showActivateForm('.$user->id.');" type="button">Activate</button> ';
 					return $buttons;
 				})
 				->rawColumns(['photo', 'actions'])
@@ -293,10 +311,34 @@ class UsersController extends Controller
 	 */
 	public function getEditUser($user_id)
 	{
-		$user_to_edit = Sentinel::findById($user_id);
+		$user_to_edit = User::select('users.*','role_users.role_id')
+						->leftjoin('role_users','users.id','=','role_users.user_id')
+						->leftjoin('roles','role_users.role_id','=','roles.id')
+						->where('users.id',$user_id)->get();
+		$logged_in_user = Sentinel::getUser();
+		$current_user_role = $logged_in_user->roles->first()->slug;
+        $role = Role::when($current_user_role == 'admin', function ($q) use($current_user_role) {
+						return $q;
+			    			//return $q->where('slug', '<>', 'admin')->where('slug','<>',$current_user_role);
+						  })
+					  ->when($current_user_role == 'owner', function ($q) use($current_user_role) {
+			    			return $q->where('slug', '<>', 'admin')->where('slug','<>',$current_user_role);
+						  })
+					  ->when($current_user_role == 'agency', function ($q) use($current_user_role) {
+			    			return $q->where('slug', '<>', 'admin')->where('slug', '<>', 'owner')->where('slug','<>',$current_user_role);
+						  })->get();
+		$agencies = Agency::when($current_user_role == 'agency', function ($q) use($logged_in_user) {
+								$q->leftjoin('users', 'users.agency_id', '=', 'agencies.id');
+								$q->select('agency_id as id','name');
+			    			return $q->where('users.id', $logged_in_user->id);
+						  		})
+							->when($current_user_role == 'owner', function ($q) use($logged_in_user) {
+								return $q->where('owner_id', $logged_in_user->id);
+							 })
+							->get();
 
-		return view('admin.my_account', ['logged_in_user' => $user_to_edit,
-											'edit_user' => true]);
+		return view('admin.my_account', ['logged_in_user' => $user_to_edit[0],
+											'edit_user' => true , 'roles' => $role ,'agencies'=>$agencies]);
 	}
 	 /**
 	 * Save the user
@@ -310,7 +352,7 @@ class UsersController extends Controller
 			if (1 == 1) {
 
 				$validator = Validator::make(Input::all(), self::$rules_add);
-
+				$logged_in_user = Sentinel::getUser();
 				$response = new \stdClass();
 				$response->error = false;
 				$response->errmens = [];
@@ -342,7 +384,7 @@ class UsersController extends Controller
 				$activation = Activation::create($user);
 				$getactivationdata = Activation::exists($user);
 				Activation::complete($user, $getactivationdata->code);
-
+				$this->insertActivity( url("/dashboard/users/edit/$insertedId"),'added a new  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
 				$logged_in_user = Sentinel::getUser();
 
 				$response->mens = Lang::get('User successfully created.');
@@ -351,4 +393,76 @@ class UsersController extends Controller
 			}
 		}
 	}
+	/**
+	 * Client Delete confirmation form
+	 *
+	 * @return Response
+	 */
+	public function getDeleteForm($id){
+     
+      $userL = Sentinel::check();        
+      if($userL){
+        $ci = User::find($id);
+          return view('admin.user.delete',['ci'=>$ci])->render();
+      }  
+    }
+	/**
+	 * Deactivate the user by modifying activation table.
+	 *
+	 * @return Response
+	 */
+	public function delete(Request $request)
+	{
+  
+          $userL = Sentinel::check();        
+	      if($userL){
+	          $logged_in_user = Sentinel::getUser();
+	          $response = new \stdClass();
+	          $response->error  = false;
+	          $response->errmens = [];
+	          $activation = DB::table('activations')->where('user_id',$request -> input('ci_id'))->delete();
+	          $this->insertActivity( url("/dashboard/user/"),'deactivate a user {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+	          $response->mens = Lang::get('User successfully deatcivated.');
+	          return RestResponse::sendResult(200,$response);
+	      }  
+		
+	}
+	/**
+	 * Client Activate confirmation form
+	 *
+	 * @return Response
+	 */
+	public function getActivateForm($id){
+     
+      $userL = Sentinel::check();        
+      if($userL){
+        $ci = User::find($id);
+          return view('admin.user.activate',['ci'=>$ci])->render();
+      }  
+    }
+    /**
+	 * Deactivate the user by modifying activation table.
+	 *
+	 * @return Response
+	 */
+	public function activate(Request $request)
+	{
+  
+          $userL = Sentinel::check();        
+	      if($userL){
+	          $logged_in_user = Sentinel::getUser();
+	          $response = new \stdClass();
+	          $response->error  = false;
+	          $response->errmens = [];
+	          $user = User::find($request -> input('ci_id'));
+	          $activation = Activation::create($user);
+			  $getactivationdata = Activation::exists($user);
+			  Activation::complete($user, $getactivationdata->code);
+	          $this->insertActivity( url("/dashboard/user/"),'activate a user {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+	          $response->mens = Lang::get('User successfully activated.');
+	          return RestResponse::sendResult(200,$response);
+	      }  
+		
+	}
+	
 }
