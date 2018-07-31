@@ -208,7 +208,7 @@ class ClientsController extends Controller
 
                 $this->insertActivity( "/dashboard/clients/edit/$ci->id",'added new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
 
-                $this->insertActivity( "/dashboard/clients/edit/$ci->id",'added a new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
+               
 
 				$response->mens = Lang::get('Client successfully created.');
 
@@ -405,7 +405,7 @@ class ClientsController extends Controller
 
 					$this->insertActivity( "/dashboard/clients/edit/$clients->id",'edited a <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
 
-					$this->insertActivity( "/dashboard/clients/edit/$clients->id",'edited a <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
+					
 
 			}
 		}
