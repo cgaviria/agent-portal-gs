@@ -29,6 +29,7 @@ Route::get('/comments/feed', 'FrontController@getCommentsFeed');
 Route::get('/dashboard/home', ['as' => 'dashboard_home', 'uses' => 'AdminController@getIndex'])->middleware('authSentinel');
 Route::get('/dashboard/importer', ['as' => 'contact_importer', 'uses' => 'AdminController@getContactImporter'])->middleware('authSentinel');
 Route::get('/dashboard/bookings', ['as' => 'bookings', 'uses' => 'BookingsController@getAdminTable'])->middleware('authSentinel');
+Route::get('/dashboard/bookings_monthly', ['as' => 'bookings_monthly', 'uses' => 'BookingsController@getBookingMonthly'])->middleware('authSentinel');
 Route::get('/dashboard/login', ['as' => 'dashboard_login', 'uses' => 'AdminController@getLogin']);
 
 /******************Client module*****************/
@@ -45,7 +46,7 @@ Route::post('/data/clients/save', 'ClientsController@save')->middleware('authSen
 Route::post('/data/clients/import_client', 'ClientsController@import')->middleware('authSentinel');
 Route::get('/forms/client/delete/{id}', 'ClientsController@getDeleteForm')->middleware('authSentinel');
 Route::post('/data/client/delete', 'ClientsController@delete')->middleware('authSentinel');
-
+Route::get('/dashboard/client_monthly', ['as' => 'client_monthly', 'uses' => 'ClientsController@getClientMonthly'])->middleware('authSentinel');
 
 /*************************************************/
 
@@ -75,6 +76,7 @@ Route::get('/dashboard/bookings/view/{id}', 'BookingsController@getBooking')->mi
 Route::get('/dashboard/bookings/cancel_booking/{id}', 'BookingsController@cancelBooking')->middleware('authSentinel');
 
 Route::get('/dashboard/groups/view/{id}', 'GroupsController@getGroup')->middleware('authSentinel');
+Route::get('/dashboard/group_monthly', ['as' => 'group_monthly', 'uses' => 'GroupsController@getGroupMonthly'])->middleware('authSentinel');
 
 Route::get('/dashboard/bookings/export/csv', 'BookingsController@exportCSV')->middleware('authSentinel');
 

@@ -384,7 +384,7 @@ class UsersController extends Controller
 				$activation = Activation::create($user);
 				$getactivationdata = Activation::exists($user);
 				Activation::complete($user, $getactivationdata->code);
-				$this->insertActivity( url("/dashboard/users/edit/$insertedId"),'added a new  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+				$this->insertActivity( url("/dashboard/users/edit/$insertedId"),'added new  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
 				$logged_in_user = Sentinel::getUser();
 
 				$response->mens = Lang::get('User successfully created.');
@@ -421,7 +421,7 @@ class UsersController extends Controller
 	          $response->error  = false;
 	          $response->errmens = [];
 	          $activation = DB::table('activations')->where('user_id',$request -> input('ci_id'))->delete();
-	          $this->insertActivity( url("/dashboard/user/"),'deactivate a user {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+	          $this->insertActivity( url("/dashboard/users/edit/".$request -> input('ci_id')),'deactivated a  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
 	          $response->mens = Lang::get('User successfully deatcivated.');
 	          return RestResponse::sendResult(200,$response);
 	      }  
@@ -458,7 +458,7 @@ class UsersController extends Controller
 	          $activation = Activation::create($user);
 			  $getactivationdata = Activation::exists($user);
 			  Activation::complete($user, $getactivationdata->code);
-	          $this->insertActivity( url("/dashboard/user/"),'activate a user {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+	          $this->insertActivity( url("/dashboard/users/edit/".$request -> input('ci_id')),'activated a <a href="%a" target="_blank">User</a>',$logged_in_user->id);
 	          $response->mens = Lang::get('User successfully activated.');
 	          return RestResponse::sendResult(200,$response);
 	      }  

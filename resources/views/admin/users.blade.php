@@ -1,16 +1,11 @@
 @extends('layouts.admin')
 @section('content')
     <script src="{{asset('js/views/admin/users.js?'.Config::get('app.cache_buster'))}}"></script>
+
+    
     <script>
-        var ViewsAdminUsersInstance = new ViewsAdminUsers({!! json_encode($datatables_params) !!});
-        function showDeleteForm(id){
-            
-            viewsAdminInstance.showDialog("{{URL::action('UsersController@getDeleteForm','')}}/"+id,"@lang('strings_client.delete_user')");
-          }
-          function showActivateForm(id){
-            
-            viewsAdminInstance.showDialog("{{URL::action('UsersController@getActivateForm','')}}/"+id,"@lang('strings_client.activate_user')");
-          }
+         var ViewsAdminUsersInstance = new ViewsAdminUsers({!! json_encode($datatables_params) !!});
+       
     </script>
     <section>
 
@@ -38,6 +33,8 @@
         <div class="container-fluid">
             <div id="card-body" class="card display-none">
               <div class="card-heading">&nbsp;</div>
+              <input type="hidden" id="deactivated_link" value="{{URL::action('UsersController@getDeleteForm','')}}/">
+              <input type="hidden" id="activated_link" value="{{URL::action('UsersController@getActivateForm','')}}/">
               <!-- START table-responsive-->
               <div class="table-responsive">
                 <div class="col-sm-12">

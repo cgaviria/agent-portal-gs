@@ -54,8 +54,10 @@ class AdminController extends Controller
         									    	    $q->where('agencies.owner_id', '=', $logged_in_user->id);
 														return $q->orwhere('user_id', '=', $logged_in_user->id);
 						  							})
-        									    ->orderBy('activities.id', 'DESC')
-        									   ->get();
+        									    ->orderBy('activities.created_at', 'DESC')
+                                                
+        									    ->get();
+                                                
 		return view('admin.index',$param);
     }
 

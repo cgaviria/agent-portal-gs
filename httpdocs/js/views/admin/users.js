@@ -5,8 +5,9 @@ var ViewsAdminUsers = Class.extend({
     add_user_endpoint: null,
     init: function(datatables_params, add_user_endpoint) {
         this.datatables_params = datatables_params;
-        this.add_user_endpoint = add_user_endpoint;
-
+        //this.add_user_endpoint = add_user_endpoint;
+         
+        
         jQuery(document).data("ViewsAdminUsers", this);
 
         jQuery(document).ready(function(){
@@ -161,3 +162,15 @@ var ViewsAdminUsers = Class.extend({
   }
 
 });
+
+
+
+function showDeleteForm(id){
+            var deactivated_link = $('#deactivated_link').val();
+            viewsAdminInstance.showDialog(deactivated_link+id,"Deactivate the user");
+          }
+
+function showActivateForm(id){
+        var activated_link = $('#activated_link').val();
+        viewsAdminInstance.showDialog(activated_link+id,"Activate the user");
+}

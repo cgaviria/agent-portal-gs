@@ -17,6 +17,7 @@ use App\Library\RestResponse;
 use Sentinel;
 use Lang;
 use URL;
+use DB;
 use App\Booking;
 use Yajra\DataTables\DataTables;    
 
@@ -120,5 +121,12 @@ class GroupsController extends Controller
 		$group = Group::find($id);
 
 		return view('admin.group', ['group' => $group]);
+	}
+	public function getGroupMonthly(){
+		$set = DB::table("agencies_groups") ->select(DB::raw('count(id) as `data`'),DB::raw('MONTH(created_at) month'))
+               ->groupby('month')
+               ->orderby('month')
+               ->get();
+        return $set;   
 	}
 }
