@@ -52,6 +52,8 @@ Route::get('/dashboard/client_monthly', ['as' => 'client_monthly', 'uses' => 'Cl
 
 
 
+/*************************************************/
+
 Route::get('/data/bookings', 'BookingsController@getData')->middleware('authSentinel');
 Route::get('/data/importer', 'ContactImporterController@getData')->middleware('authSentinel');
 Route::post('/data/importer/save', 'ContactImporterController@save')->middleware('authSentinel');
