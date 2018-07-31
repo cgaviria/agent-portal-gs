@@ -56,12 +56,7 @@ class AdminController extends Controller
 						  							})
 
         									    ->orderBy('activities.created_at', 'DESC')
-                                                
         									    ->get();
-                                                
-
-        									    ->orderBy('activities.id', 'DESC')
-        									   ->get();
 
 		return view('admin.index',$param);
     }

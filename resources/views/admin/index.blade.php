@@ -96,9 +96,6 @@
                             @foreach($activites_user as $activity)
                             <div class="card-body bb" style="display:none;">
 
-                            @foreach($activites_user as $activity)
-                            <div class="card-body bb">
-
                                 <p class="pull-left mr">
                                     <a href=""> 
                                         @if ($activity->photo)
@@ -108,7 +105,7 @@
                                         @endif
                                     </a></p>
                                 <div class="oh">
-                                    <p><strong class="spr">{{$activity->first_name}}</strong><span class="spr">{!! str_replace('%a', $activity->url , $activity->description) !!}</span></p>
+                                    <p><strong class="spr">{{$activity->first_name}}</strong><span class="spr">{!! str_replace('%a', url($activity->url) , $activity->description) !!}</span></p>
                                     <div class="clearfix">
                                         <div class="pull-left text-muted"><em class="ion-android-time mr-sm"></em><span>
                                             <?php 
@@ -149,7 +146,7 @@
                             @endif
 
 
-                            <a class="card-footer btn btn-flat btn-default" href=""><small class="text-center text-muted lh1">See more activities</small></a>
+                         
 
                         </div>
                     </div>

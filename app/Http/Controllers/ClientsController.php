@@ -206,9 +206,9 @@ class ClientsController extends Controller
 				$ci->save();
 
 
-                $this->insertActivity( url("/dashboard/clients/edit/$ci->id"),'added new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
+                $this->insertActivity( "/dashboard/clients/edit/$ci->id",'added new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
 
-                $this->insertActivity( url("/dashboard/clients/edit/$ci->id"),'added a new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
+                $this->insertActivity( "/dashboard/clients/edit/$ci->id",'added a new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
 
 				$response->mens = Lang::get('Client successfully created.');
 
@@ -331,7 +331,7 @@ class ClientsController extends Controller
 
         //  $this->insertActivity( url("/dashboard/clients/$request -> input('ci_id')"),'deleted a  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
 
-          $this->insertActivity( url("/dashboard/clients/"),'deleted a client {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
+          $this->insertActivity( "/dashboard/clients/",'deleted a client {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
 
           $response->mens = Lang::get('Client successfully deleted.');
           return RestResponse::sendResult(200,$response);
@@ -403,9 +403,9 @@ class ClientsController extends Controller
 					
 					$clients->save();
 
-					$this->insertActivity( url("/dashboard/clients/edit/$clients->id"),'edited a <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
+					$this->insertActivity( "/dashboard/clients/edit/$clients->id",'edited a <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
 
-					$this->insertActivity( url("/dashboard/clients/edit/$clients->id"),'edited a <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
+					$this->insertActivity( "/dashboard/clients/edit/$clients->id",'edited a <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
 
 			}
 		}
