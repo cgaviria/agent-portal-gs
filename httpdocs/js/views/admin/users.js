@@ -161,6 +161,7 @@ var ViewsAdminUsers = Class.extend({
       return false;
   }
 
+
 });
 
 
@@ -174,3 +175,6 @@ function showActivateForm(id){
         var activated_link = $('#activated_link').val();
         viewsAdminInstance.showDialog(activated_link+id,"Activate the user");
 }
+
+});
+

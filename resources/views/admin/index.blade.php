@@ -90,10 +90,15 @@
                                 <!-- END dropdown-->
                                 <div class="card-title">Activity</div><small>What's been going on</small>
                             </div>
+
                             
                             @if(count($activites_user)>0)
                             @foreach($activites_user as $activity)
                             <div class="card-body bb" style="display:none;">
+
+                            @foreach($activites_user as $activity)
+                            <div class="card-body bb">
+
                                 <p class="pull-left mr">
                                     <a href=""> 
                                         @if ($activity->photo)
@@ -112,6 +117,7 @@
                                               $hour = $minutes>60?intval($minutes/60):"";
                                               $days = $hour>24?intval($hour/24):"";
                                               if($secondsDifference<60)
+
                                                 echo $secondsDifference==1?$secondsDifference." second ago":$secondsDifference." seconds ago";
                                               if($days>0)
                                                  echo ($days==1)?$days." day ago":$days." days ago";
@@ -119,6 +125,15 @@
                                                  echo ($hour==1)?$hour." hour ago":$hour." hours ago";
                                               else if($minutes>0 )
                                                  echo ($minutes==1)?$minutes." minute ago":$minutes." minutes ago";
+
+                                                echo $secondsDifference." seconds ago";
+                                              if($days>0)
+                                                 echo $days." days ago";
+                                              else if($hour>0)
+                                                 echo $hour." hours ago";
+                                              else if($minutes>0 )
+                                                 echo $minutes." minutes ago";
+
                                               
                                              ?>
                                              </span></div>
@@ -127,10 +142,14 @@
                             </div>
                             @endforeach
                             
+
                             <a class="card-footer btn btn-flat btn-default" id="loadMore" href="javascript:void(0)"><small class="text-center text-muted lh1">See more activities</small></a>
                             @else
                              <a class="card-footer btn btn-flat btn-default" href=""><small class="text-center text-muted lh1">There are no activities yet</small></a>
                             @endif
+
+
+                            <a class="card-footer btn btn-flat btn-default" href=""><small class="text-center text-muted lh1">See more activities</small></a>
 
                         </div>
                     </div>

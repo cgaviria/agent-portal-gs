@@ -46,9 +46,11 @@ Route::post('/data/clients/save', 'ClientsController@save')->middleware('authSen
 Route::post('/data/clients/import_client', 'ClientsController@import')->middleware('authSentinel');
 Route::get('/forms/client/delete/{id}', 'ClientsController@getDeleteForm')->middleware('authSentinel');
 Route::post('/data/client/delete', 'ClientsController@delete')->middleware('authSentinel');
+
 Route::get('/dashboard/client_monthly', ['as' => 'client_monthly', 'uses' => 'ClientsController@getClientMonthly'])->middleware('authSentinel');
 
-/*************************************************/
+
+
 
 Route::get('/data/bookings', 'BookingsController@getData')->middleware('authSentinel');
 Route::get('/data/importer', 'ContactImporterController@getData')->middleware('authSentinel');
