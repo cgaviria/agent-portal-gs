@@ -65,6 +65,7 @@ class UsersController extends Controller
 		$validation_rules = User::$rules;
 
 		if ($user_check) {
+			//dd($request->input('edit_user'));
 			if ($user_id_to_edit = $request->input('user_id_to_edit')) {
 				$logged_in_user = Sentinel::findById($user_id_to_edit);
 				$current_user = Sentinel::getUser();
@@ -149,6 +150,7 @@ class UsersController extends Controller
 				}
 
 				$logged_in_user->save();
+				if($request->input('edit_user'))
 				$logged_in_user->roles()->sync([$request->input('role')]);
 				
 				if ($user_id_to_edit = $request->input('user_id_to_edit')) {
@@ -179,22 +181,22 @@ class UsersController extends Controller
 		$param = array();
 		$logged_in_user = Sentinel::getUser();
 		$current_user_role = $logged_in_user->roles->first()->slug;
-		$role = Role::when($current_user_role == 'admin', function ($q) use($current_user_role) {
+		$role = Role::when(Sentinel::inRole(Role::ROLE_ADMIN), function ($q) use($current_user_role) {
 						return $q;
 			    			//return $q->where('slug', '<>', 'admin')->where('slug','<>',$current_user_role);
 						  })
-					  ->when($current_user_role == 'owner', function ($q) use($current_user_role) {
+					  ->when(Sentinel::inRole(Role::ROLE_OWNER), function ($q) use($current_user_role) {
 			    			return $q->where('slug', '<>', 'admin')->where('slug','<>',$current_user_role);
 						  })
-					  ->when($current_user_role == 'agency', function ($q) use($current_user_role) {
+					  ->when(Sentinel::inRole(Role::ROLE_AGENCY_MANAGER), function ($q) use($current_user_role) {
 			    			return $q->where('slug', '<>', 'admin')->where('slug', '<>', 'owner')->where('slug','<>',$current_user_role);
 						  })->get();
-		$agencies = Agency::when($current_user_role == 'agency', function ($q) use($logged_in_user) {
+		$agencies = Agency::when(Sentinel::inRole(Role::ROLE_AGENCY_MANAGER), function ($q) use($logged_in_user) {
 								$q->leftjoin('users', 'users.agency_id', '=', 'agencies.id');
 								$q->select('agency_id as id','name');
 			    			return $q->where('users.id', $logged_in_user->id);
 						  		})
-							->when($current_user_role == 'owner', function ($q) use($logged_in_user) {
+							->when(Sentinel::inRole(Role::ROLE_OWNER), function ($q) use($logged_in_user) {
 								return $q->where('owner_id', $logged_in_user->id);
 							 })
 							->get();
@@ -317,22 +319,22 @@ class UsersController extends Controller
 						->where('users.id',$user_id)->get();
 		$logged_in_user = Sentinel::getUser();
 		$current_user_role = $logged_in_user->roles->first()->slug;
-        $role = Role::when($current_user_role == 'admin', function ($q) use($current_user_role) {
+        $role = Role::when(Sentinel::inRole(Role::ROLE_ADMIN), function ($q) use($current_user_role) {
 						return $q;
 			    			//return $q->where('slug', '<>', 'admin')->where('slug','<>',$current_user_role);
 						  })
-					  ->when($current_user_role == 'owner', function ($q) use($current_user_role) {
+					  ->when(Sentinel::inRole(Role::ROLE_OWNER), function ($q) use($current_user_role) {
 			    			return $q->where('slug', '<>', 'admin')->where('slug','<>',$current_user_role);
 						  })
-					  ->when($current_user_role == 'agency', function ($q) use($current_user_role) {
+					  ->when(Sentinel::inRole(Role::ROLE_AGENCY_MANAGER), function ($q) use($current_user_role) {
 			    			return $q->where('slug', '<>', 'admin')->where('slug', '<>', 'owner')->where('slug','<>',$current_user_role);
 						  })->get();
-		$agencies = Agency::when($current_user_role == 'agency', function ($q) use($logged_in_user) {
+		$agencies = Agency::when(Sentinel::inRole(Role::ROLE_AGENCY_MANAGER), function ($q) use($logged_in_user) {
 								$q->leftjoin('users', 'users.agency_id', '=', 'agencies.id');
 								$q->select('agency_id as id','name');
 			    			return $q->where('users.id', $logged_in_user->id);
 						  		})
-							->when($current_user_role == 'owner', function ($q) use($logged_in_user) {
+							->when(Sentinel::inRole(Role::ROLE_OWNER), function ($q) use($logged_in_user) {
 								return $q->where('owner_id', $logged_in_user->id);
 							 })
 							->get();

@@ -17,7 +17,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">{{$booking}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Bookings</small>
+                                    <h4 class="m0 text-thin">{{$booking}}</h4><small class="m0 text-muted">{!!$arrowBooking!!}Bookings</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <input type="hidden" id="bokkinglist" value="{{URL::action('BookingsController@getBookingMonthly')}}">
@@ -32,7 +32,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">{{$group}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-down-b"></em>Groups</small>
+                                    <h4 class="m0 text-thin">{{$group}}</h4><small class="m0 text-muted">{!!$arrowGrouping!!}Groups</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <input type="hidden" id="grouplist" value="{{URL::action('GroupsController@getGroupMonthly')}}">
@@ -47,7 +47,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">{{$client}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Clients</small>
+                                    <h4 class="m0 text-thin">{{$client}}</h4><small class="m0 text-muted">{!!$arrowClient!!}Clients</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <input type="hidden" id="clientlist" value="{{URL::action('ClientsController@getClientMonthly')}}">
