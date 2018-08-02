@@ -122,16 +122,6 @@
                                                  echo ($hour==1)?$hour." hour ago":$hour." hours ago";
                                               else if($minutes>0 )
                                                  echo ($minutes==1)?$minutes." minute ago":$minutes." minutes ago";
-
-                                                echo $secondsDifference." seconds ago";
-                                              if($days>0)
-                                                 echo $days." days ago";
-                                              else if($hour>0)
-                                                 echo $hour." hours ago";
-                                              else if($minutes>0 )
-                                                 echo $minutes." minutes ago";
-
-                                              
                                              ?>
                                              </span></div>
                                     </div>
