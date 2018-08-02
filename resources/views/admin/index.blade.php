@@ -122,7 +122,7 @@
                                                  echo ($hour==1)?$hour." hour ago":$hour." hours ago";
                                               else if($minutes>0 )
                                                  echo ($minutes==1)?$minutes." minute ago":$minutes." minutes ago";
-                                             ?>
+                                             ?> 
                                              </span></div>
                                     </div>
                                 </div>
