@@ -1231,7 +1231,7 @@ size_li = $(".bb").length;
             fillColor: 'transparent',
             highlightLineColor: Colors.byName('blue-700'),
             spotRadius: 0,
-            tooltipFormat: '{{offset:offset}}, {{y:value}}',
+            tooltipFormat: '{{offset:offset}} {{y:value}}',
             tooltipValueLookups: {
                 'offset': {
                     0: 'Jan',

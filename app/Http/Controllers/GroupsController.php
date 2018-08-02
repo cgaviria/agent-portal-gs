@@ -17,6 +17,7 @@ use App\Library\RestResponse;
 use Sentinel;
 use Lang;
 use URL;
+
 use DB;
 use App\Booking;
 use Yajra\DataTables\DataTables;    

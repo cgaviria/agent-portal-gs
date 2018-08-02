@@ -21,6 +21,7 @@ use URL;
 use DB;
 use App\Client;
 use App\Ship;
+use App\Role;
 use Yajra\DataTables\DataTables;    
 
 class ClientsController extends Controller
@@ -85,12 +86,12 @@ class ClientsController extends Controller
 		$user_check = Sentinel::check();
 
 		if ($user_check) {
-			$clients = Client::query();
+			$clients = Client::query()->select('clients.*');
 			$logged_in_user = Sentinel::getUser();
 			$current_user_role = $logged_in_user->roles->first()->slug;
-
-			$clients->select('clients.*');
-            $clients->when(Sentinel::findRoleBySlug(Role::ROLE_AGENT), function ($q) use($logged_in_user){
+			
+			
+            $clients->when(Sentinel::inRole(Role::ROLE_AGENT), function ($q) use($logged_in_user){
 			    return $q->where('clients.user_id', '=', $logged_in_user->id);
 			});
 			$clients->when(Sentinel::inRole(Role::ROLE_AGENCY_MANAGER), function ($q) use($logged_in_user) {
