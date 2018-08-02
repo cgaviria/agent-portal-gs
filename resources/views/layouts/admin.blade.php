@@ -59,7 +59,7 @@
                             @if (!Sentinel::inRole(\App\Role::ROLE_AGENT))
                                 <li><a class="ripple" href="{{URL::action('UsersController@getUsers')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Users</span></a></li>
                             @endif
-                             @if ($user_login->roles->first()->slug == "owner")
+                             @if (Sentinel::inRole(\App\Role::ROLE_OWNER))
                                <!-- <li><a class="ripple" href="{{URL::action('AgencyController@getAgency')}}"><span class="pull-right nav-label"><span class="badge bg-success"></span></span><span class="nav-icon"><img class="hidden" src="" alt="MenuItem"></span><span>Agency</span></a></li>-->
                             @endif
                         </ul>

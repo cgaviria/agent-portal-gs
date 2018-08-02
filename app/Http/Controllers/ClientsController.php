@@ -18,6 +18,7 @@ use App\Traits\ActivitesTrait;
 use Sentinel;
 use Lang;
 use URL;
+use DB;
 use App\Client;
 use App\Ship;
 use Yajra\DataTables\DataTables;    
@@ -204,7 +205,11 @@ class ClientsController extends Controller
 				$ci->user_id = $logged_in_user->id;
 				$ci->save();
 
-                $this->insertActivity( url("/dashboard/clients/edit/$ci->id"),'added a new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
+
+                $this->insertActivity( "/dashboard/clients/edit/$ci->id",'added new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
+
+               
+
 				$response->mens = Lang::get('Client successfully created.');
 
 				return RestResponse::sendResult(200, $response);
@@ -323,7 +328,11 @@ class ClientsController extends Controller
           $ci = Client::find($request -> input('ci_id'));
 
           $ci->delete();
-          $this->insertActivity( url("/dashboard/clients/"),'deleted a client {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
+
+        //  $this->insertActivity( url("/dashboard/clients/$request -> input('ci_id')"),'deleted a  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
+
+          $this->insertActivity( "/dashboard/clients/",'deleted a client {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
+
           $response->mens = Lang::get('Client successfully deleted.');
           return RestResponse::sendResult(200,$response);
       }  
@@ -393,7 +402,11 @@ class ClientsController extends Controller
 					$clients->duration = $request->input('duration');
 					
 					$clients->save();
-					$this->insertActivity( url("/dashboard/clients/edit/$clients->id"),'edited a <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
+
+					$this->insertActivity( "/dashboard/clients/edit/$clients->id",'edited a <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
+
+					
+
 			}
 		}
 		return response()->json([
@@ -405,5 +418,12 @@ class ClientsController extends Controller
 				)
 			]);
 		}
+	}
+	public function getClientMonthly(){
+		$set = DB::table("clients") ->select(DB::raw('count(id) as `data`'),DB::raw('MONTH(created_at) month'))
+               ->groupby('month')
+               ->orderby('month')
+               ->get();
+        return $set;
 	}
 }

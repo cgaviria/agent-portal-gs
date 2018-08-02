@@ -8,6 +8,7 @@ use App\Repositories\ProjectFiles\ProjectFileRepository;
 use App\Repositories\ProjectFileTags\ProjectFileTagsRepository;
 use App\Repositories\Projects\Criteria\Search;
 use App\Repositories\Projects\ProjectRepository as ProjectRepository;
+use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -34,29 +35,32 @@ class AdminController extends Controller
     public function getIndex(Request $request)
     {
     	$logged_in_user = Sentinel::getUser();
-    	//dd($logged_in_user);
-    	
-		$current_user_role = $logged_in_user->roles->first()->slug;
+
         $param['booking'] = Booking::count();
         $param['group'] = Group::count();
         $param['client'] = Client::count();
         $param['ContactImporter'] = ContactImporter::count();
         $param['activites_user'] = Activities::select('activities.*','users.first_name','users.last_name','users.photo')
             								   ->leftjoin('users','users.id','=','activities.user_id')
-        									   ->when($current_user_role == 'agent', function ($q) use($logged_in_user)  {
+        									   ->when(Sentinel::inRole(\App\Role::ROLE_AGENT), function ($q) use($logged_in_user)  {
 														return $q->where('user_id', '=', $logged_in_user->id);
 						  							})
-        									    ->when($current_user_role == 'agency', function ($q) use($logged_in_user)  {
+        									    ->when(Sentinel::inRole(\App\Role::ROLE_AGENCY_MANAGER), function ($q) use($logged_in_user)  {
 														return $q->where('agency_id', '=', $logged_in_user->agency_id);
 						  							})
-        									    ->when($current_user_role == 'owner', function ($q) use($logged_in_user)  {
+        									    ->when(Sentinel::inRole(\App\Role::ROLE_OWNER), function ($q) use($logged_in_user)  {
         									    	    $q->leftjoin('agencies','agencies.id','=','users.agency_id');
         									    	    $q->where('agencies.owner_id', '=', $logged_in_user->id);
 														return $q->orwhere('user_id', '=', $logged_in_user->id);
 						  							})
-        									    ->orderBy('activities.id', 'DESC')
-        									   ->get();
-		return view('admin.index',$param);
+										        ->when(Sentinel::inRole(\App\Role::ROLE_ADMIN), function ($q) use($logged_in_user)  {
+											        return $q->where('user_id', '=', $logged_in_user->id);
+										        })
+
+        									    ->orderBy('activities.created_at', 'DESC')
+        									    ->get();
+
+		return view('admin.index', $param);
     }
 
     /**

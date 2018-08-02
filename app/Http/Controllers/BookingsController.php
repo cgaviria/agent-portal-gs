@@ -17,6 +17,7 @@ use App\Library\RestResponse;
 use Sentinel;
 use Lang;
 use URL;
+use DB;
 use App\Booking;
 use Yajra\DataTables\DataTables;    
 
@@ -224,5 +225,12 @@ class BookingsController extends Controller
 		};
 
 		return Response::stream($callback, 200, $headers); //use Illuminate\Support\Facades\Response;
+	}
+	public function getBookingMonthly(){
+		$set = DB::table("bookings") ->select(DB::raw('count(id) as `data`'),DB::raw('MONTH(created_at) month'))
+               ->groupby('month')
+               ->orderby('month')
+               ->get();
+        return $set;      
 	}
 }

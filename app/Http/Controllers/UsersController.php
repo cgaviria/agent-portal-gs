@@ -122,7 +122,7 @@ class UsersController extends Controller
 			$logged_in_user->first_name = $request->input('first_name');
 			$logged_in_user->last_name = $request->input('last_name');
 			$logged_in_user->email = $request->input('email');
-			$logged_in_user->agency_id = ($request->input('role') == '1' | $request->input('role') == '2')? $request->input('agency_id') : NULL ;
+			$logged_in_user->agency_id = ($request->input('role') == '1' || $request->input('role') == '2')? $request->input('agency_id') : NULL ;
 			if ($change_password = $request->input('password')) {
 				if ($change_password == $request->input('password_confirmation')) {
 					$logged_in_user->password = $change_password;
@@ -133,10 +133,10 @@ class UsersController extends Controller
 			}
             
 			$validation_rules['email'] = array('required', 'email', Rule::unique('users')->ignore($logged_in_user->id));
-			$customMessages = [
-			        'required_if' => 'The agency field can not be blank.'
-			    ];
-			$validator = Validator::make($request->all(), $validation_rules ,$customMessages );
+			$custom_messages = [
+			        'required_if' => 'The agency field cannot be blank.'
+			];
+			$validator = Validator::make($request->all(), $validation_rules, $custom_messages);
 
 			if ($validator->fails()) {
 				return response()->json([
@@ -149,14 +149,17 @@ class UsersController extends Controller
 				}
 
 				$logged_in_user->save();
-				$logged_in_user->roles()->sync([$request->input('role')]);
-				
+
+				if ($request->input('role')) {
+					$logged_in_user->roles()->sync([$request->input('role')]);
+				}
+
 				if ($user_id_to_edit = $request->input('user_id_to_edit')) {
-					$this->insertActivity( url("/dashboard/users/edit/$logged_in_user->id"),'edited an existing  <a href="%a" target="_blank">User</a>',$current_user->id);
+					$this->insertActivity( "/dashboard/users/edit/$logged_in_user->id",'edited an existing  <a href="%a" target="_blank">User</a>',$current_user->id);
+				} else{
+					$this->insertActivity( "/dashboard/users/my_account",'updated own <a href="%a" target="_blank">Profile</a>', $current_user->id);
 				}
-				else{
-					$this->insertActivity( url("/dashboard/users/my_account"),'updated own <a href="%a" target="_blank">Profile</a>',$current_user->id);
-				}
+
 				return response()->json([
 					'status' => 'success',
 					'data' => array(
@@ -226,7 +229,7 @@ class UsersController extends Controller
 	public function getData(Request $request)
 	{
 		$user_check = Sentinel::check();
-
+       
 		if ($user_check) {
 			$users = User::query()->select('users.*','activations.id as activation_id');
 
@@ -374,17 +377,20 @@ class UsersController extends Controller
 				$user->save();
 				$insertedId = $user->id;
 
-				$role_slug = $request->input('role');
-				$role = Role::where('slug',$role_slug)->get();
-				$role_id = $role[0]->id;
-				$role = Role::find($role_id);
-				$user->roles()->attach($role);
-				
-				
+				if ($request->input('role')) {
+					$role_slug = $request->input('role');
+					$role = Role::where('slug',$role_slug)->get();
+					$role_id = $role[0]->id;
+					$role = Role::find($role_id);
+					$user->roles()->attach($role);
+				}
+
 				$activation = Activation::create($user);
 				$getactivationdata = Activation::exists($user);
 				Activation::complete($user, $getactivationdata->code);
-				$this->insertActivity( url("/dashboard/users/edit/$insertedId"),'added a new  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+
+				$this->insertActivity( "/dashboard/users/edit/$insertedId",'added new  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+
 				$logged_in_user = Sentinel::getUser();
 
 				$response->mens = Lang::get('User successfully created.');
@@ -421,7 +427,9 @@ class UsersController extends Controller
 	          $response->error  = false;
 	          $response->errmens = [];
 	          $activation = DB::table('activations')->where('user_id',$request -> input('ci_id'))->delete();
-	          $this->insertActivity( url("/dashboard/user/"),'deactivate a user {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+
+	          $this->insertActivity( "/dashboard/users/edit/".$request -> input('ci_id'),'deactivated a  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+
 	          $response->mens = Lang::get('User successfully deatcivated.');
 	          return RestResponse::sendResult(200,$response);
 	      }  
@@ -458,7 +466,9 @@ class UsersController extends Controller
 	          $activation = Activation::create($user);
 			  $getactivationdata = Activation::exists($user);
 			  Activation::complete($user, $getactivationdata->code);
-	          $this->insertActivity( url("/dashboard/user/"),'activate a user {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+
+	          $this->insertActivity( "/dashboard/users/edit/".$request -> input('ci_id'),'activated a <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+
 	          $response->mens = Lang::get('User successfully activated.');
 	          return RestResponse::sendResult(200,$response);
 	      }  
