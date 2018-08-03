@@ -91,6 +91,32 @@ class InsertDummyClients extends Migration
 
             $client->save();
         }
+        for ($k = 0 ; $k < 10; $k++) {
+            $client = new \App\Client([
+                'first_name'=>'test',
+                'last_name'=>'test',
+                'email'=>'test'.$k.'@gmail.com',
+                'ship_id'=>3,
+                'sail_date'=>'2018-07-26',
+                'duration'=>'2',
+                'created_at'=>'2018-7-25 07:22:21',
+                'user_id' => 29 ]);
+
+            $client->save();
+        }
+        for ($k = 0 ; $k < 10; $k++) {
+            $client = new \App\Client([
+                'first_name'=>'test',
+                'last_name'=>'test',
+                'email'=>'test'.$k.'@gmail.com',
+                'ship_id'=>3,
+                'sail_date'=>'2018-07-26',
+                'duration'=>'2',
+                'created_at'=>'2018-08-25 07:22:21',
+                'user_id' => 29 ]);
+
+            $client->save();
+        }
     }
 
     /**
