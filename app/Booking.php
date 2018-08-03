@@ -21,7 +21,7 @@ class Booking extends Model {
 	    'cruise_duration', 'customer_notes', 'notes_to_vendor', 'accounting_notes', 'hold_emails_for_tour', 'product_code', 'product_name', 'options_list', 'qty_adult',
 	    'qty_children', 'quantity', 'discount_row', 'total_price', 'affiliate_payment', 'total_vendor_cost', 'auto_confirm', 'over_ride', 'itinerary_works', 'tour_date',
 	    'tour_time', 'tour_duration', 'buffer_time', 'vendor_id', 'vendor_title', 'vendor_currency', 'port', 'port_arrival', 'port_departure', 'localize_port_arrival', 'localize_port_departure',
-	    'status_color', 'auto_process', 'check_stub', 'last_response', 'response_direction', 'response_received', 'response_notes', 'suggested_date', 'suggested_time', 'suggested_location', 'bundle_product'
+	    'status_color', 'auto_process', 'check_stub', 'last_response', 'response_direction', 'response_received', 'response_notes', 'suggested_date', 'suggested_time', 'suggested_location', 'bundle_product','created_at'
     ];
 
 	public function ship(){

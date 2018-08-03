@@ -17,7 +17,7 @@ trait MonthlyRecordTrait {
         return $set;
 	}
 	public function getGroupMonthlyRecord(){
-		$set = DB::table("agencies_groups") ->select(DB::raw('count(id) as `data`'),DB::raw('MONTH(created_at) month'))
+		$set = DB::table("groups") ->select(DB::raw('count(id) as `data`'),DB::raw('MONTH(created_at) month'))
                ->groupby('month')
                ->orderby('month')
                ->get();

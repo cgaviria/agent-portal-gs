@@ -1252,11 +1252,11 @@ size_li = $(".bb").length;
         var d = new Date(),
         n = d.getMonth();
         var booking_monthly = [];
-        var grouplist = []; 
+        var grouplists = []; 
         var clientlist = [];
         for (i = 0; i <= n; i++){
           booking_monthly.push(0);
-          grouplist.push(0);
+          grouplists.push(0);
           clientlist.push(0);
         }
         
@@ -1264,11 +1264,9 @@ size_li = $(".bb").length;
                   type: "GET",
                   url: $('#bokkinglist').val(),
                   success: function(result, status) {
-                    console.log(result);
                       $.map( result, function( n ) {
                            booking_monthly[n.month-1] = n.data;
                         });
-                      
                     initSparkline($('#sparkline2'), booking_monthly, sparkOpts);
                   }
               });
@@ -1277,10 +1275,10 @@ size_li = $(".bb").length;
                   url: $('#grouplist').val(),
                   success: function(result, status) {
                       $.map( result, function( n ) {
-                            grouplist[n.month-1] = n.data;
+                            grouplists[n.month-1] = n.data;
                           
                         });
-                    initSparkline($('#sparkline1'), grouplist, sparkOpts);
+                    initSparkline($('#sparkline1'), grouplists, sparkOpts);
                   }
               });
         $.ajax({
@@ -1289,19 +1287,14 @@ size_li = $(".bb").length;
                   success: function(result, status) {
                       $.map( result, function( n ) {
                            clientlist[n.month-1] = n.data;
-                           
                         });
                     initSparkline($('#sparkline3'), clientlist, sparkOpts);
                   }
               });
       
         
-                function initSparkline(el, values, opts) {
-            console.log( el.data());
-           // console.log(values);
-           // console.log(values);
+        function initSparkline(el, values, opts) {
             el.sparkline(values, $.extend(sparkOpts, el.data()));
-
         }
 
     }

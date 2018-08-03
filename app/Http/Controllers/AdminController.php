@@ -119,7 +119,9 @@ class AdminController extends Controller
         foreach($set as $each){
             $month_count[$each->month] =  $each->data;
             }
+            
         if(array_key_exists($month,$month_count)){
+            $month_count[$month - 1] = isset($month_count[$month - 1])?$month_count[$month - 1]:0;
             if($month_count[$month] > $month_count[$month - 1]){
                 $param['arrow'] = '<em class="mr-sm ion-arrow-up-b"></em>';
             }

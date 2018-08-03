@@ -15,7 +15,7 @@ class Group extends Model{
      * @var array
      */
     protected $fillable = [
-        'name','url','email','sail_date','ship_id','duration','text','image'
+        'name','url','email','sail_date','ship_id','duration','text','image','created_at'
     ];
 
 	public function ship(){
