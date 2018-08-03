@@ -103,6 +103,36 @@ class InsertDummyGroups extends Migration
 
             $group->save();
         }
+        for ($k = 0 ; $k < 25; $k++) {
+            $group = new \App\Group([
+                'name' => 'test',
+                'url' => 'alaskaontheislandprincessaugust2',
+                'email' => 'jliescheidt@dt.com',
+                'ship_id' => '1',
+                'sail_date' => '2018-01-23 00:00:00',
+                'duration' => '7',
+                'text' => 'NOW IS THE TIME to reserve your tours for this exciting voyage! Below are the most popular tours in each port. <a href="https://www.shoreexcursionsgroup.com/results">Click here</a> to view a full list of excursions available based on your time in port. All tours are first come, first served. So, don\'t delay. We would not want you to miss out!!',
+                'image' => '//media0.shoreexcursionsgroup.com/docs/groups/1117.jpg',
+                'created_at'=> '2018-07-23 00:00:00',
+            ]);
+
+            $group->save();
+        }
+        for ($k = 0 ; $k < 25; $k++) {
+            $group = new \App\Group([
+                'name' => 'test',
+                'url' => 'alaskaontheislandprincessaugust2',
+                'email' => 'jliescheidt@dt.com',
+                'ship_id' => '1',
+                'sail_date' => '2018-01-23 00:00:00',
+                'duration' => '7',
+                'text' => 'NOW IS THE TIME to reserve your tours for this exciting voyage! Below are the most popular tours in each port. <a href="https://www.shoreexcursionsgroup.com/results">Click here</a> to view a full list of excursions available based on your time in port. All tours are first come, first served. So, don\'t delay. We would not want you to miss out!!',
+                'image' => '//media0.shoreexcursionsgroup.com/docs/groups/1117.jpg',
+                'created_at'=> '2018-08-23 00:00:00',
+            ]);
+
+            $group->save();
+        }
     }
 
     /**
