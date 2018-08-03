@@ -107,6 +107,7 @@ class AdminController extends Controller
         return view('admin.contact_importer',$param);
     }
     public function getArrow($type){
+        $type = "client";
         if($type == 'group')
             $set = $this->getGroupMonthlyRecord();
         else if($type == 'client')
@@ -133,7 +134,7 @@ class AdminController extends Controller
             }
         }
         else{
-            $param['arrow'] = '<em class="mr-sm  ion-minus-round"></em>';
+            $param['arrow'] = '<em class="mr-sm ion-arrow-down-b"></em>';
         }
         return  $param['arrow'];
     }
