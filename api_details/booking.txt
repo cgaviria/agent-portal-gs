@@ -1,3 +1,13 @@
+Login :
+
+url : /httpdocs/api/login
+method : GET
+data :{ 
+email:christiangaviri@gmail.com
+password:12345
+}
+------------------------------------------------------------------------------------
+Create Booking :
 
 url : /httpdocs/api/create_booking
 method : POST
@@ -52,6 +62,8 @@ port_arrival:2018/11/11
 port_departure:2018/11/17
 }
 
+-------------------------------------------------------------------------------
+Edit Booking :
 
 url : /httpdocs/api/edit_booking
 method : POST
@@ -105,7 +117,8 @@ port:
 port_arrival:2018/11/11
 port_departure:2018/11/17
 }
-
+-----------------------------------------------------------------
+Get Booking :
 
 url : /httpdocs/api/read_booking
 method :GET
@@ -114,6 +127,9 @@ data :
 {
 id:886
 }
+
+---------------------------------------------------------------------
+Create Group :
 
 url : /httpdocs/api/create_group
 method :POST
@@ -131,6 +147,9 @@ text:NOW IS THE TIME to reserve your tours for this exciting voyage! Below are t
 image://media0.shoreexcursionsgroup.com/docs/groups/1117.jpg
 }
 
+---------------------------------------------------------------------------
+Get Group :
+
 url : /httpdocs/api/read_group
 method : GET
 
@@ -139,6 +158,9 @@ data :
 id:1645
 }
 
+----------------------------------------------------------------------------
+Delete Group :
+
 url : /httpdocs/api/delete_group
 method :GET
 
@@ -146,3 +168,4 @@ data :
 {
 id:1645
 }
+-------------------------------------------------------------------------------
