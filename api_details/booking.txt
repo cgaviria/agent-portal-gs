@@ -1,5 +1,5 @@
 
-http://localhost/shoreexcursion_dev/httpdocs/api/create_booking
+url : /httpdocs/api/create_booking
 method : POST
 data : 
 
@@ -53,7 +53,7 @@ port_departure:2018/11/17
 }
 
 
-http://localhost/shoreexcursion_dev/httpdocs/api/edit_booking
+url : /httpdocs/api/edit_booking
 method : POST
 data :
 {
@@ -107,7 +107,7 @@ port_departure:2018/11/17
 }
 
 
-http://localhost/shoreexcursion_dev/httpdocs/api/read_booking
+url : /httpdocs/api/read_booking
 method :GET
 
 data :
@@ -115,7 +115,7 @@ data :
 id:886
 }
 
-http://localhost/shoreexcursion_dev/httpdocs/api/create_group
+url : /httpdocs/api/create_group
 method :POST
 
 data:
@@ -131,7 +131,7 @@ text:NOW IS THE TIME to reserve your tours for this exciting voyage! Below are t
 image://media0.shoreexcursionsgroup.com/docs/groups/1117.jpg
 }
 
-http://localhost/shoreexcursion_dev/httpdocs/api/read_group
+url : /httpdocs/api/read_group
 method : GET
 
 data :
@@ -139,7 +139,7 @@ data :
 id:1645
 }
 
-http://localhost/shoreexcursion_dev/httpdocs/api/delete_group
+url : /httpdocs/api/delete_group
 method :GET
 
 data :
