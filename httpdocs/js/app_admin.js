@@ -1249,6 +1249,7 @@ size_li = $(".bb").length;
                 }
             }
         };
+
         var d = new Date(),
         n = d.getMonth();
         var booking_monthly = [];
@@ -1259,7 +1260,6 @@ size_li = $(".bb").length;
           grouplists.push(0);
           clientlist.push(0);
         }
-        
         $.ajax({
                   type: "GET",
                   url: $('#bokkinglist').val(),
@@ -1291,8 +1291,7 @@ size_li = $(".bb").length;
                     initSparkline($('#sparkline3'), clientlist, sparkOpts);
                   }
               });
-      
-        
+
         function initSparkline(el, values, opts) {
             el.sparkline(values, $.extend(sparkOpts, el.data()));
         }

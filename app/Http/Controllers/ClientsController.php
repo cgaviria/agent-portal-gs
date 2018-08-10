@@ -422,7 +422,8 @@ class ClientsController extends Controller
 		}
 	}
 	public function getClientMonthly(){
+
 		$set = $this->getClientMonthlyRecord();
-        return $set;
+    return $set;
 	}
 }

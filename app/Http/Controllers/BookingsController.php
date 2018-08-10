@@ -227,7 +227,8 @@ class BookingsController extends Controller
 		return Response::stream($callback, 200, $headers); //use Illuminate\Support\Facades\Response;
 	}
 	public function getBookingMonthly(){
-		$set = $this->getBookingMonthlyRecord();
+
+		    $set = $this->getBookingMonthlyRecord();
         return $set;      
 	}
 }

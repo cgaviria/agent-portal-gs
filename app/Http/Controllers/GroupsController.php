@@ -124,7 +124,8 @@ class GroupsController extends Controller
 		return view('admin.group', ['group' => $group]);
 	}
 	public function getGroupMonthly(){
+
 		$set = $this->getGroupMonthlyRecord();
-        return $set;   
+    return $set;   
 	}
 }

@@ -123,7 +123,7 @@ class UsersController extends Controller
 			$logged_in_user->first_name = $request->input('first_name');
 			$logged_in_user->last_name = $request->input('last_name');
 			$logged_in_user->email = $request->input('email');
-			$logged_in_user->agency_id = ($request->input('role') == '1' | $request->input('role') == '2')? $request->input('agency_id') : NULL ;
+			$logged_in_user->agency_id = ($request->input('role') == '1' || $request->input('role') == '2')? $request->input('agency_id') : NULL ;
 			if ($change_password = $request->input('password')) {
 				if ($change_password == $request->input('password_confirmation')) {
 					$logged_in_user->password = $change_password;
@@ -134,10 +134,10 @@ class UsersController extends Controller
 			}
             
 			$validation_rules['email'] = array('required', 'email', Rule::unique('users')->ignore($logged_in_user->id));
-			$customMessages = [
-			        'required_if' => 'The agency field can not be blank.'
-			    ];
-			$validator = Validator::make($request->all(), $validation_rules ,$customMessages );
+			$custom_messages = [
+			        'required_if' => 'The agency field cannot be blank.'
+			];
+			$validator = Validator::make($request->all(), $validation_rules, $custom_messages);
 
 			if ($validator->fails()) {
 				return response()->json([
@@ -150,6 +150,7 @@ class UsersController extends Controller
 				}
 
 				$logged_in_user->save();
+
 				if($request->input('edit_user'))
 				$logged_in_user->roles()->sync([$request->input('role')]);
 				
@@ -158,7 +159,8 @@ class UsersController extends Controller
 				}
 				else{
 					$this->insertActivity( "/dashboard/users/my_account",'updated own <a href="%a" target="_blank">Profile</a>',$current_user->id);
-				}
+          }
+
 				return response()->json([
 					'status' => 'success',
 					'data' => array(
@@ -376,13 +378,14 @@ class UsersController extends Controller
 				$user->save();
 				$insertedId = $user->id;
 
-				$role_slug = $request->input('role');
-				$role = Role::where('slug',$role_slug)->get();
-				$role_id = $role[0]->id;
-				$role = Role::find($role_id);
-				$user->roles()->attach($role);
-				
-				
+				if ($request->input('role')) {
+					$role_slug = $request->input('role');
+					$role = Role::where('slug',$role_slug)->get();
+					$role_id = $role[0]->id;
+					$role = Role::find($role_id);
+					$user->roles()->attach($role);
+				}
+
 				$activation = Activation::create($user);
 				$getactivationdata = Activation::exists($user);
 				Activation::complete($user, $getactivationdata->code);
