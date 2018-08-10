@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
-
+use App\Traits\MonthlyRecordTrait;
 use App\Library\RestResponse;
 
 use Sentinel;
@@ -23,7 +23,7 @@ use Yajra\DataTables\DataTables;
 
 class BookingsController extends Controller
 {
-    
+    use MonthlyRecordTrait;
     public static $rules_add = array(
         'user_id'  => 'required',
         'email'  => 'required|email',
@@ -227,10 +227,8 @@ class BookingsController extends Controller
 		return Response::stream($callback, 200, $headers); //use Illuminate\Support\Facades\Response;
 	}
 	public function getBookingMonthly(){
-		$set = DB::table("bookings") ->select(DB::raw('count(id) as `data`'),DB::raw('MONTH(created_at) month'))
-               ->groupby('month')
-               ->orderby('month')
-               ->get();
+
+		    $set = $this->getBookingMonthlyRecord();
         return $set;      
 	}
 }

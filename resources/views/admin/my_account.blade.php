@@ -79,6 +79,7 @@
                                     </div>
                                 </div>
                             </fieldset>
+                            <input type="hidden" value="{{$edit_user}}" name="edit_user">
                             @if($edit_user)
                              <fieldset>
                                 <div class="form-group">

@@ -11,19 +11,20 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
-
+use App\Traits\MonthlyRecordTrait;
 use App\Library\RestResponse;
 
 use Sentinel;
 use Lang;
 use URL;
+
 use DB;
 use App\Booking;
 use Yajra\DataTables\DataTables;    
 
 class GroupsController extends Controller
 {
-    
+    use MonthlyRecordTrait;
     public static $rules_add = array(
         'user_id'  => 'required',
         'email'  => 'required|email',
@@ -123,10 +124,8 @@ class GroupsController extends Controller
 		return view('admin.group', ['group' => $group]);
 	}
 	public function getGroupMonthly(){
-		$set = DB::table("agencies_groups") ->select(DB::raw('count(id) as `data`'),DB::raw('MONTH(created_at) month'))
-               ->groupby('month')
-               ->orderby('month')
-               ->get();
-        return $set;   
+
+		$set = $this->getGroupMonthlyRecord();
+    return $set;   
 	}
 }

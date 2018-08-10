@@ -1221,7 +1221,7 @@ size_li = $(".bb").length;
         var sparkOpts = {
             type: 'line',
             height: 20,
-            width: '70',
+            width: '200',
             lineWidth: 2,
             valueSpots: {
                 '0:': Colors.byName('blue-700'),
@@ -1230,17 +1230,42 @@ size_li = $(".bb").length;
             spotColor: Colors.byName('blue-700'),
             fillColor: 'transparent',
             highlightLineColor: Colors.byName('blue-700'),
-            spotRadius: 0
+            spotRadius: 0,
+            tooltipFormat: '{{offset:offset}}, {{y:value}}',
+            tooltipValueLookups: {
+                'offset': {
+                    0: 'Jan',
+                    1: 'Feb',
+                    2: 'Mar',
+                    3: 'Apr',
+                    4: 'May',
+                    5: 'Jun',
+                    6: 'Jul',
+                    7: 'Aug',
+                    8: 'Sep',
+                    9: 'Oct',
+                    10:'Nov',
+                    11:'Dec'
+                }
+            }
         };
+
+        var d = new Date(),
+        n = d.getMonth();
         var booking_monthly = [];
-        var grouplist = []; 
+        var grouplists = []; 
         var clientlist = [];
+        for (i = 0; i <= n; i++){
+          booking_monthly.push(0);
+          grouplists.push(0);
+          clientlist.push(0);
+        }
         $.ajax({
                   type: "GET",
                   url: $('#bokkinglist').val(),
                   success: function(result, status) {
                       $.map( result, function( n ) {
-                           booking_monthly.push(n.data);
+                           booking_monthly[n.month-1] = n.data;
                         });
                     initSparkline($('#sparkline2'), booking_monthly, sparkOpts);
                   }
@@ -1250,9 +1275,10 @@ size_li = $(".bb").length;
                   url: $('#grouplist').val(),
                   success: function(result, status) {
                       $.map( result, function( n ) {
-                           grouplist.push(n.data);
+                            grouplists[n.month-1] = n.data;
+                          
                         });
-                    initSparkline($('#sparkline1'), grouplist, sparkOpts);
+                    initSparkline($('#sparkline1'), grouplists, sparkOpts);
                   }
               });
         $.ajax({
@@ -1260,13 +1286,12 @@ size_li = $(".bb").length;
                   url: $('#clientlist').val(),
                   success: function(result, status) {
                       $.map( result, function( n ) {
-                           clientlist.push(n.data);
+                           clientlist[n.month-1] = n.data;
                         });
                     initSparkline($('#sparkline3'), clientlist, sparkOpts);
                   }
               });
-        
-       
+
         function initSparkline(el, values, opts) {
             el.sparkline(values, $.extend(sparkOpts, el.data()));
         }

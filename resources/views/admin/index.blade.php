@@ -17,7 +17,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">{{$booking}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Bookings</small>
+                                    <h4 class="m0 text-thin">{{$booking}}</h4><small class="m0 text-muted">{!!$arrowBooking!!}Bookings</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <input type="hidden" id="bokkinglist" value="{{URL::action('BookingsController@getBookingMonthly')}}">
@@ -32,7 +32,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">{{$group}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-down-b"></em>Groups</small>
+                                    <h4 class="m0 text-thin">{{$group}}</h4><small class="m0 text-muted">{!!$arrowGrouping!!}Groups</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <input type="hidden" id="grouplist" value="{{URL::action('GroupsController@getGroupMonthly')}}">
@@ -47,7 +47,7 @@
                         <div class="card-body pv">
                             <div class="clearfix">
                                 <div class="pull-left">
-                                    <h4 class="m0 text-thin">{{$client}}</h4><small class="m0 text-muted"><em class="mr-sm ion-arrow-up-b"></em>Clients</small>
+                                    <h4 class="m0 text-thin">{{$client}}</h4><small class="m0 text-muted">{!!$arrowClient!!}Clients</small>
                                 </div>
                                 <div class="pull-right mt-lg">
                                     <input type="hidden" id="clientlist" value="{{URL::action('ClientsController@getClientMonthly')}}">
@@ -90,7 +90,6 @@
                                 <!-- END dropdown-->
                                 <div class="card-title">Activity</div><small>What's been going on</small>
                             </div>
-
                             @if(count($activites_user)>0)
                             @foreach($activites_user as $activity)
                             <div class="card-body bb" style="display:none;">
@@ -113,7 +112,6 @@
                                               $hour = $minutes>60?intval($minutes/60):"";
                                               $days = $hour>24?intval($hour/24):"";
                                               if($secondsDifference<60)
-
                                                 echo $secondsDifference==1?$secondsDifference." second ago":$secondsDifference." seconds ago";
                                               if($days>0)
                                                  echo ($days==1)?$days." day ago":$days." days ago";
@@ -121,11 +119,7 @@
                                                  echo ($hour==1)?$hour." hour ago":$hour." hours ago";
                                               else if($minutes>0 )
                                                  echo ($minutes==1)?$minutes." minute ago":$minutes." minutes ago";
-
-                                            
-
-                                              
-                                             ?>
+                                              ?>
                                              </span></div>
                                     </div>
                                 </div>

@@ -9,14 +9,15 @@
         "cartalyst/sentinel": "2.0.*",
         "doctrine/dbal": "*",
         "fideloper/proxy": "~4.0",
+        "folklore/image": "0.2.4",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "5.6.*",
+        "laravel/passport": "^6.0",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.6",
         "webklex/laravel-imap": "^1.1",
-        "yajra/laravel-datatables-oracle": "^8.4",
-        "folklore/image": "0.2.4"
+        "yajra/laravel-datatables-oracle": "^8.4"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

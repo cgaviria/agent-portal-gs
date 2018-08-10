@@ -14,18 +14,20 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Library\RestResponse;
 use App\Traits\ActivitesTrait;
-
+use App\Traits\MonthlyRecordTrait;
 use Sentinel;
 use Lang;
 use URL;
 use DB;
 use App\Client;
 use App\Ship;
+use App\Role;
 use Yajra\DataTables\DataTables;    
 
 class ClientsController extends Controller
 {
      use ActivitesTrait;
+     use MonthlyRecordTrait;
     public static $rules_add = array(
         'first_name'  => 'required|regex:/^[a-zA-Z]+$/u',
         'last_name'=>'regex:/^[a-zA-Z]+$/u',
@@ -84,19 +86,19 @@ class ClientsController extends Controller
 		$user_check = Sentinel::check();
 
 		if ($user_check) {
-			$clients = Client::query();
+			$clients = Client::query()->select('clients.*');
 			$logged_in_user = Sentinel::getUser();
 			$current_user_role = $logged_in_user->roles->first()->slug;
-
-			$clients->select('clients.*');
-            $clients->when($current_user_role  == 'agent', function ($q) use($logged_in_user){
+			
+			
+            $clients->when(Sentinel::inRole(Role::ROLE_AGENT), function ($q) use($logged_in_user){
 			    return $q->where('clients.user_id', '=', $logged_in_user->id);
 			});
-			$clients->when($current_user_role  == 'agency', function ($q) use($logged_in_user) {
+			$clients->when(Sentinel::inRole(Role::ROLE_AGENCY_MANAGER), function ($q) use($logged_in_user) {
 				$q->leftjoin('users', 'clients.user_id', '=', 'users.id');
 			    return $q->where('users.agency_id', '=', $logged_in_user->agency_id);
 			});
-			$clients->when($current_user_role  == 'owner', function ($q) use($logged_in_user) {
+			$clients->when(Sentinel::inRole(Role::ROLE_OWNER), function ($q) use($logged_in_user) {
 				$q->leftjoin('users', 'clients.user_id', '=', 'users.id');
 				$q->leftjoin('agencies', 'agencies.id', '=', 'users.agency_id');
 			    return $q->where('agencies.owner_id', '=', $logged_in_user->id);
@@ -420,10 +422,8 @@ class ClientsController extends Controller
 		}
 	}
 	public function getClientMonthly(){
-		$set = DB::table("clients") ->select(DB::raw('count(id) as `data`'),DB::raw('MONTH(created_at) month'))
-               ->groupby('month')
-               ->orderby('month')
-               ->get();
-        return $set;
+
+		$set = $this->getClientMonthlyRecord();
+    return $set;
 	}
 }

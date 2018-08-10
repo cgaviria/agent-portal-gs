@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Laravel\Passport\HasApiTokens;
 use Folklore\Image\Facades\Image;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Sentinel;
