@@ -6,12 +6,15 @@ var ViewsAdminBookings = Class.extend({
     tour_date_end: null,
     datatable: null,
     client_id :null,
+    group_id :null,
     init: function() {
         // this.cancel_booking_endpoint = cancel_booking_endpoint;
 
         jQuery(document).data("ViewsAdminBookings", this);
         var client_id = jQuery('#client_id').val();
+        var group_id = jQuery('#group_id').val();
         jQuery(document).data("ViewsAdminBookings").client_id = client_id;
+        jQuery(document).data("ViewsAdminBookings").group_id = group_id;
         jQuery(document).ready(function(){
             jQuery("#btn-order-date-range, #btn-order-date-range-main").click($(document).data("ViewsAdminBookings").orderDateFilterClick);
             //jQuery("#btn-order-date-range-remove-filter").click(jQuery(document).data("ViewsAdminBookings").removeOrderDateFilter);

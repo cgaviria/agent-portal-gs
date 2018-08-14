@@ -1,14 +1,8 @@
 @extends('layouts.admin')
 @section('content')
     <script src="{{asset('js/views/admin/users.js?'.Config::get('app.cache_buster'))}}"></script>
-
-    
     <script>
-
          var ViewsAdminUsersInstance = new ViewsAdminUsers({!! json_encode($datatables_params) !!});
-       
-
-       
     </script>
     <section>
 

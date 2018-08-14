@@ -69,6 +69,11 @@
         @else
         <input type="hidden" value='' id="client_id">
         @endif
+         @if(isset($group_id))
+        <input type="hidden" value={{$group_id}} id="group_id">
+        @else
+        <input type="hidden" value='' id="group_id">
+        @endif
 
         <div class="content-heading bg-white">
             <div class="row">
@@ -82,7 +87,7 @@
                 </div>
                 <div class="col-sm-8 text-right hidden-xs upper-right-buttons">
                   
-                        <a href="#" id="btn-all-remove-filter" class="btn btn-danger ripple" type="button" style="padding: 6px 16px;">Clear Search</a></li>
+                        <a href="#" id="btn-all-remove-filter" class="btn btn-danger ripple" type="button" style="padding: 6px 16px;">Clear Search</a>
                            
                     
                     <div class="btn-group">
@@ -173,6 +178,7 @@
                   d.tour_date_end = jQuery(document).data("ViewsAdminBookings").tour_date_end;
                   d.tour_date_end = jQuery(document).data("ViewsAdminBookings").tour_date_end;
                   d.client_id = jQuery(document).data("ViewsAdminBookings").client_id;
+                  d.group_id = jQuery(document).data("ViewsAdminBookings").group_id;
               }
           }
           ,

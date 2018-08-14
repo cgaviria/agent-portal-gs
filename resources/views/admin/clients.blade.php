@@ -11,10 +11,10 @@
                     
                     @if (Sentinel::inRole(\App\Role::ROLE_AGENT))
                     <div class="btn-group">
-                       <button  onclick="importClient();" class="btn ripple btn-primary" type="button">Import Clients by CSV</button>
+                       <button class="btn ripple btn-primary"  id="import_client" type="button">Import Clients by CSV</button>
                     </div>
                     <div class="btn-group">
-                        <button  onclick="showAddForm();" class="btn ripple btn-primary" type="button">Add New Client</button>
+                        <button class="btn ripple btn-primary" id="create_client" type="button">Add New Client</button>
                     </div>
                     @endif
                     
@@ -55,26 +55,10 @@
 @section('extra_script')
 <script src="{{asset('js/views/admin/client.js?'.Config::get('app.cache_buster'))}}"></script>
 <script>
-  var ViewsAdminClientsInstance = new ViewsAdminClients('{!! json_encode($fields) !!}','{{ url($url) }}','{!! json_encode($order) !!}');
-</script>
-<script type="text/javascript">
+  var ViewsAdminClientsInstance = new ViewsAdminClients('{!! json_encode($fields) !!}','{{ url($url) }}','{!! json_encode($order) !!}','{{URL::action("ClientsController@getAddForm")}}','{{URL::action("ClientsController@getImportCLient")}}');
   
-  function showAddForm(){
-    viewsAdminInstance.showDialog("{{URL::action('ClientsController@getAddForm')}}","@lang('strings_client.add_client')");
-  }
-  function importClient(){
-     viewsAdminInstance.showDialog("{{URL::action('ClientsController@getImportCLient')}}","@lang('strings_client.import_client')");
-  }
-  function showEditForm(id){
-    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getEditForm','')}}/"+id,"@lang('strings.edit_importer')");
-  }
-
   function showDeleteForm(id){
     viewsAdminInstance.showDialog("{{URL::action('ClientsController@getDeleteForm','')}}/"+id,"@lang('strings_client.delete_client')");
-  }
-
-  function showRunForm(id){
-    viewsAdminInstance.showDialog("{{URL::action('ContactImporterController@getRunForm','')}}/"+id,"@lang('strings.run_importer')");
   }
 </script>    
 @endsection

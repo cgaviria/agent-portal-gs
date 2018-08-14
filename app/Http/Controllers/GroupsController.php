@@ -105,6 +105,7 @@ class GroupsController extends Controller
 				})
 				->addColumn('actions', function ($group) use ($user_check) {
 					$buttons = '<a href="' . action('GroupsController@getGroup', array($group->id)) . '" class="mb-sm btn btn-primary ripple" type="button">View</a> ';
+					$buttons.= '<a href="' . action('GroupsController@getBooking', array($group->id)) . '" class="mb-sm btn btn-primary ripple" type="button">View Booking</a> ';
 					return $buttons;
 				})
 				->rawColumns(['actions'])
@@ -120,12 +121,55 @@ class GroupsController extends Controller
 	public function getGroup($id, Request $request)
 	{
 		$group = Group::find($id);
-
-		return view('admin.group', ['group' => $group]);
+        $agents = Booking::where('group_id',$id)
+                  ->leftjoin('users','bookings.agent_id','=','users.id')
+                  ->selectRaw('users.first_name,users.last_name,sum(qty_children) as qty_children,sum(qty_adult) as qty_adult,GROUP_CONCAT(DISTINCT(port)) as port,GROUP_CONCAT(DISTINCT(product_name)) as product_name,sum(qty_children+qty_adult) as total')
+                  //->select('users.first_name','users.last_name','bookings.port','product_name','qty_children','qty_adult', (DB::raw('qty_children + qty_adult AS total')))
+                  ->groupBy('users.id')
+                  ->get();
+        // dd($agents);        
+		return view('admin.group', ['group' => $group,'agents' => $agents]);
 	}
 	public function getGroupMonthly(){
 
 		$set = $this->getGroupMonthlyRecord();
     return $set;   
 	}
+	 /**
+     * Shows the bookings page.
+     *
+     * @return Response
+     */
+    public function getBooking($id ,Request $request)
+    {
+        /*https://laravel-news.com/google-api-socialite*/
+       
+        $param = array();
+        $param['url']  = URL::action('BookingsController@getData');
+        $param['group_id'] = $id;
+        $param['title'] = "Bookings for Group ID ".$id;
+        $param['fields'] = [
+                            [ 'id' => 'order_id', 'label' => 'Order ID', 'ordenable' => true,  'searchable' => true],
+                            [ 'id' => 'order_date', 'label' => 'Order Date', 'ordenable' => true,  'searchable' => true],
+                            [ 'id' => 'first_name', 'label' => 'Full Name', 'ordenable' => true,  'searchable' => true],
+	                        [ 'id' => 'customer_email_address', 'label' => 'Customer Email', 'ordenable' => true,  'searchable' => true],
+                            [ 'id' => 'ship_id', 'label' => 'Cruise Ship', 'ordenable' => true,  'searchable' => false],
+	                        [ 'id' => 'cruise_start_date', 'label' => 'Cruise Start Date', 'ordenable' => true,  'searchable' => false],
+	                        [ 'id' => 'product_name', 'label' => 'Product Name', 'ordenable' => true,  'searchable' => true],
+                            [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
+                           ];
+
+        $param['order'] = ['order' => 0, 'way' => 'desc'];
+
+        return view('admin.bookings', $param);
+      
+    }
+    public function getCustomerGroup($url){
+
+        $group = Group::where('url',$url)
+                ->leftjoin('bookings','bookings.group_id','=','groups.id')
+                ->get();
+        return view('admin.customergroup', ['group' => $group]);
+    
+    }
 }

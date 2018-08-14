@@ -1034,6 +1034,7 @@ fieldset .form-group {
     height: 48px !important;
     padding: 14px 18px;
     border-top: 1px solid rgba(0, 0, 0, 0.045);
+    width: auto;
 }
 .table > tbody + tbody {
     border-bottom-width: 1px;

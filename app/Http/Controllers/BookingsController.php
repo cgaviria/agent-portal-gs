@@ -108,6 +108,11 @@ class BookingsController extends Controller
             	$bookings->leftJoin('clients', 'clients.email', '=', 'bookings.customer_email_address');
             	$bookings->where('clients.id', $request->client_id);
             }
+             if($request->group_id){
+
+            	$bookings->leftJoin('groups', 'groups.id', '=', 'bookings.group_id');
+            	$bookings->where('groups.id', $request->group_id);
+            }
 			if ($search_term = $request->input('search.value')) {
 				$bookings->where(function($bookings) use ($search_term) {
 					$bookings->where('cruise_ships.name', 'LIKE', '%' . strtolower($search_term) . '%');
