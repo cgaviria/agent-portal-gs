@@ -49,7 +49,7 @@ return [
     | Changing this value will cause all javascript files to reload for users.
     |
     */
-    'cache_buster' => 'v=83',
+    'cache_buster' => 'v=84',
 
     /*
     |--------------------------------------------------------------------------
