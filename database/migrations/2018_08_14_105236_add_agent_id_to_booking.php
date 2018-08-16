@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUserIdToClients extends Migration
+class AddAgentIdToBooking extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddUserIdToClients extends Migration
      */
     public function up()
     {
-        Schema::table('clients', function($table) {
-            $table->integer('user_id')->unsigned();
+      Schema::table('bookings', function($table) {
+            $table->integer('agent_id')->unsigned();
         });
     }
 

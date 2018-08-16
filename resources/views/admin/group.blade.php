@@ -4,10 +4,13 @@
     <section>
         <div class="content-heading bg-white">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-4">
                     <h4 class="m0 text-thin">Group Details</h4>
                     <small>View details for a specific group</small>
                 </div>
+                <div class="col-sm-8 text-right hidden-xs upper-right-buttons">
+                    <a href="{{ URL::to('/dashboard/group/booking/' . $group->id) }}" id="btn-all-remove-filter" class="btn btn-primary ripple" type="button" style="padding: 6px 16px;">View Booking</a>
+                 </div>
             </div>
         </div>
         <div class="container-fluid">
@@ -22,50 +25,56 @@
                             <table class="table table-striped">
                                 <tbody>
                                     <tr>
-                                        <td class="group-details-td"><em class="ion-document-text icon-fw mr"></em>ID</td>
-                                        <td>{{$group->id}}</td>
-                                    </tr>
-                                    <tr>
                                         <td><em class="ion-document-text icon-fw mr"></em>Name</td>
                                         <td>{{$group->name}}</td>
                                     </tr>
-                                    <tr>
+                                   <tr>
                                         <td><em class="ion-document-text icon-fw mr"></em>URL</td>
-                                        <td>{{$group->url}}</td>
+                                        <td><a href="http://www.shoreexcursionsgroup.com/group/{{$group->url}}" target="_blank">Click Here</a></td>
                                     </tr>
-                                    <tr>
-                                        <td><em class="ion-document-text icon-fw mr"></em>Email</td>
-                                        <td>{{$group->email}}</td>
-                                    </tr>
+                                    
                                     <tr>
                                         <td><em class="ion-document-text icon-fw mr"></em>Sail Date</td>
                                         <td>{{($group->sail_date ? date('n/j/Y', strtotime($group->sail_date)) : 'N/A')}}</td>
                                     </tr>
-                                    <tr>
-                                        <td><em class="ion-document-text icon-fw mr"></em>Ship</td>
-                                        <td>{{($group->ship ? $group->ship->name : 'N/A')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><em class="ion-document-text icon-fw mr"></em>Duration</td>
-                                        <td>{{($group->duration ? $group->duration . ' days' : 'N/A')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><em class="ion-document-text icon-fw mr"></em>Text</td>
-                                        <td>{{($group->text ? htmlspecialchars($group->text) : 'N/A')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><em class="ion-document-text icon-fw mr"></em>Image</td>
-                                        <td>{!! ($group->image ? '<img src="' . $group->image . '" />' : 'N/A') !!}</td>
-                                    </tr>
+                                    
                                 </tbody>
                             </table>
                         </div>
                     </form>
+                    <form class="card" name="user.profileForm">
+                     <div class="card-body">
+                                <table class="table table-bordered">
+                                    <thead><tr>
+                                        <th>Agent</th>
+                                        <th>Tour Port</th>
+                                        <th>Tour Name</th>
+                                        <th>Number Of Children</th>
+                                        <th>Number Of Adults</th>
+                                        <th>Total Attending</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($agents as $each_details)
+                                        <tr>
+                                            <td>{{$each_details->first_name}} {{$each_details->last_name}}</td>
+                                            <td>{{$each_details->port}}</td>
+                                            <td>{{$each_details->product_name}}</td>
+                                            <td>{{$each_details->qty_children}}</td>
+                                            <td>{{$each_details->qty_adult}}</td>
+                                            <td>{{$each_details->total}}</a></td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
                     @if ($group->getBookings()->count())
-                        <form class="card" name="user.profileForm">
+                       <!-- <form class="card" name="user.profileForm">
                             <h5 class="card-heading pb0">
                                 Bookings
                             </h5>
+                           
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead><tr>
@@ -91,7 +100,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </form>
+                        </form>-->
                     @endif
                 </div>
             </div>

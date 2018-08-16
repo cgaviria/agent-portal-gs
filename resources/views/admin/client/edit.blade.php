@@ -4,9 +4,13 @@
     <section>
         <div class="content-heading bg-white">
             <div class="row">
-                <div class="col-sm-8">
-                    <h4 class="m0 text-thin">Edit {{$clients[0]->first_name}}</h4>
+                <div class="col-sm-4">
+                    <h4 class="m0 text-thin">Edit Client ID {{$clients[0]->id}}</h4>
+                    <small>Edit the client information here</small>
                 </div>
+                <div class="col-sm-8 text-right hidden-xs upper-right-buttons">
+                    <a href="{{ URL::to('/dashboard/clients/view/' . $clients[0]->id) }}" id="btn-all-remove-filter" class="btn btn-primary ripple" type="button" style="padding: 6px 16px;">View Booking</a>
+                 </div>
             </div>
         </div>
         <div class="container-fluid">

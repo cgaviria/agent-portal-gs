@@ -9,12 +9,26 @@ var ViewsAdminClients = Class.extend({
     getdataurl : null,
     order : null,
     edit: null,
-    init: function(fields, getdataurl, order, edit) {
+    imports: null,
+   
+    init: function(fields, getdataurl, order, edit, imports) {
         this.edit = edit;
+        this.imports = imports;
         // this.cancel_booking_endpoint = cancel_booking_endpoint;
         jQuery(document).ready(function(){
             $("#form-edit-client").submit($(document).data("ViewsAdminClients").onClientSubmit);
         });
+        $('#create_client').click(function(){
+            $('#dynamic_modal_title').html('Add client');
+            $(document).data("ViewsAdminClients").sendGet(edit, $(document).data("ViewsAdminClients").responseDialog);
+            return false;
+        });
+         $('#import_client').click(function(){
+            $('#dynamic_modal_title').html('Import client');
+            $(document).data("ViewsAdminClients").sendGet(imports, $(document).data("ViewsAdminClients").responseDialog);
+            return false;
+        });
+
         jQuery(document).data("ViewsAdminClients", this);
         $('#example-datepicker-9')
           .datepicker({
@@ -66,6 +80,27 @@ var ViewsAdminClients = Class.extend({
   }
          
     },
+    responseDialog: function(result) {
+      $('#dynamic_modal_body').html(result);
+    $('#dynamic_modal').modal('show');  
+    $('#example-datepicker-9')
+          .datepicker({
+              container:'#example-datepicker-container-9',
+              startDate: '+0d',
+              format: 'yyyy-mm-dd',
+                    autoclose: true
+          });
+  },
+  sendGet: function(url, callBack){
+      $.ajax({
+          type: "GET",
+          url: url,
+          //success: callBack(result, status)
+          success: function(result, status) {
+              callBack(result);
+          }
+      });
+  },
     orderDateFilterClick: function(event) {
         jQuery('#dynamic_modal_title').html('Order Date Filter');
         jQuery('#dynamic_modal_body').html(jQuery('#modal-order-date-filter').html());

@@ -73,13 +73,15 @@ Route::post('/runimporter', 'ImapController@makeImportPaswd')->middleware('authS
 Route::post('/runimporterNP', 'ImapController@makeImportNoPaswd')->middleware('authSentinel');
 
 Route::get('/dashboard/groups', ['as' => 'groups', 'uses' => 'GroupsController@getAdminTable'])->middleware('authSentinel');
+
+Route::get('/dashboard/group/{url}', 'GroupsController@getCustomerGroup')->middleware('authSentinel');
 Route::get('/dashboard/groups/view/{id}', 'GroupsController@getGroup')->middleware('authSentinel');
 Route::get('/data/groups', 'GroupsController@getData')->middleware('authSentinel');
-
+Route::get('/dashboard/group/booking/{id}', 'GroupsController@getBooking')->middleware('authSentinel');
 Route::get('/dashboard/bookings/view/{id}', 'BookingsController@getBooking')->middleware('authSentinel');
 Route::get('/dashboard/bookings/cancel_booking/{id}', 'BookingsController@cancelBooking')->middleware('authSentinel');
 
-Route::get('/dashboard/groups/view/{id}', 'GroupsController@getGroup')->middleware('authSentinel');
+
 Route::get('/dashboard/group_monthly', ['as' => 'group_monthly', 'uses' => 'GroupsController@getGroupMonthly'])->middleware('authSentinel');
 
 Route::get('/dashboard/bookings/export/csv', 'BookingsController@exportCSV')->middleware('authSentinel');
