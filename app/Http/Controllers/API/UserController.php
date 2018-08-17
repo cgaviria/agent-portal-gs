@@ -24,7 +24,6 @@ public $successStatus = 200;
      * @return \Illuminate\Http\Response 
      */ 
     public function login(Request $request){ 
-       
         
         $credentials = [
             'email'    => $request->email,
@@ -32,7 +31,7 @@ public $successStatus = 200;
         ];
         $data = Sentinel::authenticate($credentials);
         
-        if( $data){ 
+        if($data){ 
             $apitoken = new ApiTokens;
             $current_time = time();
             $valid_till = $current_time + 60*60*2;
@@ -42,18 +41,16 @@ public $successStatus = 200;
             $apitoken->unix_timestamp = $current_time;
             $apitoken->valid_until = $valid_till;
             $apitoken->save();
-            
             return response()->json(['success' => $success,'data'=>$data], $this-> successStatus); 
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401); 
         } 
-
     }
 
     public function create_booking(Request $request){
-        $input = $request->all();
         
+        $input = $request->all();
         $checkAuthentication = $this->getHeader($request);
         if($checkAuthentication){
                 $booking = new Booking(array(
@@ -106,18 +103,17 @@ public $successStatus = 200;
                         'agent_id'=> $input['agent_id']
                         
                     ));
-
-                   $booking_insert =  $booking->save();
-                   if($booking){
-                        return response()->json(['return_type' => 'success','data'=>$booking], $this-> successStatus); 
-                    } 
-                    else{ 
-                        return response()->json(['error'=>'Error while creating booking'], 401); 
-                    } 
-        }
-             else{ 
-                    return response()->json(['error'=>'Unauthorised'], 401); 
+                $booking_insert =  $booking->save();
+                if($booking){
+                    return response()->json(['return_type' => 'success','data'=>$booking], $this-> successStatus); 
                 } 
+                else{ 
+                    return response()->json(['error'=>'Error while creating booking'], 401); 
+                } 
+        }
+        else{ 
+                return response()->json(['error'=>'Unauthorised'], 401); 
+            } 
     }
    
      public function edit_booking(Request $request){
@@ -309,7 +305,6 @@ public $successStatus = 200;
         $header = $request->header('token');
         $apiTokens = ApiTokens::where('token_string',$header)->get();
         $current_time = time();
-        
         if($current_time <= $apiTokens[0]->valid_until)
            return true;
         else
