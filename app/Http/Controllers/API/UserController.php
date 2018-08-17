@@ -53,6 +53,7 @@ public $successStatus = 200;
 
     public function create_booking(Request $request){
         $input = $request->all();
+        
         $checkAuthentication = $this->getHeader($request);
         if($checkAuthentication){
                 $booking = new Booking(array(
@@ -102,6 +103,7 @@ public $successStatus = 200;
                         'port' => $input['port'],
                         'port_arrival' => $input['port_arrival'],
                         'port_departure' => $input['port_departure'],
+                        'agent_id'=> $input['agent_id']
                         
                     ));
 
@@ -113,7 +115,7 @@ public $successStatus = 200;
                         return response()->json(['error'=>'Error while creating booking'], 401); 
                     } 
         }
-        else{ 
+             else{ 
                     return response()->json(['error'=>'Unauthorised'], 401); 
                 } 
     }
@@ -169,6 +171,7 @@ public $successStatus = 200;
             $booking->port = $input['port'];
             $booking->port_arrival = $input['port_arrival'];
             $booking->port_departure = $input['port_departure'];
+            $booking->agent_id=$input['agent_id'];
 
             $booking_update =  $booking->save();
             if($booking_update){
