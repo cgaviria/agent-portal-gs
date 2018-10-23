@@ -3,6 +3,10 @@
     <script src="{{asset('js/views/admin/my_account.js?'.Config::get('app.cache_buster'))}}"></script>
     <script>
         var ViewsAdminMyAccountInstance = new ViewsAdminMyAccount('{{action('UsersController@postMyAccount')}}');
+        function showDeleteForm(id){
+            viewsAdminInstance.showDialog("{{URL::action('AdminController@getDeleteForm','')}}/"+id,"Delete picture");
+             //viewsAdminInstance.showDialog("{{URL::action('ClientsController@getDeleteForm','')}}/"+id,"@lang('strings_client.delete_client')");
+          }
     </script>
     <section>
         <div class="content-heading bg-white">
@@ -31,8 +35,9 @@
                                     <label class="col-sm-2 control-label"> @if ($logged_in_user->photo)Change @else Upload @endif Picture</label>
                                     <div class="col-sm-10">
                                         @if ($logged_in_user->photo)
-                                            <div>
+                                            <div class ="img_place">
                                                 <img class="my-account-image img-circle" src="{{asset(((!empty($logged_in_user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT])) ? $logged_in_user->image_thumbnails[\App\User::THUMB_MY_ACCOUNT] : $logged_in_user->photo))}}">
+                                                <button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm(<?php echo $logged_in_user->id;?>);" type="button" style="margin-left: 144px !important;">Delete Existing Picture</button>
                                             </div>
                                         @endif
                                         <input class="form-control" id="photo" name="photo" type="file"><span class="help-block">Your picture. Used throughout the dashboard.</span>
@@ -144,5 +149,6 @@
             $('.agentselect').css('display','none');
           }
         }
+         
       </script>
 @endsection

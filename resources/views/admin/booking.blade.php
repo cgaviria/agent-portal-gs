@@ -118,7 +118,7 @@
                                 </tr>
                                 <tr>
                                     <td><em class="ion-document-text icon-fw mr"></em>Email</td>
-                                    <td>{{($booking->customer_email_address ? $booking->customer_email_address : 'N/A')}}</td>
+                                    <td class="email_add_booking">{{($booking->customer_email_address ? $booking->customer_email_address : 'N/A')}}</td>
                                 </tr>
                                 </tbody>
                             </table>

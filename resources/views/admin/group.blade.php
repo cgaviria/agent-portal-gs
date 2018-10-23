@@ -9,7 +9,13 @@
                     <small>View details for a specific group</small>
                 </div>
                 <div class="col-sm-8 text-right hidden-xs upper-right-buttons">
-                    <a href="{{ URL::to('/dashboard/group/booking/' . $group->id) }}" id="btn-all-remove-filter" class="btn btn-primary ripple" type="button" style="padding: 6px 16px;">View Booking</a>
+                    <a href="{{ URL::to('/dashboard/group/booking/' . $group->id) }}" id="btn-all-remove-filter" class="btn btn-primary ripple" type="button" style="padding: 6px 16px;">
+                        @if($count_booking)
+                            View Bookings
+                        @elseif($count_booking == 0)
+                            No bookings available
+                        @endif
+                    </a>
                  </div>
             </div>
         </div>
@@ -25,7 +31,7 @@
                             <table class="table table-striped">
                                 <tbody>
                                     <tr>
-                                        <td><em class="ion-document-text icon-fw mr"></em>Name</td>
+                                        <td><em class="ion-document-text icon-fw mr"></em>Group Name</td>
                                         <td>{{$group->name}}</td>
                                     </tr>
                                    <tr>

@@ -333,7 +333,7 @@ class ClientsController extends Controller
 
         //  $this->insertActivity( url("/dashboard/clients/$request -> input('ci_id')"),'deleted a  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
 
-          $this->insertActivity( "/dashboard/clients/",'deleted a client {{$ci->first_name}} {{$ci->last_name}}, see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
+          $this->insertActivity( "/dashboard/clients/",'deleted a client '.$ci->first_name.' '.$ci->last_name.', see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
 
           $response->mens = Lang::get('Client successfully deleted.');
           return RestResponse::sendResult(200,$response);

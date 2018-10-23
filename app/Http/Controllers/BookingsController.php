@@ -68,7 +68,23 @@ class BookingsController extends Controller
 
         return view('admin.bookings', $param);
     }
+public function getFilterForm(Request $request){
 
+      $userL = Sentinel::check(); 
+     
+      if($userL){
+          return view('admin.bookings.filter')->render();
+      }  
+    }
+    public function getTourFilterForm(Request $request){
+
+      $userL = Sentinel::check(); 
+     
+      if($userL){
+          return view('admin.bookings.tour_filter')->render();
+      }  
+    }
+    /*
     /**
      * Get the Admin Table
      *
@@ -77,7 +93,6 @@ class BookingsController extends Controller
     public function getData(Request $request)
     {
 		$user_check = Sentinel::check();
-		
 		if ($user_check) {
 			$bookings = Booking::query();
 

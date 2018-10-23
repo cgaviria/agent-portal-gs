@@ -8,6 +8,8 @@ use App\Repositories\ProjectFiles\ProjectFileRepository;
 use App\Repositories\ProjectFileTags\ProjectFileTagsRepository;
 use App\Repositories\Projects\Criteria\Search;
 use App\Repositories\Projects\ProjectRepository as ProjectRepository;
+use App\Library\RestResponse;
+
 use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +17,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
+
 
 use Sentinel;
 use URL;
@@ -24,7 +27,7 @@ use App\Client;
 use App\ContactImporter;
 use App\Activities;
 use App\User;
-
+use App\Traits\ActivitesTrait;
 use App\Traits\MonthlyRecordTrait;
 class AdminController extends Controller
 {
@@ -37,6 +40,7 @@ class AdminController extends Controller
     public function getIndex(Request $request)
     {
         $logged_in_user = Sentinel::getUser();
+        
         $current_user_role = $logged_in_user->roles->first()->slug;
         $param['booking'] = Booking::count();
         $param['group'] = Group::count();
@@ -45,7 +49,7 @@ class AdminController extends Controller
         $param['arrowBooking'] = $this->getArrow('booking');
         $param['arrowGrouping'] = $this->getArrow('group');
         $param['arrowClient'] = $this->getArrow('client');
-
+        $param['logged_in_user'] = $logged_in_user->id;
 
         $param['activites_user'] = Activities::select('activities.*','users.first_name','users.last_name','users.photo')
 
@@ -108,7 +112,7 @@ class AdminController extends Controller
         return view('admin.contact_importer',$param);
     }
     public function getArrow($type){
-        $type = "client";
+       
         if($type == 'group')
             $set = $this->getGroupMonthlyRecord();
         else if($type == 'client')
@@ -121,8 +125,9 @@ class AdminController extends Controller
         foreach($set as $each){
             $month_count[$each->month] =  $each->data;
             }
-            
+           
         if(array_key_exists($month,$month_count)){
+
             $month_count[$month - 1] = isset($month_count[$month - 1])?$month_count[$month - 1]:0;
             if($month_count[$month] > $month_count[$month - 1]){
                 $param['arrow'] = '<em class="mr-sm ion-arrow-up-b"></em>';
@@ -130,13 +135,58 @@ class AdminController extends Controller
             else if($month_count[$month] < $month_count[$month - 1]){
                 $param['arrow'] = '<em class="mr-sm ion-arrow-down-b"></em>';
             }
-            else if($month_count[$month] < $month_count[$month - 1]){
-                $param['arrow'] = '<em class="mr-sm ion-android-bar"></em>';
+            else if($month_count[$month] == $month_count[$month - 1]){
+                $param['arrow'] = '<em class="mr-sm icon ion-minus"></em>';
             }
+        }
+        else if(!array_key_exists(($month - 1),$month_count)){
+            $param['arrow'] = '<em class="mr-sm icon ion-minus"></em>';
+        }
+        else if($month_count[$month - 1] == 0){
+            $param['arrow'] = '<em class="mr-sm icon ion-minus"></em>';
         }
         else{
             $param['arrow'] = '<em class="mr-sm ion-arrow-down-b"></em>';
         }
         return  $param['arrow'];
+    }
+    /**
+     * Client Delete confirmation form
+     *
+     * @return Response
+     */
+    public function getDeleteForm($id){
+
+      $userL = Sentinel::check();        
+      if($userL){
+        $ci = User::find($id);
+          return view('admin.myaccount.delete',['ci'=>$ci])->render();
+      }  
+    }
+    /**
+     * Delete functionality
+     *
+     * @return Response
+     */
+    public function delete(Request $request){
+      $logged_in_user = Sentinel::getUser();
+      $userL = Sentinel::check();        
+      if($userL){
+        $response = new \stdClass();
+        $response->error  = false;
+        $response->errmens = [];
+              
+        $ci = User::find($request -> input('ci_id'));
+        $ci->photo = '';
+        
+        $ci->save();
+        
+
+        //  $this->insertActivity( url("/dashboard/clients/$request -> input('ci_id')"),'deleted a  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
+
+        
+          $response->mens ='Image successfully deleted.';
+          return RestResponse::sendResult(200,$response);
+      }  
     }
 }

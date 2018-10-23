@@ -30,13 +30,13 @@ var ViewsAdminClients = Class.extend({
         });
 
         jQuery(document).data("ViewsAdminClients", this);
-        $('#example-datepicker-9')
+        /*$('#example-datepicker-9')
           .datepicker({
               container:'#sail_date',
               startDate: '+0d',
               format: 'yyyy-mm-dd',
               autoclose: true
-          });
+          });*/
         fieldsdata = JSON.parse(fields);
         console.log(fieldsdata);
         var table;
@@ -75,12 +75,11 @@ var ViewsAdminClients = Class.extend({
       });
   
 
-  function refreshTable(){
-    table = jQuery('#datatable-responsive').DataTable().ajax.reload();
-  }
+ 
          
     },
     responseDialog: function(result) {
+    
       $('#dynamic_modal_body').html(result);
     $('#dynamic_modal').modal('show');  
     $('#example-datepicker-9')

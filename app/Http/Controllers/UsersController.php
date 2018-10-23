@@ -155,10 +155,10 @@ class UsersController extends Controller
 				$logged_in_user->roles()->sync([$request->input('role')]);
 				
 				if ($user_id_to_edit = $request->input('user_id_to_edit')) {
-					$this->insertActivity( "/dashboard/users/edit/$logged_in_user->id",'edited an existing  <a href="%a" target="_blank">User</a>',$current_user->id);
+					$this->insertActivity( "/dashboard/users/edit/$logged_in_user->id",'edited account details for  <a href="%a" target="_blank">'.$logged_in_user->first_name.'</a>',$current_user->id);
 				}
 				else{
-					$this->insertActivity( "/dashboard/users/my_account",'updated own <a href="%a" target="_blank">Profile</a>',$current_user->id);
+					$this->insertActivity( "/dashboard/users/my_account",'updated account details',$current_user->id);
           }
 
 				return response()->json([
@@ -240,6 +240,7 @@ class UsersController extends Controller
 
 			$users->where('users.id', '!=', $logged_in_user->id);
 			$users->leftjoin('activations','users.id','=','activations.user_id');
+
 			if (!Sentinel::inRole(Role::ROLE_ADMIN)) {
 				if ($logged_in_user->agency_id && Sentinel::inRole(Role::ROLE_AGENCY_MANAGER)) {
 					$agent_role = Sentinel::findRoleBySlug(Role::ROLE_AGENT);
@@ -315,11 +316,15 @@ class UsersController extends Controller
 	 */
 	public function getEditUser($user_id)
 	{
+		$logged_in_user = Sentinel::getUser();
+		if($logged_in_user->id == $user_id ){
+			return redirect('dashboard/users/my_account');
+		}
 		$user_to_edit = User::select('users.*','role_users.role_id')
 						->leftjoin('role_users','users.id','=','role_users.user_id')
 						->leftjoin('roles','role_users.role_id','=','roles.id')
 						->where('users.id',$user_id)->get();
-		$logged_in_user = Sentinel::getUser();
+		
 		$current_user_role = $logged_in_user->roles->first()->slug;
         $role = Role::when(Sentinel::inRole(Role::ROLE_ADMIN), function ($q) use($current_user_role) {
 						return $q;
@@ -429,7 +434,7 @@ class UsersController extends Controller
 	          $response->errmens = [];
 	          $activation = DB::table('activations')->where('user_id',$request -> input('ci_id'))->delete();
 
-	          $this->insertActivity( "/dashboard/users/edit/".$request -> input('ci_id'),'deactivated a  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+	          $this->insertActivity( "/dashboard/users/edit/".$request -> input('ci_id'),'deactivated an  <a href="%a" target="_blank">User</a>',$logged_in_user->id);
 
 	          $response->mens = Lang::get('User successfully deatcivated.');
 	          return RestResponse::sendResult(200,$response);
@@ -468,7 +473,7 @@ class UsersController extends Controller
 			  $getactivationdata = Activation::exists($user);
 			  Activation::complete($user, $getactivationdata->code);
 
-	          $this->insertActivity( "/dashboard/users/edit/".$request -> input('ci_id'),'activated a <a href="%a" target="_blank">User</a>',$logged_in_user->id);
+	          $this->insertActivity( "/dashboard/users/edit/".$request -> input('ci_id'),'activated an <a href="%a" target="_blank">User</a>',$logged_in_user->id);
 
 	          $response->mens = Lang::get('User successfully activated.');
 	          return RestResponse::sendResult(200,$response);

@@ -1,75 +1,24 @@
 <?php
 
-/** Autoloading The required Classes **/
+require_once __DIR__ . '/API.php';
+$shore_excursions_api = new Shore_Excursions_API();
 
-class IndexController {
+/////////////////////////// Login Functionality ///////////////////////////////
 
-	function __construct(){ }
+$login_array = array(
+	"email"        => "christiangaviri@gmail.com",
+	"password"     => "12345"
+);
 
-	public function callAPI($method, $url, $data, $token = NULL){
-		$curl = curl_init();
+$shore_excursions_api->setAPIKey('MS9lZDA3');
 
-		switch ($method){
-			case "POST":
-				curl_setopt($curl, CURLOPT_POST, 1);
-				if ($data)
-					curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-				break;
-			case "PUT":
-				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-				if ($data)
-					curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-				break;
-			default:
-				if ($data)
-					$url = sprintf("%s?%s", $url, http_build_query($data));
-		}
+if ($token = $shore_excursions_api->login($login_array)) {
+	$shore_excursions_api->setToken($token);
+}
 
-		// OPTIONS:
-		curl_setopt($curl, CURLOPT_URL, $url);
+//////////////////////////// Create Booking Functionality ////////////////////////
 
-
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-			'APIKEY: 111111111111111111111',
-			'Content-Type: application/json',
-			'token: '.$token,
-		));
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-		// EXECUTE:
-		$result = curl_exec($curl);
-		if(!$result){die("Connection Failure");}
-		curl_close($curl);
-		return $result;
-	}
-	public function index()
-	{
-		return "This is Api Call Index Page";
-	}
-	public function login()
-	{
-
-		$data_array =  array(
-			"email"        => "christiangaviri@gmail.com",
-			"password"     => "12345"
-		);
-
-		$get_data = $this->callAPI('POST', 'http://localhost/shoreexcursion_dev/httpdocs/api/login', json_encode($data_array));
-		//$get_data = callAPI('GET', 'http=>//localhost/shoreexcursion_dev/httpdocs/api/login?email=christiangaviri@gmail.com&password=12345', false);
-		$response = json_decode($get_data, true);
-		$token =  $response['success']['token']; //65fd915b62e4ac2b21280238dad604d7
-		$_SESSION['token'] = $token;
-		if($token){
-			echo "Login Successfully";
-		}
-
-	}
-	public function createbooking()
-	{
-
-
-		$data_array =  array(
+$booking_array =  array(
 			'order_id'=>11234213,
 			'order_date'=>'2016/07/08',
 			'order_status'=>'processing',
@@ -118,16 +67,13 @@ class IndexController {
 			'port_departure'=>'2018/11/17',
 			'agent_id'=>'32'
 		);
-		//print_r($data_array);exit;
-		$get_data = $this->callAPI('POST', 'http://localhost/shoreexcursion_dev/httpdocs/api/create_booking', json_encode($data_array), $_SESSION["token"]);
-		$response = json_decode($get_data, true);
-		print_r($response);
-	}
-	public function editbooking()
-	{
 
-		$data_array =  array(
-			'id'=> 887,
+$response = $shore_excursions_api->createBooking($booking_array);
+
+//////////////////////////// Edit Booking Functionality ////////////////////////
+
+$data_array =  array(
+			'id'=> 915,
 			'order_id'=>123456,
 			'order_date'=>'2016/07/08',
 			'order_status'=>'processing',
@@ -177,25 +123,21 @@ class IndexController {
 			'agent_id'=>'29'
 		);
 
-		$get_data = $this->callAPI('POST', 'http://localhost/shoreexcursion_dev/httpdocs/api/edit_booking', json_encode($data_array), $_SESSION["token"]);
-		$response = json_decode($get_data, true);
-		print_r($response);
-	}
-	public function readbooking()
-	{
-		$get_data = $this->callAPI('GET', 'http://localhost/shoreexcursion_dev/httpdocs/api/read_booking?id=1', false, $_SESSION["token"]);
-		$response = json_decode($get_data, true);
-		print_r($get_data);
-	}
-	public function deletebooking()
-	{
-		$get_data = $this->callAPI('GET', 'http://localhost/shoreexcursion_dev/httpdocs/api/delete_booking?id=888', false, $_SESSION["token"]);
-		$response = json_decode($get_data, true);
-		print_r($get_data);
-	}
-	public function creategroup()
-	{
-		$data_array =  array(
+$response = $shore_excursions_api->editBooking($data_array);
+
+//////////////////////////// Read Booking Functionality ////////////////////////
+
+$id = 1;
+$response = $shore_excursions_api->getBooking($id);
+
+//////////////////////////// Delete Booking Functionality ////////////////////////
+
+$id = 1;
+$response = $shore_excursions_api->deletebooking($id);
+
+//////////////////////////// Create Group Functionality ////////////////////////
+
+$data_array =  array(
 			'name'=>'testfdvfdvfd',
 			'url'=>'alaskaontheislandprincessaugust2',
 			'email'=>'jliescheidt@dt.com',
@@ -205,41 +147,36 @@ class IndexController {
 			'text'=>'NOW IS THE TIME to reserve your tours for this exciting voyage! Below are the most popular tours in each port. <a href="https=//www.shoreexcursionsgroup.com/results">Click here</a> to view a full list of excursions available based on your time in port. All tours are first come, first served. So, don\'t delay. We would not want you to miss out!!',
 			'image'=>'//media0.shoreexcursionsgroup.com/docs/groups/1117.jpg'
 		);
-		$get_data = $this->callAPI('POST', 'http://localhost/shoreexcursion_dev/httpdocs/api/create_group', json_encode($data_array), $_SESSION["token"]);
-		$response = json_decode($get_data, true);
-		print_r($response);
-	}
-	public function editgroup()
-	{
-		$data_array =  array(
+
+$response = $shore_excursions_api->creategroup($data_array);
+
+//////////////////////////// Edit Group Functionality ////////////////////////
+
+$data_array =  array(
 			'id'=>71,
 			'name'=>'changing message',
 			'url'=>'alaskaontheislandprincessaugust2',
-			'email'=>'jliescheidt@dt.com',
+			'email'=>'test@test.com',
 			'ship_id'=>1,
 			'sail_date'=>'2018-01-23 00=00:00',
 			'duration'=>7,
 			'text'=>'NOW IS THE TIME to reserve your tours for this exciting voyage! Below are the most popular tours in each port. <a href="https=//www.shoreexcursionsgroup.com/results">Click here</a> to view a full list of excursions available based on your time in port. All tours are first come, first served. So, don\'t delay. We would not want you to miss out!!',
 			'image'=>'//media0.shoreexcursionsgroup.com/docs/groups/1117.jpg'
 		);
-		$get_data = $this->callAPI('POST', 'http://localhost/shoreexcursion_dev/httpdocs/api/edit_group', json_encode($data_array), $_SESSION["token"]);
-		$response = json_decode($get_data, true);
-		print_r($response);
-	}
-	public function readgroup()
-	{
+$response = $shore_excursions_api->editgroup($data_array);
 
-		$get_data = $this->callAPI('GET', 'http://localhost/shoreexcursion_dev/httpdocs/api/read_group?id=1', false, $_SESSION["token"]);
-		$response = json_decode($get_data, true);
-		print_r($get_data);
-	}
-	public function deletegroup()
-	{
-		$get_data = $this->callAPI('GET', 'http://localhost/shoreexcursion_dev/httpdocs/api/delete_group?id=1645', false, $_SESSION["token"]);
-		$response = json_decode($get_data, true);
-		print_r($get_data);
-	}
+//////////////////////////// Read Group Functionality ////////////////////////
 
-}
+$id = 1;
+$response = $shore_excursions_api->readgroup($id);
+
+//////////////////////////// Delete Group Functionality ////////////////////////
+/**
+   For deleting a group the group id is passed by $id.
+   Token is passed through the function to determine if it matches then will delete the group.
+*/
+
+$id = 1645;
+$response = $shore_excursions_api->deletegroup($id);
 
 ?>

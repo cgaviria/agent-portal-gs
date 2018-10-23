@@ -44,5 +44,27 @@ var ViewsAdminMyAccount = Class.extend({
         });
 
         return false;
+    },
+    responseForm: function(results) {
+   
+    try {
+      var obj = jQuery.parseJSON(results);
+
+      if(obj.data.error) {
+        for (var e in obj.data.errmens) {
+          for (var i = 0; i < obj.data.errmens[e].length; i++ ) {
+              viewsGlobalInstance.showError(obj.data.errmens[e][i]);
+          }
+        }  
+      } else {
+          viewsGlobalInstance.showSuccess(obj.data.mens);
+          table = $('#datatable-responsive').DataTable().ajax.reload();
+          $('.img_place').html('');
+          $('#dynamic_modal').modal('hide');
+      }
+      $('input[type=submit]').attr('disabled', false);  
+    } catch(error) {
+
     }
+  },
 });

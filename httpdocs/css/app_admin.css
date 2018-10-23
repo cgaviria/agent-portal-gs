@@ -1036,6 +1036,9 @@ fieldset .form-group {
     border-top: 1px solid rgba(0, 0, 0, 0.045);
     width: auto;
 }
+.email_add_booking{
+    word-break:break-all;
+}
 .table > tbody + tbody {
     border-bottom-width: 1px;
 }
@@ -1335,7 +1338,7 @@ tr.danger > td {
 }
 .card .card-body {
     position: relative;
-    padding: 16px;
+    padding: 38px;
 }
 .card .card-footer {
     padding: 16px;
@@ -7452,6 +7455,7 @@ table.va-bottom td {
 }
 .bb {
     border-bottom: 1px solid rgba(162, 162, 162, 0.32);
+    padding: 16px !important;
 }
 .b,
 .ba {

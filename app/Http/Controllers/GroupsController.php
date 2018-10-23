@@ -75,7 +75,7 @@ class GroupsController extends Controller
 		$user_check = Sentinel::check();
 
 		if ($user_check) {
-			$groups = Group::query();
+			$groups = Group::query()->orderBy('id', 'DESC');
 
 			$logged_in_user = Sentinel::getUser();
 
@@ -121,14 +121,16 @@ class GroupsController extends Controller
 	public function getGroup($id, Request $request)
 	{
 		$group = Group::find($id);
-        $agents = Booking::where('group_id',$id)
+    $agents = Booking::where('group_id',$id)
                   ->leftjoin('users','bookings.agent_id','=','users.id')
                   ->selectRaw('users.first_name,users.last_name,sum(qty_children) as qty_children,sum(qty_adult) as qty_adult,GROUP_CONCAT(DISTINCT(port)) as port,GROUP_CONCAT(DISTINCT(product_name)) as product_name,sum(qty_children+qty_adult) as total')
                   //->select('users.first_name','users.last_name','bookings.port','product_name','qty_children','qty_adult', (DB::raw('qty_children + qty_adult AS total')))
                   ->groupBy('users.id')
                   ->get();
+    $count_booking = Booking::query()->where('bookings.group_id', $id)->count();
+
         // dd($agents);        
-		return view('admin.group', ['group' => $group,'agents' => $agents]);
+		return view('admin.group', ['group' => $group,'agents' => $agents,'count_booking'=>$count_booking]);
 	}
 	public function getGroupMonthly(){
 

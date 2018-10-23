@@ -2,68 +2,7 @@
 @section('content')
     <!-- Page content-->
     <section>
-        <div id="modal-order-date-filter" class="display-none">
-            {{ csrf_field() }}
-            <div class="modal-body">
-                <fieldset>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" style="text-align:left !important;">Start Date</label>
-                        <div class="col-sm-10">
-                            <input class="form-control input-order-date-start" name="input-order-date-start" type="text"><span class="help-block">YYYY/MM/DD. The start date to filter bookings from.</span>
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset id="date-range-end">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" style="text-align:left !important;">End Date</label>
-                        <div class="col-sm-10">
-                            <input class="form-control input-order-date-end" name="input-order-date-end" type="text"><span class="help-block">YYYY/MM/DD. The end date to filter bookings up to.</span>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="modal-footer">
-                <div class="form-group pull-right">
-                    <div class="col-sm-6">
-                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    </div>
-                    <div class="col-sm-6">
-                        <button class="btn btn-primary ripple btn-cancel-request-yes" type="submit">Apply</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="modal-tour-date-filter" class="display-none">
-            {{ csrf_field() }}
-            <div class="modal-body">
-                <fieldset>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" style="text-align:left !important;">Start Date</label>
-                        <div class="col-sm-10">
-                            <input class="form-control input-tour-date-start" name="input-tour-date-start" type="text"><span class="help-block">YYYY/MM/DD. The start date to filter bookings from.</span>
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset id="date-range-end">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" style="text-align:left !important;">End Date</label>
-                        <div class="col-sm-10">
-                            <input class="form-control input-tour-date-end" name="input-tour-date-end" type="text"><span class="help-block">YYYY/MM/DD. The end date to filter bookings up to.</span>
-                        </div>
-                    </div>
-                </fieldset>
-            </div>
-            <div class="modal-footer">
-                <div class="form-group pull-right">
-                    <div class="col-sm-6">
-                        <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-                    </div>
-                    <div class="col-sm-6">
-                        <button class="btn btn-primary ripple btn-cancel-request-yes-tour" type="submit">Apply</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+     
         @if(isset($client_id))
         <input type="hidden" value={{$client_id}} id="client_id">
         @else
@@ -74,7 +13,8 @@
         @else
         <input type="hidden" value='' id="group_id">
         @endif
-
+        <input type="hidden" value="{{url('forms/booking/filter')}}" id="booking_filter">
+        <input type="hidden" value="{{url('forms/booking/tour_filter')}}" id="tour_filter">
         <div class="content-heading bg-white">
             <div class="row">
                 <div class="col-sm-4">
@@ -87,7 +27,7 @@
                 </div>
                 <div class="col-sm-8 text-right hidden-xs upper-right-buttons">
                   
-                        <a href="#" id="btn-all-remove-filter" class="btn btn-danger ripple" type="button" style="padding: 6px 16px;">Clear Search</a>
+                        <a href="#" id="btn-all-remove-filter" class="btn btn-danger ripple" type="button" style="padding: 6px 16px; display: none;">Clear Filters</a>
                            
                     
                     <div class="btn-group">

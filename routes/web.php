@@ -41,12 +41,15 @@ Route::get('/dashboard/clients/view/{id}', 'ClientsController@getBooking')->midd
 Route::get('/dashboard/clients/edit/{id}', 'ClientsController@editClient')->middleware('authSentinel');
 Route::post('/dashboard/clients/saveEdit/', 'ClientsController@saveEdit')->middleware('authSentinel');
 Route::get('/forms/client/add', 'ClientsController@getAddForm')->middleware('authSentinel');
+Route::get('/forms/booking/filter', 'BookingsController@getFilterForm')->middleware('authSentinel');
+Route::get('/forms/booking/tour_filter', 'BookingsController@getTourFilterForm')->middleware('authSentinel');
 Route::get('/forms/client/import', 'ClientsController@getImportCLient')->middleware('authSentinel');
 Route::post('/data/clients/save', 'ClientsController@save')->middleware('authSentinel');
 Route::post('/data/clients/import_client', 'ClientsController@import')->middleware('authSentinel');
 Route::get('/forms/client/delete/{id}', 'ClientsController@getDeleteForm')->middleware('authSentinel');
+Route::get('/forms/myaccount/delete/{id}', 'AdminController@getDeleteForm')->middleware('authSentinel');
 Route::post('/data/client/delete', 'ClientsController@delete')->middleware('authSentinel');
-
+Route::post('/data/myaccount/delete', 'AdminController@delete')->middleware('authSentinel');
 Route::get('/dashboard/client_monthly', ['as' => 'client_monthly', 'uses' => 'ClientsController@getClientMonthly'])->middleware('authSentinel');
 
 

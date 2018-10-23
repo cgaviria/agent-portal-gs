@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <!-- Page content-->
+
     <section>
         <div class="content-heading bg-white">
             <div class="row">
@@ -9,8 +10,10 @@
                 </div>
             </div>
         </div>
-
-        <div class="container-fluid">
+        <div id="card-body-loader" class="loader-demo loader-primary">
+                <div class="loader-inner ball-pulse"></div>
+            </div>
+        <div class="container-fluid" style="display:none;">
             <div class="row">
                 <div class="col-xs-6 col-lg-4">
                     <div class="card">
@@ -72,6 +75,7 @@
                     </div>
                 </div>-->
             </div>
+
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="row" style="margin-left:0px;margin-right:0px">
@@ -92,10 +96,13 @@
                             </div>
                             @if(count($activites_user)>0)
                             @foreach($activites_user as $activity)
+
                             <div class="card-body bb" style="display:none;">
 
                                 <p class="pull-left mr">
-                                    <a href=""> 
+                                	
+                                    	<a href="{{url('/dashboard/users/edit/'.$activity->user_id)}}" target="_blank">
+                                    
                                         @if ($activity->photo)
                                             <img class="img-circle thumb40" src="{{asset(((!empty($activity->image_thumbnails[\App\User::THUMB_SIDEBAR])) ? $activity->image_thumbnails[\App\User::THUMB_SIDEBAR] : $activity->photo))}}">
                                         @else
@@ -103,7 +110,11 @@
                                         @endif
                                     </a></p>
                                 <div class="oh">
-                                    <p><strong class="spr">{{$activity->first_name}}</strong><span class="spr">{!! str_replace('%a', url($activity->url) , $activity->description) !!}</span></p>
+                                    <p><strong class="spr" ">
+                                   
+                                    	<a href="{{url('/dashboard/users/edit/'.$activity->user_id)}}" target="_blank" style="color:black"> 
+                                   
+                                     {{$activity->first_name}}</a></strong><span class="spr">{!! str_replace('%a', url($activity->url) , $activity->description) !!}</span></p>
                                     <div class="clearfix">
                                         <div class="pull-left text-muted"><em class="ion-android-time mr-sm"></em><span>
                                             <?php 
@@ -141,9 +152,17 @@
             </div>
         </div>
     </section>
-  
+  <script type="text/javascript">
+      $(document).ready(function(){
+        $('.container-fluid').hide();
+        setTimeout(function(){ 
+            $('#card-body-loader').hide();
+            $('.container-fluid').fadeIn(1000);
+        }, 3000);
+      })
+  </script>
 @endsection
 
 @section('extra_script')
-       
+     
 @endsection
