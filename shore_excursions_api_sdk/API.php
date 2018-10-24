@@ -35,8 +35,8 @@ class Shore_Excursions_API {
 		curl_setopt($curl, CURLOPT_URL, $url);
 
 		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-			'api_key: ' . $api_key,
-			'agency_api_key: ' . $agency_api_key,
+			'akey: ' . $api_key,
+			'aakey: ' . $agency_api_key,
 			'Content-Type: application/json',
 			'token: ' . $token,
 		));

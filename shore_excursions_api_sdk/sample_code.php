@@ -10,7 +10,7 @@ $login_array = array(
 	"password"     => "12345"
 );
 
-$shore_excursions_api->setAPIKey('MS9lZDA3');
+$shore_excursions_api->setAPIKey('$2y$10$Ldtkz7H.0rbB2LjDiq8B2.324IHb9XqSgkgxqfbYmgC9bI9dVgM5u');
 
 //Only use for owner, agents, and agent admins
 //$shore_excursions_api->setAgencyAPIKey('xxxxxx');
