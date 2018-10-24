@@ -48,8 +48,7 @@ class Shore_Excursions_API {
 		}
 
 		curl_close($curl);
-		//echo $url;
-		//echo $result;
+
 		return $result;
 	}
 
@@ -81,16 +80,14 @@ class Shore_Excursions_API {
 	public function login($login_array)
 	{
 		$data_array =  array(
-			"email"               => $login_array['email'],
-			"password"            => $login_array['password'],
-			"user_api_key"        => $login_array['user_api_key'],
-			"agency_api_key"      => $login_array['agency_api_key']
+			"email"        => $login_array['email'],
+			"password"     => $login_array['password']
 		);
-		
+
 		$get_data = $this->callAPI('POST', $this->_url . 'login', json_encode($data_array), $this->_api_key);
 		$response = json_decode($get_data, true);
 		$token = $response['success']['token'];
-     
+
 		if ($token) {
 			return $token;
 		}
@@ -119,7 +116,7 @@ class Shore_Excursions_API {
 
 	public function deleteBooking($id)
 	{
-		$get_data = $this->callAPI('GET', $this->_url . 'delete_booking?id=13', false, $this->_api_key, $this->_token);
+		$get_data = $this->callAPI('GET', $this->_url . 'delete_booking?id=888', false, $this->_api_key, $this->_token);
 		$response = json_decode($get_data, true);
 		return($get_data);
 	}

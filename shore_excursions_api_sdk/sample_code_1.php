@@ -5,29 +5,17 @@ $shore_excursions_api = new Shore_Excursions_API();
 
 /////////////////////////// Login Functionality ///////////////////////////////
 
-/*************** For agent,agency manager and owner user type ****************/
-
 $login_array = array(
-	"email"             => "molive@gmail.com",
-	"password"          => "123456",
-	"agency_api_key" 	=> "$2y$10.MhxDEqdeDucL6h2g8VL6P3bf84.sg8Opyw7RLvu",
-	"user_api_key" 		=> "$2y$10$1PvisgNQDWsKG6E.iZDYjuhOzSINAmM0xoBT1SVLt/Ntaixln3exO",
-	
-);
-
-/*************** For admin ****************/
-/*$login_array = array(
 	"email"        => "christiangaviri@gmail.com",
 	"password"     => "12345"
-);*/
-/*******************************************************************************/
-//$shore_excursions_api->setAPIKey('MS9lZDA3');
-//print_r($login_array);exit;
-$token = $shore_excursions_api->login($login_array);
+);
+
+$shore_excursions_api->setAPIKey('MS9lZDA3');
 
 if ($token = $shore_excursions_api->login($login_array)) {
 	$shore_excursions_api->setToken($token);
 }
+
 //////////////////////////// Create Booking Functionality ////////////////////////
 
 $booking_array =  array(
@@ -44,7 +32,7 @@ $booking_array =  array(
 			'last_name'=>'Gaviria',
 			'agency_data'=>'',
 			'agency_email_address'=>'',
-			'agency_name'=>'Agency 1',
+			'agency_name'=>'',
 			'agency_branding'=>false,
 			'agency_bcc'=>true,
 			'review_email_disabled'=>true,
@@ -77,7 +65,7 @@ $booking_array =  array(
 			'port'=>'',
 			'port_arrival'=>'2018/11/11',
 			'port_departure'=>'2018/11/17',
-			'agent_id'=>'26'
+			'agent_id'=>'32'
 		);
 
 $response = $shore_excursions_api->createBooking($booking_array);
@@ -99,7 +87,7 @@ $data_array =  array(
 			'last_name'=>'Gaviria',
 			'agency_data'=>'',
 			'agency_email_address'=>'',
-			'agency_name'=>'Agency 1',
+			'agency_name'=>'',
 			'agency_branding'=>false,
 			'agency_bcc'=>true,
 			'review_email_disabled'=>true,
@@ -132,14 +120,14 @@ $data_array =  array(
 			'port'=>'',
 			'port_arrival'=>'2018/11/11',
 			'port_departure'=>'2018/11/17',
-			'agent_id'=>'26'
+			'agent_id'=>'29'
 		);
 
 $response = $shore_excursions_api->editBooking($data_array);
 
 //////////////////////////// Read Booking Functionality ////////////////////////
 
-$id = 915;
+$id = 1;
 $response = $shore_excursions_api->getBooking($id);
 
 //////////////////////////// Delete Booking Functionality ////////////////////////
@@ -188,7 +176,7 @@ $response = $shore_excursions_api->readgroup($id);
    Token is passed through the function to determine if it matches then will delete the group.
 */
 
-$id = 17;
+$id = 1645;
 $response = $shore_excursions_api->deletegroup($id);
 
 ?>
