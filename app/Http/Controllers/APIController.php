@@ -426,7 +426,7 @@ class APIController extends Controller
 		$user_api = $this->getUserApiKey($user[0],$user[0]->id); // Get the api key associated with the user
 		$token = md5($user[0]->id.'/'.$user[0]->email.'/'.md5($user[0]->password).'/'.$valid_till); //rebuild of md5 token
 
-		if ($user_id == 1) {
+		if(Sentinel::findById($user_id )->roles[0]->slug == "admin"){
 			if ($token == $api_key_gen  && $user_api_key == md5($user_api)) {
 				if($current_time <= $valid_till) // check if current time is less than valid till time.
 					return true;
