@@ -25,7 +25,7 @@ public $successStatus = 200;
      * @return \Illuminate\Http\Response 
      */ 
     public function login(Request $request){ 
-      // dd($request);
+       
         $credentials = [
             'email'    => $request->email,
             'password' => $request->password,
@@ -33,9 +33,8 @@ public $successStatus = 200;
         $data = Sentinel::authenticate($credentials);
         //$agency_api_key = $this->getApiKey($request,$data->id); // Get the api key associated with the user
         //$user_api_key = $this->getUserApiKey($request,$data->id); 
-        $agency_api_key = $request->agency_api_key?$request->agency_api_key:'';
-        //echo $agency_api_key ;exit;
-        $user_api_key = $request->user_api_key;
+        $agency_api_key = $request->header('agency_api_key') ? $request->header('agency_api_key') : '';
+        $user_api_key = $request->header('api_key');
         $current_time = time();
         $valid_till = $current_time + 60*60*2;
         $token = "";
@@ -44,7 +43,7 @@ public $successStatus = 200;
                 $token =   base64_encode($data->id.'/'.md5($data->id.'/'.$request->email.'/'.md5($data->password).'/'.$valid_till).'/'.$valid_till.'/'.md5($user_api_key));
             }
             else if($agency_api_key){ 
-                $token =   base64_encode($data->id.'/'.md5($data->id.'/'.$request->email.'/'.md5($data->password).'/'.$valid_till).'/'.$valid_till.'/'.md5($user_api_key).'/'.base64_encode($agency_api_key));
+                $token =   base64_encode($data->id.'/'.md5($data->id.'/'.$request->email.'/'.md5($data->password).'/'.$valid_till).'/'.$valid_till.'/'.md5($user_api_key).'/'.md5($agency_api_key));
                //$token =   base64_encode($data->id.'/'.md5($data->id.'/'.$request->email.'/'.md5($data->password).'/'.$agency_api_key.'/'.$valid_till).'/'.$valid_till);   // Generate the token with id,email,password,apikey,valid_till data
             } 
             if($token){
@@ -67,13 +66,10 @@ public $successStatus = 200;
     }
 
     public function create_booking(Request $request){
-       
+        
         $input = $request->all();
-        //dd($input);
         $token_array = $this->getToken($request); // Get the token passed through header
-
         $checkAuthentication = $this->checkAuthentication($token_array); // Check  authentication.
-        //print_r($checkAuthentication);exit;
         //$agency_id = $this->getAgencyId($token_array);
         $user_id = $token_array[0];
         $userRole = DB::table('users')
@@ -81,7 +77,6 @@ public $successStatus = 200;
                   ->where('user_id',$user_id)
                   ->select('role_id')
                   ->get();
-       
         if($userRole[0]->role_id == 1){
             $error = $this->permissionAgent($token_array,$input);
         }
@@ -94,7 +89,7 @@ public $successStatus = 200;
          if($userRole[0]->role_id == 4){
             $error = $this->permissionAdmin();
         }
-       //echo $error;exit;
+       
         if($checkAuthentication && $error == 0){
                 $booking = new Booking(array(
                         'order_id' =>$input['order_id'],
@@ -407,7 +402,7 @@ public $successStatus = 200;
         }
     }
     private function getToken(Request $request){
-        
+
         $token = $request->header('token');
         $tokenstring = base64_decode($token);
         $array = explode('/',$tokenstring);
@@ -416,41 +411,36 @@ public $successStatus = 200;
     private function checkAuthentication($token_array){
 
         //$token =   base64_encode($data->id.'/'.md5($data->id.'/'.$request->email.'/'.md5($data->password).'/'.$valid_till).'/'.$valid_till.'/'.md5($user_api_key).'/'.md5($agency_api_key));
-        //print_r( $token_array);exit;
+
         $user_id = $token_array[0];
         $api_key_gen = $token_array[1];
         $valid_till = $token_array[2];
         $user_api_key = $token_array[3];
         $agency_api_key = count($token_array)>4?$token_array[4]:'';
-        //echo base64_decode( $agency_api_key);exit;
-        $status = '';
+       
         $current_time = time();
         $user = User::where('id',$user_id)->get();
         if($agency_api_key)
             $agency_key = $this->getApiKey($user[0],$user[0]->id); // Get the agency api key associated with the user
-       // echo  $agency_key;exit;
         $user_api = $this->getUserApiKey($user[0],$user[0]->id); // Get the api key associated with the user
         $token =   md5($user[0]->id.'/'.$user[0]->email.'/'.md5($user[0]->password).'/'.$valid_till); //rebuild of md5 token
-
        
         if($user_id == 1){
             if($token == $api_key_gen  && $user_api_key == md5($user_api) ){ 
                 if($current_time <= $valid_till) // check if current time is less than valid till time.
-                    return  true;
+                   return true;
                 else
-                    return  false;
+                    return false;
             }
         }
         else {
-            if($token == $api_key_gen && base64_decode($agency_api_key) == ($agency_key) && $user_api_key == md5($user_api) ){ 
+            if($token == $api_key_gen && $agency_api_key == md5($agency_key) && $user_api_key == md5($user_api) ){ 
                 if($current_time <= $valid_till) // check if current time is less than valid till time.
                    return true;
                 else
-                   return false;
+                    return false;
             }
         }
-        //$arr = array('status'=>$status);
-       // return $arr;
     }
     /*private function getAgencyId($token_array){
         $user_id = $token_array[0];
@@ -477,7 +467,6 @@ public $successStatus = 200;
             $adminApi = SysVariables::select('value')->where('key','ADMIN_APIKEY')->get();
             $api_key = $adminApi[0]->value;
         }*/
-       
         if($userApi[0]->api_key)
           $api_key = $userApi[0]->api_key;
         else if( $ownerApi[0]->api_key)
@@ -507,7 +496,7 @@ public $successStatus = 200;
         //return  $userApi[0]->id;
     }*/
     
-    public function permissionAgent($token_array,$input){
+    private function permissionAgent($token_array,$input){
         $user_id = $token_array[0];
         $api_key_gen = $token_array[1];
         $valid_till = $token_array[2];
@@ -528,7 +517,7 @@ public $successStatus = 200;
         }
         return $error;
     }
-    public function permissionAgency($token_array,$input){
+    private function permissionAgency($token_array,$input){
         $user_id = $token_array[0];
         $api_key_gen = $token_array[1];
         $valid_till = $token_array[2];
@@ -550,39 +539,33 @@ public $successStatus = 200;
         }
         return $error;
     }
-    public function permissionOwner($token_array,$input){
-
+    private function permissionOwner($token_array,$input){
         $user_id = $token_array[0];
         $api_key_gen = $token_array[1];
         $valid_till = $token_array[2];
         $user_api_key = $token_array[3];
         $agency_api_key = $token_array[4];
-
         $user = User::where('id',$user_id)->get();
-        $err = '0';
+        $error = 0;
         $userApi = User::where('email',$user[0]->email)->leftjoin('agencies','users.id','=','agencies.owner_id')->select('agencies.*')->get();
         $agency_id = $userApi[0]->id;
         $agency_name = $userApi[0]->name;
         $agent_id = $input['agent_id'];
         $agency_name_ip = $input['agency_name'];
         $agentBelongsTo = User::where('users.id',$agent_id)->leftjoin('agencies','users.agency_id','=','agencies.id')->where('agencies.id',$agency_id)->select('agencies.*')->get();
-        
         if(!$agentBelongsTo){
-            $err = '1';
+            $error = 1;
         }
-
         if($agency_name != $agency_name_ip){
-            $err= '1';
+            $error = 1;
         }
-       // echo $err;
-       return $err ;exit;
-       
+        return $error;
     }
-    public function permissionAdmin(){
+    private function permissionAdmin(){
         $error = 0;
         return $error;
     }
-     public function permissionAgentForReadBooking($token_array,$input){
+     private function permissionAgentForReadBooking($token_array,$input){
         $user_id = $token_array[0];
         $error = 0;
         $booking_id = $input['id'];
@@ -595,7 +578,7 @@ public $successStatus = 200;
         
         return $error;
     }
-    public function permissionAgencyForReadBooking($token_array,$input){
+    private function permissionAgencyForReadBooking($token_array,$input){
         $user_id = $token_array[0];
         $user = User::where('id',$user_id)->get();
         $error = 0;
@@ -616,7 +599,7 @@ public $successStatus = 200;
         
         return $error;
     }
-    public function permissionOwnerForReadBooking($token_array,$input){
+    private function permissionOwnerForReadBooking($token_array,$input){
         $user_id = $token_array[0];
         $user = User::where('id',$user_id)->get();
         $error = 0;
@@ -637,7 +620,7 @@ public $successStatus = 200;
         
         return $error;
     }
-    public function permissionAdminForReadBooking(){
+    private function permissionAdminForReadBooking(){
         $error = 0;
         return $error;
     }
