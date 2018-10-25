@@ -6,16 +6,17 @@ $shore_excursions_api = new Shore_Excursions_API();
 /////////////////////////// Login Functionality ///////////////////////////////
 
 $login_array = array(
-	"email"        => "christiangaviri@gmail.com",
-	"password"     => "12345"
+	"email"        => "greta@gmail.com",
+	"password"     => "123456"
 );
 
-$shore_excursions_api->setAPIKey('$2y$10$Ldtkz7H.0rbB2LjDiq8B2.324IHb9XqSgkgxqfbYmgC9bI9dVgM5u');
+$shore_excursions_api->setAPIKey('$2y$10$nhDzzuhLO6smVZlg4hcgou1yEmZQ7/KK7UG/LWInt/UtKRPbU5MeC');
 
 //Only use for owner, agents, and agent admins
-//$shore_excursions_api->setAgencyAPIKey('xxxxxx');
+$shore_excursions_api->setAgencyAPIKey('$2y$10.MhxDEqdeDucL6h2g8VL6P3bf84.sg8Opyw7RLvu');
 
 if ($token = $shore_excursions_api->login($login_array)) {
+	//echo $token;exit;
 	$shore_excursions_api->setToken($token);
 }
 
@@ -35,7 +36,7 @@ $booking_array =  array(
 			'last_name'=>'Gaviria',
 			'agency_data'=>'',
 			'agency_email_address'=>'',
-			'agency_name'=>'',
+			'agency_name'=>'Agency 1',
 			'agency_branding'=>false,
 			'agency_bcc'=>true,
 			'review_email_disabled'=>true,
@@ -68,7 +69,7 @@ $booking_array =  array(
 			'port'=>'',
 			'port_arrival'=>'2018/11/11',
 			'port_departure'=>'2018/11/17',
-			'agent_id'=>'32'
+			'agent_id'=>'26'
 		);
 
 $response = $shore_excursions_api->createBooking($booking_array);
@@ -123,7 +124,7 @@ $data_array =  array(
 			'port'=>'',
 			'port_arrival'=>'2018/11/11',
 			'port_departure'=>'2018/11/17',
-			'agent_id'=>'29'
+			'agent_id'=>'26'
 		);
 
 $response = $shore_excursions_api->editBooking($data_array);
@@ -136,7 +137,7 @@ $response = $shore_excursions_api->getBooking($id);
 //////////////////////////// Delete Booking Functionality ////////////////////////
 
 $id = 1;
-$response = $shore_excursions_api->deletebooking($id);
+//$response = $shore_excursions_api->deletebooking($id);
 
 //////////////////////////// Create Group Functionality ////////////////////////
 

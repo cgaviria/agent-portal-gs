@@ -2,8 +2,8 @@
 
 class Shore_Excursions_API {
 	CONST PRODUCTION_URL = 'http://devagents.shoreexcursionsgroup.com/api/';
-	//CONST STAGING_URL = 'http://devagents.shoreexcursionsgroup.com/api/';
-	CONST STAGING_URL = 'http://localhost/agent-portal-gs/httpdocs/api/';
+	CONST STAGING_URL = 'http://devagents.shoreexcursionsgroup.com/api/';
+	//CONST STAGING_URL = 'http://localhost/agent-portal-gs/httpdocs/api/';
 	protected $_url = self::STAGING_URL;
 	protected $_api_key;
 	protected $_agency_api_key;
@@ -31,20 +31,22 @@ class Shore_Excursions_API {
 					$url = sprintf("%s?%s", $url, http_build_query($data));
 				}
 		}
-
+		curl_setopt($curl, CURLOPT_HEADER, false);
 		curl_setopt($curl, CURLOPT_URL, $url);
-
+        $array = array($api_key,$agency_api_key);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-			'akey: ' . $api_key,
-			'aakey: ' . $agency_api_key,
+			//'api_key: ' . $api_key,
+			//'agency_api_key: ' . $agency_api_key,
 			'Content-Type: application/json',
 			'token: ' . $token,
+			'Authorization: '.$api_key.'##'.$agency_api_key
 		));
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		//curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 
 		$result = curl_exec($curl);
-        echo $url.$result;
+		echo $url;
+		echo $result;
 		if (!$result) {
 			die("Connection Failure");
 		}
