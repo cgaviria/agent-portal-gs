@@ -2,8 +2,8 @@
 
 class Shore_Excursions_API {
 	CONST PRODUCTION_URL = 'http://devagents.shoreexcursionsgroup.com/api/';
-	CONST STAGING_URL = 'http://devagents.shoreexcursionsgroup.com/api/';
-
+	//CONST STAGING_URL = 'http://devagents.shoreexcursionsgroup.com/api/';
+	CONST STAGING_URL = 'http://localhost/agent-portal-gs/httpdocs/api/';
 	protected $_url = self::STAGING_URL;
 	protected $_api_key;
 	protected $_agency_api_key;
@@ -44,7 +44,7 @@ class Shore_Excursions_API {
 		curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 
 		$result = curl_exec($curl);
-
+        echo $url.$result;
 		if (!$result) {
 			die("Connection Failure");
 		}

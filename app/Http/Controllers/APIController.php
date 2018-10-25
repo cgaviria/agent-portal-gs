@@ -25,7 +25,7 @@ class APIController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function login(Request $request){
-
+        
 		$credentials = [
 			'email'    => $request->email,
 			'password' => $request->password,
@@ -33,8 +33,11 @@ class APIController extends Controller
 		$data = Sentinel::authenticate($credentials);
 		//$agency_api_key = $this->getApiKey($request,$data->id); // Get the api key associated with the user
 		//$user_api_key = $this->getUserApiKey($request,$data->id);
-		$agency_api_key = $request->header('aakey') ? $request->header('aakey') : '';
-		$user_api_key = $request->header('akey');
+        $the_key = $request->header('Authorization');
+      
+        $key_arr = explode('##',$the_key);
+		$agency_api_key = $key_arr[1] ? $key_arr[1] : '';
+		$user_api_key = $key_arr[0];
 		$current_time = time();
 		$valid_till = $current_time + 60*60*2;
 		$token = "";
@@ -70,7 +73,7 @@ class APIController extends Controller
 		$input = $request->all();
 		$token_array = $this->getToken($request); // Get the token passed through header
 		$checkAuthentication = $this->checkAuthentication($token_array); // Check  authentication.
-		//$agency_id = $this->getAgencyId($token_array);
+		//print_r($checkAuthentication);exit;
 		$user_id = $token_array[0];
 		$userRole = DB::table('users')
 			->leftJoin('role_users', 'users.id', '=', 'role_users.user_id')
@@ -425,21 +428,34 @@ class APIController extends Controller
 
 		$user_api = $this->getUserApiKey($user[0],$user[0]->id); // Get the api key associated with the user
 		$token = md5($user[0]->id.'/'.$user[0]->email.'/'.md5($user[0]->password).'/'.$valid_till); //rebuild of md5 token
-
+ 
 		if(Sentinel::findById($user_id )->roles[0]->slug == "admin"){
+            //echo  "y".$token.'<br/>'.$api_key_gen.'<br/>'.$user_api_key.'<br/>'.md5($user_api);exit;
 			if ($token == $api_key_gen  && $user_api_key == md5($user_api)) {
-				if($current_time <= $valid_till) // check if current time is less than valid till time.
+                //echo  $token;exit;
+				if($current_time <= $valid_till) {// check if current time is less than valid till time.
+                   
 					return true;
-				else
+                }
+				else{
+                    
 					return false;
+                }
 			}
+            else{
+                return false;
+            }
 		} else {
+            echo $agency_api_key.'<br/>'.md5($agency_key);
 			if($token == $api_key_gen && $agency_api_key == md5($agency_key) && $user_api_key == md5($user_api) ){
 				if($current_time <= $valid_till) // check if current time is less than valid till time.
 					return true;
 				else
 					return false;
 			}
+            else{
+                return false;
+            }
 		}
 	}
 
