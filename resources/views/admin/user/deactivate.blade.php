@@ -1,9 +1,9 @@
-<form class="form-horizontal" method="post"  id="form_delete_importer" action="{{URL::action('UsersController@delete')}}" onsubmit="viewsGlobalInstance.sendForm(this,ViewsAdminUsersInstance.responseForm);return  false;">
+<form class="form-horizontal" method="post"  id="form_delete_importer" action="{{URL::action('UsersController@deactivate')}}" onsubmit="viewsGlobalInstance.sendForm(this,ViewsAdminUsersInstance.responseForm);return  false;">
   {{ csrf_field() }}
   <input type="hidden" name="ci_id" value="{{$ci->id}}">
   <div class="modal-body">
       <div class="form-group">
-        <label class="col-sm-12"  style="text-align:left !important; font-weight: normal !important;">Are you sure you want to delete this user?</label>
+        <label class="col-sm-12"  style="text-align:left !important; font-weight: normal !important;">Are you sure you want to deactivate this user?</label>
       </div>
   </div>
    <div class="modal-footer">

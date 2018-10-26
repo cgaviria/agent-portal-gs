@@ -30,7 +30,7 @@
         <div class="container-fluid">
             <div id="card-body" class="card display-none">
               <div class="card-heading">&nbsp;</div>
-              <input type="hidden" id="deactivated_link" value="{{URL::action('UsersController@getDeleteForm','')}}/">
+              <input type="hidden" id="deactivated_link" value="{{URL::action('UsersController@getDeactivateForm','')}}/">
               <input type="hidden" id="activated_link" value="{{URL::action('UsersController@getActivateForm','')}}/">
               <!-- START table-responsive-->
               <div class="table-responsive">

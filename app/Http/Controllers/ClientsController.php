@@ -28,7 +28,7 @@ class ClientsController extends Controller
 {
      use ActivitesTrait;
      use MonthlyRecordTrait;
-    public static $rules_add = array(
+     public static $rules_add = array(
         'first_name'  => 'required|regex:/^[a-zA-Z]+$/u',
         'last_name'=>'regex:/^[a-zA-Z]+$/u',
         'email'  => 'required|email|unique:clients,email,$this->id,id',
@@ -40,7 +40,6 @@ class ClientsController extends Controller
     public static $rules_edit = array(
         'first_name'  => 'required|regex:/^[a-zA-Z]+$/u',
         'last_name'=>'regex:/^[a-zA-Z]+$/u',
-      //  'email'  => 'required|email|unique:clients,email,$this->id,id',
         'ship'  => 'required',
         'sail_date'  => 'required',
         'duration' =>'required|numeric'
@@ -54,43 +53,35 @@ class ClientsController extends Controller
        
     );
     /**
-     * Shows the bookings page.
+     * Shows the client table struicture
      *
      * @return Response
      */
     public function getClientTable(Request $request)
     {
-        /*https://laravel-news.com/google-api-socialite*/
-        
         $param = array();
         $param['url']  = URL::action('ClientsController@getData');
         $param['fields'] = [
-                            [ 'id' => 'first_name', 'label' => 'Name', 'ordenable' => false,  'searchable' => true],
-                          
-                            [ 'id' => 'email', 'label' => 'Email', 'ordenable' => true,  'searchable' => true],
-                            [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
+                               [ 'id' => 'first_name', 'label' => 'Name', 'ordenable' => false,  'searchable' => true],
+                               [ 'id' => 'email', 'label' => 'Email', 'ordenable' => true,  'searchable' => true],
+                               [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
                            ];
-
         $param['order'] = ['order' => 0, 'way' => 'desc'];
-
         return view('admin.clients', $param);
     }
 
     /**
-     * Get the Admin Table
+     * Get data for the client list
      *
      * @return Response
      */
     public function getData(Request $request)
     {
 		$user_check = Sentinel::check();
-
 		if ($user_check) {
 			$clients = Client::query()->select('clients.*');
 			$logged_in_user = Sentinel::getUser();
 			$current_user_role = $logged_in_user->roles->first()->slug;
-			
-			
             $clients->when(Sentinel::inRole(Role::ROLE_AGENT), function ($q) use($logged_in_user){
 			    return $q->where('clients.user_id', '=', $logged_in_user->id);
 			});
@@ -105,14 +96,13 @@ class ClientsController extends Controller
 			});
 			
 			$datatables = new Datatables;
-			return $datatables->eloquent($clients)
-				->editColumn('first_name', function ($client){
+			return $datatables->eloquent($clients)->editColumn('first_name', function ($client){
 					return $client->getFullName();
 				})
 				->addColumn('actions', function ($client) use ($user_check){
-					$buttons = '<a href="' . action('ClientsController@getBooking', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View Bookings</a> ';
-					 $buttons .= '<a href="' . action('ClientsController@editClient', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">Edit</a> ';
-					 $buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$client->id.');" type="button">Delete</button> ';
+				    $buttons = '<a href="' . action('ClientsController@getBooking', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">View Bookings</a> ';
+					$buttons .= '<a href="' . action('ClientsController@editClient', array($client->id)) . '" class="mb-sm btn btn-primary ripple" type="button" target="_blank">Edit</a> ';
+					$buttons .= '<button class="mb-sm btn btn-danger ripple" onclick="showDeleteForm('.$client->id.');" type="button">Delete</button> ';
 					return $buttons;
 				})
 				->rawColumns(['actions'])
@@ -121,69 +111,62 @@ class ClientsController extends Controller
 	}
 
 	/**
-	 * Shows the booking page.
+	 * Get the client data in edit page
 	 *
 	 * @return Response
 	 */
 	public function getClient($id, Request $request)
 	{
 		$client = Client::find($id);
-
 		return view('admin.client', ['client' => $client]);
 	}
 	 /**
-     * Shows the bookings page.
+     * Get the booking for the particulat client
      *
      * @return Response
      */
     public function getBooking($id ,Request $request)
     {
-        /*https://laravel-news.com/google-api-socialite*/
-       
         $param = array();
         $param['url']  = URL::action('BookingsController@getData');
         $param['client_id'] = $id;
         $param['title'] = "Bookings for Client ID ".$id;
         $param['fields'] = [
-                            [ 'id' => 'order_id', 'label' => 'Order ID', 'ordenable' => true,  'searchable' => true],
-                            [ 'id' => 'order_date', 'label' => 'Order Date', 'ordenable' => true,  'searchable' => true],
-                            [ 'id' => 'first_name', 'label' => 'Full Name', 'ordenable' => true,  'searchable' => true],
-	                        [ 'id' => 'customer_email_address', 'label' => 'Customer Email', 'ordenable' => true,  'searchable' => true],
-                            [ 'id' => 'ship_id', 'label' => 'Cruise Ship', 'ordenable' => true,  'searchable' => false],
-	                        [ 'id' => 'cruise_start_date', 'label' => 'Cruise Start Date', 'ordenable' => true,  'searchable' => false],
-	                        [ 'id' => 'product_name', 'label' => 'Product Name', 'ordenable' => true,  'searchable' => true],
-                            [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
+                                [ 'id' => 'order_id', 'label' => 'Order ID', 'ordenable' => true,  'searchable' => true],
+                                [ 'id' => 'order_date', 'label' => 'Order Date', 'ordenable' => true,  'searchable' => true],
+                                [ 'id' => 'first_name', 'label' => 'Full Name', 'ordenable' => true,  'searchable' => true],
+	                            [ 'id' => 'customer_email_address', 'label' => 'Customer Email', 'ordenable' => true,  'searchable' => true],
+                                [ 'id' => 'ship_id', 'label' => 'Cruise Ship', 'ordenable' => true,  'searchable' => false],
+	                            [ 'id' => 'cruise_start_date', 'label' => 'Cruise Start Date', 'ordenable' => true,  'searchable' => false],
+	                            [ 'id' => 'product_name', 'label' => 'Product Name', 'ordenable' => true,  'searchable' => true],
+                                [ 'id' => 'actions', 'label' => 'Actions', 'ordenable' => false,  'searchable' => false, 'width' => '10%']
                            ];
 
         $param['order'] = ['order' => 0, 'way' => 'desc'];
-
         return view('admin.bookings', $param);
-      
     }
     /**
 	 * Get client add form
 	 *
 	 * @return Response
 	 */
-	public function getAddForm(Request $request){
-
-      $userL = Sentinel::check(); 
-      $ships = Ship::get(); 
-      if($userL){
-          return view('admin.client.add', ['ships' => $ships])->render();
-      }  
+	public function getAddForm(Request $request)
+	{
+        $userL = Sentinel::check(); 
+        $ships = Ship::get(); 
+        if($userL){
+            return view('admin.client.add', ['ships' => $ships])->render();
+        }  
     }
     /**
 	 * Save the client
 	 *
 	 * @return Response
 	 */
-     public function save(Request $request)
+    public function save(Request $request)
 	{
 		if (!is_null(Sentinel::check())) {
-			//if($userL->inRole('superadmin')){
 			if (1 == 1) {
-
 				$validator = Validator::make(Input::all(), self::$rules_add);
 				$logged_in_user = Sentinel::getUser();
 				$response = new \stdClass();
@@ -197,7 +180,6 @@ class ClientsController extends Controller
 				}
 
 				$ci = new Client;
-
 				$ci->first_name = $request->input('first_name');
 				$ci->last_name = $request->input('last_name');
 				$ci->email = $request->input('email');
@@ -206,14 +188,8 @@ class ClientsController extends Controller
 				$ci->duration = $request->input('duration');
 				$ci->user_id = $logged_in_user->id;
 				$ci->save();
-
-
                 $this->insertActivity( "/dashboard/clients/edit/$ci->id",'added new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
-
-               
-
 				$response->mens = Lang::get('Client successfully created.');
-
 				return RestResponse::sendResult(200, $response);
 			}
 		}
@@ -238,7 +214,6 @@ class ClientsController extends Controller
 	 */
      public function import(Request $request)
 	{
-
 		if (!is_null(Sentinel::check())) {
 			//if($userL->inRole('superadmin')){
 			if (1 == 1) {
@@ -276,15 +251,19 @@ class ClientsController extends Controller
 				    }
 					$response->mens = Lang::get('Clients successfully created.');
 					return RestResponse::sendResult(200, $response);
-			  }
+			    }
 			}
 		}
 	}
+	/**
+	 * Convertion to array from csv
+	 *
+	 * @return Response
+	 */
 	function csvToArray($filename = '', $delimiter = ',')
 	{
 	    if (!file_exists($filename) || !is_readable($filename))
 	        return false;
-
 	    $header = null;
 	    $data = array();
 	    if (($handle = fopen($filename, 'r')) !== false)
@@ -310,7 +289,7 @@ class ClientsController extends Controller
 
       $userL = Sentinel::check();        
       if($userL){
-        $ci = Client::find($id);
+          $ci = Client::find($id);
           return view('admin.client.delete',['ci'=>$ci])->render();
       }  
     }
@@ -320,28 +299,22 @@ class ClientsController extends Controller
 	 * @return Response
 	 */
     public function delete(Request $request){
-      $logged_in_user = Sentinel::getUser();
-      $userL = Sentinel::check();        
-      if($userL){
-          $response = new \stdClass();
-          $response->error  = false;
-          $response->errmens = [];
-              
-          $ci = Client::find($request -> input('ci_id'));
 
-          $ci->delete();
-
-        //  $this->insertActivity( url("/dashboard/clients/$request -> input('ci_id')"),'deleted a  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
-
-          $this->insertActivity( "/dashboard/clients/",'deleted a client '.$ci->first_name.' '.$ci->last_name.', see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
-
-          $response->mens = Lang::get('Client successfully deleted.');
-          return RestResponse::sendResult(200,$response);
-      }  
+        $logged_in_user = Sentinel::getUser();
+        $userL = Sentinel::check();        
+        if($userL){
+            $response = new \stdClass();
+            $response->error  = false;
+            $response->errmens = [];
+            $ci = Client::find($request -> input('ci_id'));
+            $ci->delete();
+            $this->insertActivity( "/dashboard/clients/",'deleted a client '.$ci->first_name.' '.$ci->last_name.', see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
+            $response->mens = Lang::get('Client successfully deleted.');
+            return RestResponse::sendResult(200,$response);
+        }  
     }
-    public function csv_valid($data){
-       
-		    
+    public function csv_valid($data)
+    {   
 		    $error = array();
 		    foreach($data as $each_arr){
 		    	$mail_check = Client::where('email',$each_arr['email'])->count();
@@ -357,12 +330,9 @@ class ClientsController extends Controller
 				    break;
 			    }
 		    }
-
 		    if (!empty($error)) {
 			    $error['check']= array("Kindly check and upload the CSV file to import.");
-		   
-		}
-
+		    }
 		return  $error;
     }
      /**
@@ -406,12 +376,9 @@ class ClientsController extends Controller
 					$clients->save();
 
 					$this->insertActivity( "/dashboard/clients/edit/$clients->id",'edited a <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
-
-					
-
+				}
 			}
-		}
-		return response()->json([
+			return response()->json([
 				'status' => 'success',
 				'data' => array(
 					'new_user_info' => $clients,
@@ -421,9 +388,14 @@ class ClientsController extends Controller
 			]);
 		}
 	}
+	/**
+	 * Get Client count monthly basis for admin
+	 *
+	 * @return Response
+	 */
 	public function getClientMonthly(){
 
 		$set = $this->getClientMonthlyRecord();
-    return $set;
+    	return $set;
 	}
 }
