@@ -48,8 +48,6 @@ class BookingsController extends Controller
      */
     public function getAdminTable(Request $request)
     {
-        /*https://laravel-news.com/google-api-socialite*/
-
         $param = array();
         $param['url']  = URL::action('BookingsController@getData');
         $param['title'] = "Booking";
@@ -68,10 +66,10 @@ class BookingsController extends Controller
 
         return view('admin.bookings', $param);
     }
-public function getFilterForm(Request $request){
+	public function getFilterForm(Request $request){
 
       $userL = Sentinel::check(); 
-     
+
       if($userL){
           return view('admin.bookings.filter')->render();
       }  
@@ -79,14 +77,14 @@ public function getFilterForm(Request $request){
     public function getTourFilterForm(Request $request){
 
       $userL = Sentinel::check(); 
-     
+      
       if($userL){
           return view('admin.bookings.tour_filter')->render();
       }  
     }
     /*
     /**
-     * Get the Admin Table
+     * Get the Booking list of admin
      *
      * @return Response
      */
@@ -96,38 +94,54 @@ public function getFilterForm(Request $request){
 		if ($user_check) {
 			$bookings = Booking::query();
 
-			$logged_in_user = Sentinel::getUser();
-			$current_user_role = $logged_in_user->roles->first()->slug;
+			$logged_in_user = Sentinel::getUser(); // Get the user list
+			$current_user_role = $logged_in_user->roles->first()->slug;  // Get the user role
+
+			/********************** Booking list for the agency associated with the logged in user ****************/
 
 			if ($logged_in_user->agency_id) {
 				$bookings->where('bookings.agency_id', $logged_in_user->agency_id);
 			}
-
+			/*****************************************************************************************************/
 			$bookings->select('bookings.*');
 
 			$bookings->leftJoin('cruise_ships', 'cruise_ships.id', '=', 'bookings.ship_id');
+
+			/************************* booking list if owner logged in **********************/
 			if($current_user_role == "owner" && !$request->client_id){
 				$bookings->leftJoin('agencies', 'agencies.id', '=', 'bookings.agency_id');
             	$bookings->where('agencies.owner_id', $logged_in_user->id);
 			}
+			/*******************************************************************************/
+
+			/************************* booking list if agency manager logged in **********************/
 			if($current_user_role == "agency" && !$request->client_id){
 				$bookings->leftJoin('users', 'users.agency_id', '=', 'bookings.agency_id');
             	$bookings->where('users.id', $logged_in_user->id);
 			}
+			/*****************************************************************************************/
+
+			/************************* booking list if agent logged in *******************************/
 			if($current_user_role == "agent" && !$request->client_id){
 				$bookings->leftJoin('users', 'users.agency_id', '=', 'bookings.agency_id');
             	$bookings->where('users.id', $logged_in_user->id) ->orWhere('bookings.agency_email_address', '=', $logged_in_user->email);
 			}
-
+			/*****************************************************************************************/
+			/************************* booking list for individual client *******************************/
             if($request->client_id){
             	$bookings->leftJoin('clients', 'clients.email', '=', 'bookings.customer_email_address');
             	$bookings->where('clients.id', $request->client_id);
             }
+            /*****************************************************************************************/
+            /************************* booking list for individual group *******************************/
              if($request->group_id){
 
             	$bookings->leftJoin('groups', 'groups.id', '=', 'bookings.group_id');
             	$bookings->where('groups.id', $request->group_id);
             }
+            /*****************************************************************************************/
+
+            /************************* booking list according to the search **************************/
 			if ($search_term = $request->input('search.value')) {
 				$bookings->where(function($bookings) use ($search_term) {
 					$bookings->where('cruise_ships.name', 'LIKE', '%' . strtolower($search_term) . '%');
@@ -220,7 +234,11 @@ public function getFilterForm(Request $request){
 			]);
 		}
 	}
-
+	/**
+	 * Exporting CSV of booking list
+	 *
+	 * @return Response
+	 */
 	public function exportCSV()
 	{
 		$headers = [
@@ -248,7 +266,8 @@ public function getFilterForm(Request $request){
 	}
 	public function getBookingMonthly(){
 
-		    $set = $this->getBookingMonthlyRecord();
+		$set = $this->getBookingMonthlyRecord();
+
         return $set;      
 	}
 }

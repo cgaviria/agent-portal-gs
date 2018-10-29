@@ -34,6 +34,7 @@ $booking_array =  array(
 			'customer_email_sent'=>true,
 			'first_name'=>'Christian',
 			'last_name'=>'Gaviria',
+			'agency_id'=>9,
 			'agency_data'=>'',
 			'agency_email_address'=>'',
 			'agency_name'=>'Agency 1',
@@ -89,9 +90,10 @@ $data_array =  array(
 			'customer_email_sent'=>true,
 			'first_name'=>'Christian',
 			'last_name'=>'Gaviria',
+			'agency_id'=>9,
 			'agency_data'=>'',
 			'agency_email_address'=>'',
-			'agency_name'=>'',
+			'agency_name'=>'Agency 1',
 			'agency_branding'=>false,
 			'agency_bcc'=>true,
 			'review_email_disabled'=>true,
@@ -131,7 +133,7 @@ $response = $shore_excursions_api->editBooking($data_array);
 
 //////////////////////////// Read Booking Functionality ////////////////////////
 
-$id = 1;
+$id = 2;
 $response = $shore_excursions_api->getBooking($id);
 
 //////////////////////////// Delete Booking Functionality ////////////////////////

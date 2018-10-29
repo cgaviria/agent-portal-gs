@@ -31,8 +31,7 @@ class APIController extends Controller
 			'password' => $request->password,
 		];
 		$data = Sentinel::authenticate($credentials);
-		//$agency_api_key = $this->getApiKey($request,$data->id); // Get the api key associated with the user
-		//$user_api_key = $this->getUserApiKey($request,$data->id);
+		
         $the_key = $request->header('Authorization');
       
         $key_arr = explode('##',$the_key);
@@ -47,7 +46,7 @@ class APIController extends Controller
 			}
 			else if($agency_api_key){
 				$token =   base64_encode($data->id.'/'.md5($data->id.'/'.$request->email.'/'.md5($data->password).'/'.$valid_till).'/'.$valid_till.'/'.md5($user_api_key).'/'.md5($agency_api_key));
-				//$token =   base64_encode($data->id.'/'.md5($data->id.'/'.$request->email.'/'.md5($data->password).'/'.$agency_api_key.'/'.$valid_till).'/'.$valid_till);   // Generate the token with id,email,password,apikey,valid_till data
+				
 			}
 			if($token){
 				$apitoken = new ApiTokens;
@@ -73,13 +72,14 @@ class APIController extends Controller
 		$input = $request->all();
 		$token_array = $this->getToken($request); // Get the token passed through header
 		$checkAuthentication = $this->checkAuthentication($token_array); // Check  authentication.
-		//print_r($checkAuthentication);exit;
+		
 		$user_id = $token_array[0];
 		$userRole = DB::table('users')
 			->leftJoin('role_users', 'users.id', '=', 'role_users.user_id')
 			->where('user_id',$user_id)
 			->select('role_id')
 			->get();
+			
 		if($userRole[0]->role_id == 1){
 			$error = $this->permissionAgent($token_array,$input);
 		}
@@ -177,6 +177,7 @@ class APIController extends Controller
 		if($userRole[0]->role_id == 4){
 			$error = $this->permissionAdmin();
 		}
+
 		if($checkAuthentication  && $error == 0){
 			$booking = Booking::find($input['id']);
 			$booking->order_id = $input['order_id'];
@@ -261,6 +262,7 @@ class APIController extends Controller
 		if($userRole[0]->role_id == 4){
 			$error = $this->permissionAdminForReadBooking();
 		}
+		
 		if($checkAuthentication && $error == 0){
 			$booking = Booking::find($input['id']);
 			if($booking){
@@ -411,8 +413,6 @@ class APIController extends Controller
 	}
 	private function checkAuthentication($token_array){
 
-		//$token =   base64_encode($data->id.'/'.md5($data->id.'/'.$request->email.'/'.md5($data->password).'/'.$valid_till).'/'.$valid_till.'/'.md5($user_api_key).'/'.md5($agency_api_key));
-
 		$user_id = $token_array[0];
 		$api_key_gen = $token_array[1];
 		$valid_till = $token_array[2];
@@ -430,9 +430,9 @@ class APIController extends Controller
 		$token = md5($user[0]->id.'/'.$user[0]->email.'/'.md5($user[0]->password).'/'.$valid_till); //rebuild of md5 token
  
 		if(Sentinel::findById($user_id )->roles[0]->slug == "admin"){
-            //echo  "y".$token.'<br/>'.$api_key_gen.'<br/>'.$user_api_key.'<br/>'.md5($user_api);exit;
+           
 			if ($token == $api_key_gen  && $user_api_key == md5($user_api)) {
-                //echo  $token;exit;
+              
 				if($current_time <= $valid_till) {// check if current time is less than valid till time.
                    
 					return true;
@@ -446,7 +446,7 @@ class APIController extends Controller
                 return false;
             }
 		} else {
-            echo $agency_api_key.'<br/>'.md5($agency_key);
+           
 			if($token == $api_key_gen && $agency_api_key == md5($agency_key) && $user_api_key == md5($user_api) ){
 				if($current_time <= $valid_till) // check if current time is less than valid till time.
 					return true;
@@ -464,10 +464,7 @@ class APIController extends Controller
 		$api_key = '';
 		$userApi = User::where('email',$request->email)->leftjoin('agencies','users.agency_id','=','agencies.id')->select('agencies.*')->get();
 		$ownerApi = User::where('email',$request->email)->leftjoin('agencies','users.id','=','agencies.owner_id')->select('agencies.*')->get();
-		/*if(Sentinel::findById($user_id )->roles[0]->slug == "admin"){
-			$adminApi = SysVariables::select('value')->where('key','ADMIN_APIKEY')->get();
-			$api_key = $adminApi[0]->value;
-		}*/
+		
 		if($userApi[0]->api_key)
 			$api_key = $userApi[0]->api_key;
 		else if( $ownerApi[0]->api_key)
@@ -478,39 +475,36 @@ class APIController extends Controller
 
 		$api_key = '';
 		$userApi = User::where('email',$request->email)->select('users.*')->get();
-		/*if(Sentinel::findById($user_id )->roles[0]->slug == "admin"){
-			$adminApi = SysVariables::select('value')->where('key','ADMIN_APIKEY')->get();
-			$api_key = $adminApi[0]->value;
-		}*/
+		
 		if($userApi[0]->api_key)
 			$api_key = $userApi[0]->api_key;
 		return $api_key;
 	}
-	/* private function getIdAgency($request,$agency_api_key){
-		 $userApi = User::where('email',$request->email)->leftjoin('agencies','users.agency_id','=','agencies.id')->select('agencies.*')->get();
-		 $ownerApi = User::where('email',$request->email)->leftjoin('agencies','users.id','=','agencies.owner_id')->select('agencies.*')->get();
-		 if($userApi[0]->api_key)
-		   $agency_id = $userApi[0]->id;
-		 else if( $ownerApi[0]->api_key)
-		   $agency_id = $ownerApi[0]->id;
-		 return $agency_id;
-		 //return  $userApi[0]->id;
-	 }*/
+	
 
 	private function permissionAgent($token_array,$input){
-		$user_id = $token_array[0];
-		$api_key_gen = $token_array[1];
-		$valid_till = $token_array[2];
-		$user_api_key = $token_array[3];
-		$agency_api_key = count($token_array)>4?$token_array[4]:'';
+
+		/************************** Array from the token passed through API ****************/
+		$user_id = $token_array[0];   // user id of the user who requested
+		$api_key_gen = $token_array[1];  // Api key generated by doing md5 of userid/mail/password
+		$valid_till = $token_array[2];  // Valid till time from the time the api is being hit
+		$user_api_key = $token_array[3]; // Api key associated with the user in user table
+		$agency_api_key = count($token_array)>4?$token_array[4]:''; // Agency api key associated to agency tagged with the user.
+
+		/***********************************************************************************/
+
 		$user = User::where('id',$user_id)->get();
 		$error = 0;
 		$userApi = User::where('email',$user[0]->email)->leftjoin('agencies','users.agency_id','=','agencies.id')->select('agencies.*')->get();
-		$agency_id = $userApi[0]->id;
+		$agency_id = $userApi[0]->id; 
 		$agency_name = $userApi[0]->name;
 		$agent_id = $input['agent_id'];
 		$agency_name_ip = $input['agency_name'];
+		
 		if($user_id != $agent_id){
+			$error = 1;
+		}
+		if($agency_id !=$input['agency_id']){
 			$error = 1;
 		}
 		if($agency_name != $agency_name_ip){
@@ -519,37 +513,48 @@ class APIController extends Controller
 		return $error;
 	}
 	private function permissionAgency($token_array,$input){
-		$user_id = $token_array[0];
-		$api_key_gen = $token_array[1];
-		$valid_till = $token_array[2];
-		$user_api_key = $token_array[3];
-		$agency_api_key = count($token_array)>4?$token_array[4]:'';
+		
+		/************************** Array from the token passed through API ****************/
+		$user_id = $token_array[0];   // user id of the user who requested
+		$api_key_gen = $token_array[1];  // Api key generated by doing md5 of userid/mail/password
+		$valid_till = $token_array[2];  // Valid till time from the time the api is being hit
+		$user_api_key = $token_array[3]; // Api key associated with the user in user table
+		$agency_api_key = count($token_array)>4?$token_array[4]:''; // Agency api key associated to agency tagged with the user.
+
+		/***********************************************************************************/
+		
 		$user = User::where('id',$user_id)->get();
 		$error = 0;
 		$userApi = User::where('email',$user[0]->email)->leftjoin('agencies','users.agency_id','=','agencies.id')->select('agencies.*')->get();
-		$agency_id = $userApi[0]->id;
+		$agency_id = $userApi[0]->id; // Get the agency id of the agency manager who called the function
 		$agency_name = $userApi[0]->name;
-		$agent_id = $input['agent_id'];
+		$agent_id = $input['agent_id'];  
 		$agency_name_ip = $input['agency_name'];
 		$agentBelongsTo = User::where('users.id',$agent_id)->leftjoin('agencies','users.agency_id','=','agencies.id')->where('agencies.id',$agency_id)->select('agencies.*')->get();
 		if(!$agentBelongsTo){
 			$error = 1;
 		}
 		if($agency_name != $agency_name_ip){
+			$error = 1;
+		}
+		if($agency_id != $input['agency_id']){
 			$error = 1;
 		}
 		return $error;
 	}
 	private function permissionOwner($token_array,$input){
-		$user_id = $token_array[0];
-		$api_key_gen = $token_array[1];
-		$valid_till = $token_array[2];
-		$user_api_key = $token_array[3];
-		$agency_api_key = $token_array[4];
+		/************************** Array from the token passed through API ****************/
+		$user_id = $token_array[0];   // user id of the user who requested
+		$api_key_gen = $token_array[1];  // Api key generated by doing md5 of userid/mail/password
+		$valid_till = $token_array[2];  // Valid till time from the time the api is being hit
+		$user_api_key = $token_array[3]; // Api key associated with the user in user table
+		$agency_api_key = count($token_array)>4?$token_array[4]:''; // Agency api key associated to agency tagged with the user.
+
+		/***********************************************************************************/
 		$user = User::where('id',$user_id)->get();
 		$error = 0;
 		$userApi = User::where('email',$user[0]->email)->leftjoin('agencies','users.id','=','agencies.owner_id')->select('agencies.*')->get();
-		$agency_id = $userApi[0]->id;
+		$agency_id = $userApi[0]->id; // Agency id of the user who called the function
 		$agency_name = $userApi[0]->name;
 		$agent_id = $input['agent_id'];
 		$agency_name_ip = $input['agency_name'];
@@ -558,6 +563,9 @@ class APIController extends Controller
 			$error = 1;
 		}
 		if($agency_name != $agency_name_ip){
+			$error = 1;
+		}
+		if($agency_id != $input['agency_id']){
 			$error = 1;
 		}
 		return $error;

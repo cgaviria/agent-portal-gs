@@ -80,15 +80,19 @@ class ClientsController extends Controller
 		$user_check = Sentinel::check();
 		if ($user_check) {
 			$clients = Client::query()->select('clients.*');
+			
 			$logged_in_user = Sentinel::getUser();
 			$current_user_role = $logged_in_user->roles->first()->slug;
+           
             $clients->when(Sentinel::inRole(Role::ROLE_AGENT), function ($q) use($logged_in_user){
 			    return $q->where('clients.user_id', '=', $logged_in_user->id);
 			});
+			
 			$clients->when(Sentinel::inRole(Role::ROLE_AGENCY_MANAGER), function ($q) use($logged_in_user) {
 				$q->leftjoin('users', 'clients.user_id', '=', 'users.id');
 			    return $q->where('users.agency_id', '=', $logged_in_user->agency_id);
 			});
+			
 			$clients->when(Sentinel::inRole(Role::ROLE_OWNER), function ($q) use($logged_in_user) {
 				$q->leftjoin('users', 'clients.user_id', '=', 'users.id');
 				$q->leftjoin('agencies', 'agencies.id', '=', 'users.agency_id');
@@ -159,7 +163,7 @@ class ClientsController extends Controller
         }  
     }
     /**
-	 * Save the client
+	 * Save the client while adding
 	 *
 	 * @return Response
 	 */
@@ -188,6 +192,7 @@ class ClientsController extends Controller
 				$ci->duration = $request->input('duration');
 				$ci->user_id = $logged_in_user->id;
 				$ci->save();
+                
                 $this->insertActivity( "/dashboard/clients/edit/$ci->id",'added new  <a href="%a" target="_blank">Client</a>',$logged_in_user->id);
 				$response->mens = Lang::get('Client successfully created.');
 				return RestResponse::sendResult(200, $response);
@@ -239,6 +244,7 @@ class ClientsController extends Controller
 				}
 				else{
 				    foreach ($customerArr as  $value) {
+				    	
 				    	$ci = new Client;
 						$ci->first_name = $value['first_name'];
 						$ci->last_name = $value['last_name'];
@@ -308,11 +314,17 @@ class ClientsController extends Controller
             $response->errmens = [];
             $ci = Client::find($request -> input('ci_id'));
             $ci->delete();
+            
             $this->insertActivity( "/dashboard/clients/",'deleted a client '.$ci->first_name.' '.$ci->last_name.', see  <a href="%a" target="_blank">Clients</a>',$logged_in_user->id);
             $response->mens = Lang::get('Client successfully deleted.');
             return RestResponse::sendResult(200,$response);
         }  
     }
+    /**
+	 * Validating CSV
+	 *
+	 * @return Response
+	 */
     public function csv_valid($data)
     {   
 		    $error = array();
@@ -389,7 +401,7 @@ class ClientsController extends Controller
 		}
 	}
 	/**
-	 * Get Client count monthly basis for admin
+	 * Get Client count monthly basis for dashboard
 	 *
 	 * @return Response
 	 */
